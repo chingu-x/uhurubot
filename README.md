@@ -70,26 +70,65 @@ node uhuru <option> <flags>
 ```
 | Option     | Description                                 | Permissable flags |
 |------------|---------------------------------------------|-------------------|
-| create     | Create channels for a Voyage                | v, t              |
-| authorize  | Authorize users to access channels          | v, u              |
-| post       | Post a message in the `#team-advice` channel | c                |
-
-### Flags
+| create     | Create channels for a Voyage                | v                 |
+| authorize  | Authorize users to access channels          | v                 |
+| post       | Post a message in the `#team-advice` channel | p                |
 
 Before running it you'll first need to identify option values you'll using 
 in both the command line and the CLI `.env` file. 
 
 | CLI Flag        | `.env` Parm    | Description                              |
 |-----------------|----------------|------------------------------------------|
-| -v, --voyage    | VOYAGE         | Voyage name (e.g. v99) |
-| -t, --teams     | TEAMS          | Team names |
-| -u, --users     | USERS          | User channel assignments |
-| -c, --channel   | CHANNEL        | Channel name |
+| -v, --voyage    | VOYAGE         | Voyage teams & users (JSON file) |
+| -p, --posts     | POSTS          | Channel post specifications (JSON file) |
  
 It's important to keep in mind that options you supply on the command line
 ALWAYS override the same option you specify in the `.env` file.
 
 `env.sample` in the root of the project contains a sample of how to set up a `.env` file.
+
+### Configuration files
+
+Due to the complexity of the data required to setup channels, authorize users,
+and manage channel posts command line parameters are not a good solution for
+specifying the parameters needed to guide these operations.
+
+Instead, CLI parameters defining JSON files containing the necessary
+specifications are used. The following sections define the format and content
+of these files.
+#### Voyage Teams & Users
+
+The following shows the format of the Voyage Teams & Users JSON file:
+
+```
+{
+  "voyages": "nn", 
+  "teams": [
+    {
+      "team": "<animalname-nn>",
+      "discord_names": ["user1", "user2", "user3"]
+    }, {
+      "team": "<animalname-nn>",
+      "discord_names": ["user4", "user5", "user6"]
+    }, {
+      "team": "<animalname-nn>",
+      "discord_names": ["user4", "user5", "user6"]
+    },
+  ]
+}
+```
+
+`<animalname-nn>` should be replaced with a unique team name. For example,
+`toucans-01`. Any valid string value may be used for an animal name, but
+the current practice is to use:
+
+- Tier 1 teams: `toucans`
+- Tier 2 teams: `geckos`
+- Tier 3 teams: `bears`
+
+#### Post Specifications
+
+
 
 ### CLI Examples
 
