@@ -102,7 +102,7 @@ The following shows the format of the Voyage Teams & Users JSON file:
 
 ```
 {
-  "voyages": "nn", 
+  "voyage_number": "nn", 
   "teams": [
     {
       "team": "<animalname-nn>",
@@ -126,8 +126,41 @@ the current practice is to use:
 - Tier 2 teams: `geckos`
 - Tier 3 teams: `bears`
 
+`discord_names` defines the Discord users that are in that team. The user
+names in this array must be valid Discord users who have joined the Chingu
+server.
+
+The `team` key-value pair is only required for the `create` option. When
+the `authorize` option is requested both the `team` and the `discord_names`
+key-value pairs must be provided. 
+
 #### Post Specifications
 
+The following shows the format of the Post specifications JSON file:
+
+```
+{
+  "voyage": {
+    voyage_number: "nn",
+    start_date: "yyyy-mm-dd",
+    end_date: "yyyy-mm-dd"
+  }, 
+  "schedule": [
+    {
+      "sprint_number": nn,
+      "sprint_day": "daynameofweek",
+      "channel": "channelname",
+      "message": "messagetext"
+    }, {
+      "sprint_number": nn,
+      "sprint_day": "daynameofweek",
+      "channel": "channelname",
+      "message": "messagetext"
+    },
+    ...
+  ]
+}
+```
 
 
 ### CLI Examples
