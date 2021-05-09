@@ -70,17 +70,18 @@ node uhuru <option> <flags>
 ```
 | Option     | Description                                 | Permissable flags |
 |------------|---------------------------------------------|-------------------|
-| create     | Create channels for a Voyage                | v                 |
-| authorize  | Authorize users to access channels          | v                 |
-| post       | Post a message in the `#team-advice` channel | p                |
+| create     | Create channels for a Voyage                | -v, -t            |
+| authorize  | Authorize users to access channels          | -v, -t            |
+| post       | Post a message in the `#team-advice` channel | -v, -p           |
 
 Before running it you'll first need to identify option values you'll using 
 in both the command line and the CLI `.env` file. 
 
 | CLI Flag        | `.env` Parm    | Description                              |
 |-----------------|----------------|------------------------------------------|
-| -v, --voyage    | VOYAGE         | Voyage teams & users (JSON file) |
-| -p, --posts     | POSTS          | Channel post specifications (JSON file) |
+| -v, --voyage    | VOYAGE         | Voyage number |
+| -t, --teams     | TEAMS          | Teams & users (JSON file) path |
+| -p, --posts     | POSTS          | Channel post specifications (JSON file) path |
  
 It's important to keep in mind that options you supply on the command line
 ALWAYS override the same option you specify in the `.env` file.
@@ -96,13 +97,20 @@ specifying the parameters needed to guide these operations.
 Instead, CLI parameters defining JSON files containing the necessary
 specifications are used. The following sections define the format and content
 of these files.
-#### Voyage Teams & Users
 
-The following shows the format of the Voyage Teams & Users JSON file:
+Since multiple Voyages may be underway at the same time file names for these
+files will follow the following naming convention so configuration files can
+maintained in the same file system directory:
+
+- Teams & Users: `vnnnnn_teams_users`
+- Posts: `vnnnnn_posts`
+#### Teams & Users
+
+The following shows the format of the Teams & Users JSON file:
 
 ```
 {
-  "voyage_number": "nn", 
+  "voyage_number": "nnnnn", 
   "teams": [
     {
       "team": "<animalname-nn>",
@@ -141,11 +149,17 @@ The following shows the format of the Post specifications JSON file:
 ```
 {
   "voyage": {
-    voyage_number: "nn",
-    start_date: "yyyy-mm-dd",
-    end_date: "yyyy-mm-dd"
+    "voyage_number": "nnnnn",
+    "schedule": [
+      { 
+        "sprint_number": "nn",
+        "start_date": "yyyy-mm-dd",
+        "end_date": "yyyy-mm-dd"
+      },
+      ...
+    ],
   }, 
-  "schedule": [
+  "posts": [
     {
       "sprint_number": nn,
       "sprint_day": "daynameofweek",
@@ -154,7 +168,7 @@ The following shows the format of the Post specifications JSON file:
     }, {
       "sprint_number": nn,
       "sprint_day": "daynameofweek",
-      "channel": "channelname",
+      "channel": "categoryname/channelname",
       "message": "messagetext"
     },
     ...
@@ -162,10 +176,81 @@ The following shows the format of the Post specifications JSON file:
 }
 ```
 
+The `voyage` section defines the voyage number, number of sprints, and the
+date range for each sprint. 
+
+- `voyage_number` is a character string that defines
+a unique identifier for the Voyage. It may be either numeric or a string. Numeric
+Voyage numbers need not contain leading zeros.
+
+- `schedule` contains an array of objects defining each sprint and its start
+and end dates. This is used to map posts scheduled for a particular sprint and
+day of the week (e.g. Monday) to a specific date for a Voyage.
+
+The `posts` section defines the messages to be added to a channel on an
+specific day of a sprint.
+
+- `sprint_number` & `sprint_day` are used along with the Voyage schedule to
+identify the specific date the message is to be posted.
+
+- `sprint_day` may be specified as the day name (e.g. 'monday'). Any case is 
+valid.
+
+- `channel` specifies the specific channel the message is to be posted into.
+For example, `VOYAGE-30/team-advice` or `chingu-news-v31-📰`. When a channel is
+a member of a category the category name must be specified followed by a
+slash (i.e. '/') and the channel name.
+
+- `message` is the Markdown formatted text to be added to a channel.
 
 ### CLI Examples
 
-#### Example #1
+#### Example #1 - Create Channels prior to New Voyage
+
+In a terminal session issue the following to create Discord channels for a
+specific voyage:
+```
+node uhuru create -v 31 -t v31_teams_users
+```
+
+Example contents for the `v31_teams_users` file:
+
+```
+{
+  "voyage_number": "31", 
+  "teams": [
+    {
+      "team": "toucans-team-01",
+    }, {
+      "team": "toucans-team-02",
+    }, {
+      "team": "geckos-team-03",
+    }, {
+      "team": "bears-team-04",
+    }, {
+      "team": "bears-team-05",
+    },    }, {
+      "team": "bears-team-06",
+    },
+  ]
+}
+```
+
+After completion the Chingu Discord server will contain the following new
+channels in the new `VOYAGE-31` category:
+
+- `#team-advice`
+- `#team-resources`
+- `#toucans-team-01`
+- `#toucans-team-02`
+- `#geckos-team-03`
+- `#bears-team-04`
+- `#bears-team-05`
+- `#bears-team-06`
+
+Note that the `v31_teams_users` file omitted the `discord_names` attributes
+since it's optional for the `create` function. However, if included they will 
+be ignored.
 
 ## Release History
 
