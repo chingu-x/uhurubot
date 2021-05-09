@@ -1,6 +1,7 @@
 const { Command } = require('commander');
 const program = new Command();
 const { isDebugOn } = require('./src/Environment')
+const Environment = require('./src/Environment')
 
 const environment = new Environment()
 environment.initDotEnv('./')
@@ -12,35 +13,21 @@ const consoleLogOptions = (options) => {
     console.log('--------------------')
     console.log('- debug: ',options.debug)
     console.log('- voyage: ', options.voyage)
+    console.log('- teams: ', options.teams)
   }
 }
 
-let reposToCreate = []
-const generateRepoList = (voyageName, teams) => {
-  let teamNo = 0
-  for (let teamCount = 0; teamCount < teams.length; teamCount++) {
-    if (teams[teamCount].count > 0) {
-      for (let currentTeamNo = 1; currentTeamNo <= teams[teamCount].count; currentTeamNo++) {
-        teamNo += 1
-        reposToCreate.push({ 
-          voyageName: `${ voyageName }`,
-          tierName: `${ teams[teamCount].name.toLowerCase() }`,
-          teamNo: `${ teamNo.toString().padStart(2, "0") }` 
-        })
-      }
-    }
-  }
-}
-
-// Interpret command line directives and options
+// Process a request to create new Voyage team channels
 program 
   .command('create')
-  .description('Clone a template GitHub repo to create Chingu Voyage Repos')
+  .description('Create team channels in Discord for an upcoming Chingu Voyage')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
   .action( async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       voyage: options.voyage,
+      teams: options.teams,
     })
 
     isDebug = environment.isDebug()
@@ -49,15 +36,35 @@ program
     isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
-    const { VOYAGE } = environment.getOperationalVars()
-    generateRepoList(VOYAGE, [
-      { name: TIER1_NAME, count: NO_TIER1_TEAMS },
-      { name: TIER2_NAME, count: NO_TIER2_TEAMS },
-      { name: TIER3_NAME, count: NO_TIER3_TEAMS }
-    ])
+    const { VOYAGE, TEAMS } = environment.getOperationalVars()
     
-    const github = new GitHub(environment) 
-    await github.cloneTemplate(reposToCreate)
+    const discord = new discord(environment) 
+    await discord.addVoyageChannels()
+  })
+
+// Process a request to authorize Chingus to access their Voyage team channels
+program 
+  .command('authorize')
+  .description('Authorize Chingus in a Voyage to access their Discord team channels')
+  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
+  .action( async (options) => {
+    environment.setOperationalVars({
+      debug: options.debug,
+      voyage: options.voyage,
+      teams: options.teams,
+    })
+
+    isDebug = environment.isDebug()
+
+    isDebug && consoleLogOptions(options)
+    isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    environment.isDebug() && environment.logEnvVars()
+
+    const { VOYAGE, TEAMS } = environment.getOperationalVars()
+    
+    const discord = new Discord(environment) 
+    await discord.grantVoyageChannelAccess()
   })
 
   program.parse(process.argv)
