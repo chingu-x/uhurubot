@@ -1,6 +1,7 @@
 const { Command } = require('commander');
 const program = new Command();
 const { isDebugOn } = require('./src/Environment')
+const Discord = require('./src/Discord')
 const Environment = require('./src/Environment')
 
 const environment = new Environment()
@@ -38,8 +39,8 @@ program
 
     const { VOYAGE, TEAMS } = environment.getOperationalVars()
     
-    const discord = new discord(environment) 
-    await discord.addVoyageChannels()
+    const discord = new Discord(environment) 
+    await discord.createVoyageChannels()
   })
 
 // Process a request to authorize Chingus to access their Voyage team channels
