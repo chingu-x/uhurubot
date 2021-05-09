@@ -231,7 +231,7 @@ Example contents for the `v31_teams_users` file:
       "team": "bears-team-05",
     },    }, {
       "team": "bears-team-06",
-    },
+    }
   ]
 }
 ```
@@ -247,10 +247,94 @@ channels in the new `VOYAGE-31` category:
 - `#bears-team-04`
 - `#bears-team-05`
 - `#bears-team-06`
+- `#toucans-team-01av`
+- `#toucans-team-02av`
+- `#geckos-team-03av`
+- `#bears-team-04av`
+- `#bears-team-05av`
+- `#bears-team-06av`
+
+All channels are private channels and are not visible to `@everyone`. The 
+`create` function doesn't grant any team access to the channels it creates.
+Access is granted by the `authorize` function since to allow teams to be created
+in advance.
+
+Team channels ending in the team number are text channels. Those ending in `av`
+are voice channels.
 
 Note that the `v31_teams_users` file omitted the `discord_names` attributes
 since it's optional for the `create` function. However, if included they will 
 be ignored.
+
+#### Example #2 - Authorize Discord Users to access their Voyage Channels
+
+In a terminal session issue the following to authorize Chingu's to access
+their team channels for a voyage:
+```
+node uhuru authorize -v 31 -t v31_teams_users
+```
+
+Example contents for the `v31_teams_users` file:
+
+```
+{
+  "voyage_number": "31", 
+  "teams": [
+    {
+      "team": "toucans-team-01",
+      "discord_names": ["Freddie#3489", "Carol#1123", "Rakesh#6733"]
+    }, {
+      "team": "toucans-team-02",
+      "discord_names": ["Paulo#4921", "Perez#9275", "Johann#6373", "Judy#0987"]
+    }, {
+      "team": "geckos-team-03",
+      "discord_names": ["Chu#4431", "Linda@0934", "Mark#7682", "Suzie#0472", "Maggie#7659"]
+    }, {
+      "team": "bears-team-04",
+      "discord_names": ["Frieda#8277", "Bart#5921", "Ian#1206"]
+    }, {
+      "team": "bears-team-05",
+      "discord_names": ["Christie#5112", "Franco#4689", "Adnan#0021", "Joh#7654", "Nghi#9812"]
+    },    }, {
+      "team": "bears-team-06",
+      "discord_names": ["Kay#8876", "Joey#3240", "Alan#6724", "Peggy#8894", "Julie#6513"]
+    }
+  ]
+}
+```
+
+After completion the Chingu Discord server will contain the following new
+channels in the new `VOYAGE-31` category:
+
+- `#team-advice`
+- `#team-resources`
+- `#toucans-team-01`
+- `#toucans-team-02` 
+- `#geckos-team-03`
+- `#bears-team-04`
+- `#bears-team-05`
+- `#bears-team-06`
+- `#toucans-team-01av`
+- `#toucans-team-02av`
+- `#geckos-team-03av`
+- `#bears-team-04av`
+- `#bears-team-05av`
+- `#bears-team-06av`
+
+All users in all teams are granted read-only access along with permission to
+post emoji reactions to the `team-advice` and `team-resources` channels.
+
+Team members are granted update access to their team text channel, and access
+to their teams voice channel (e.g. `toucans-team-01av`). No access, read-only or
+otherwise, is granted to non-team members other than administrators who by 
+default have access to all channels in the server.
+
+Note that the `v31_teams_users` file MUST contain the `discord_names` attributes
+since it's required to grant access.
+
+#### Example #3 - Schedule Discord Posts for a Voyage
+
+TBD
 
 ## Release History
 
