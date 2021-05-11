@@ -1,0 +1,12 @@
+{
+  "voyage_number": "99", 
+  "teams": [
+    {
+      "team": "toucans-team-01>"
+    }, {
+      "team": "geckos-team-02"
+    }, {
+      "team": "bears-team-03"
+    }
+  ]
+}

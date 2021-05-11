@@ -1,3 +1,4 @@
+const FileOps = require('./FileOps')
 
 class Discord {
   constructor(environment) {
@@ -5,8 +6,11 @@ class Discord {
     this.isDebug = this.environment.isDebug()
   }
 
-  createVoyageChannels() {
-
+  createVoyageChannels(VOYAGE, TEAMS) {
+    const rawTeamData = FileOps.readFile(TEAMS)
+    const jsonTeamData = JSON.parse(rawTeamData)
+    console.log(jsonTeamData)
+    console.log(jsonTeamData.voyage_number)
   }
 
   grantVoyageChannelAccess() {
