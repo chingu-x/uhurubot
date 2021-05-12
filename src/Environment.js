@@ -11,6 +11,7 @@ class Environment {
     console.log('---------------------')
     console.log('- DEBUG: ', process.env.DEBUG)
     console.log('- VOYAGE: ', process.env.VOYAGE)
+    console.log('- DISCORD_TOKEN: ', process.env.DISCORD_TOKEN)
     console.log('- TEAMS: ', process.env.TEAMS)
 
     return true
@@ -42,13 +43,14 @@ class Environment {
 
   setOperationalVars(options) {
     // Retrieve the current variable values from `.env` file
-    let { DEBUG, VOYAGE, TEAMS} = process.env
+    let { DEBUG, VOYAGE, DISCORD_TOKEN, TEAMS} = process.env
 
     // Initialize `operationalVars` allowing command line parameter values
     // to override `.env` parameters
     const debugValue = options.debug ? options.debug : DEBUG
     this.operationalVars.DEBUG = debugValue.toUpperCase() === 'YES' ? true : false
     this.operationalVars.VOYAGE = options.voyage ? options.voyage : VOYAGE
+    this.operationalVars.DISCORD_TOKEN = DISCORD_TOKEN
     this.operationalVars.TEAMS = options.teams ? options.teams : TEAMS
   }
 }

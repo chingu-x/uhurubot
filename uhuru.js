@@ -37,10 +37,10 @@ program
     isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
-    const { VOYAGE, TEAMS } = environment.getOperationalVars()
+    const { DISCORD_TOKEN, VOYAGE, TEAMS } = environment.getOperationalVars()
     
     const discord = new Discord(environment) 
-    await discord.createVoyageChannels(VOYAGE, TEAMS)
+    await discord.createVoyageChannels(DISCORD_TOKEN, VOYAGE, TEAMS)
   })
 
 // Process a request to authorize Chingus to access their Voyage team channels
