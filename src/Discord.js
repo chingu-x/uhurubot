@@ -51,7 +51,7 @@ class Discord {
   }
 
   grantVoyageChannelAccess() {
-    
+    // Add code here
   }
 
 }
