@@ -8,14 +8,13 @@ class Discord {
 
     // Since extraction occurs within the `client.on` block these promises are
     // returned to the extract/audit callers and resolved by calling 
-    // `this.xxxxxxResolve()` when `createVoyageChannels()` has completed.
+    // `this.createResolve()` when `createVoyageChannels()` has completed.
     this.createResolve = null
     this.createReject = null
     this.createPromise = new Promise((resolve, reject) => {
       this.createResolve = resolve
       this.createReject = reject
     })
-
   }
 
   async createVoyageChannels(DISCORD_TOKEN, VOYAGE, TEAMS) {
@@ -44,7 +43,7 @@ class Discord {
       return this.createPromise
     }
     catch (err) {
-      console.error(`Error logging into Discord. Token: ${process.env.DISCORD_TOKEN}`)
+      console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
       console.error(err)
       this.createReject('fail')
     }
