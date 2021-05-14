@@ -17,8 +17,13 @@ class Discord {
     })
   }
 
+  isCategoryCreated(guild, categoryName) {
+    return guild.channels.cache.array()
+      .filter(channel => channel.type === 'category' && channel.name === categoryName)
+  }
+
   async createChannelCategory(guild, categoryName) {
-    guild.channels.create(categoryName, {
+    const category = await guild.channels.create(categoryName, {
       type: 'category',
       position: 1,
       permissionOverwrites: [
@@ -26,25 +31,28 @@ class Discord {
           id: guild.id,
           allow: ['VIEW_CHANNEL'],
         }]
-    }).then(category => {
-      console.log('Category created - ', category.name)
-      return category
     })
+    console.log('Category created - ', category.name)
+    return category
+  }
+
+  isChannelCreated(guild, teamName) {
+    return guild.channels.cache.array()
+      .filter(channel => channel.type === 'text' && channel.name === teamName)
   }
 
   async createChannel(guild, category, teamName) {
-    guild.channels.create(teamName, {
+    const channel = await guild.channels.create(teamName, {
       type: 'text',
-      parent: category.id,
+      parent: category,
       permissionOverwrites: [
         {
           id: guild.id,
           allow: ['VIEW_CHANNEL'],
         }]
-    }).then(channel => {
-      console.log('Channel created - ', channel.name)
-      return channel
     })
+    console.log('Channel created - ', channel.name)
+    return channel
   }
 
   async createVoyageChannels(DISCORD_TOKEN, TEAMS) {
@@ -60,13 +68,20 @@ class Discord {
 
         const channels = client.channels.cache.array()
         const guild = channels[0].guild
+        console.log('guild.categories: ', guild.channels.cache.array()
+          .filter(channel => channel.type === 'category'))
 
         const categoryName = 'v'.concat(teams.voyage_number,'-🔥')
-        const category = await this.createChannelCategory(guild, categoryName)
-        console.log('category: ', category)
+        let category = this.isCategoryCreated(guild, categoryName)
+        if (category.length === 0) {
+          category = await this.createChannelCategory(guild, categoryName)
+        }
 
         for (let team of teams.teams) {
-          const channel = await this.createChannel(guild, category, team.team)
+          let channel = this.isChannelCreated(guild, team.team)
+          if (channel.length === 0) {
+            channel = await this.createChannel(guild, category, team.team)
+          }
         }
 
         this.createResolve('done')
