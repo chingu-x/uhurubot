@@ -17,17 +17,58 @@ class Discord {
     })
   }
 
-  async createVoyageChannels(DISCORD_TOKEN, VOYAGE, TEAMS) {
-    const rawTeamData = FileOps.readFile(TEAMS)
-    const jsonTeamData = JSON.parse(rawTeamData)
-    console.log(jsonTeamData)
-    console.log(jsonTeamData.voyage_number)
+  async createChannelCategory(guild, categoryName) {
+    guild.channels.create(categoryName, {
+      type: 'category',
+      position: 1,
+      permissionOverwrites: [
+        {
+          id: guild.id,
+          allow: ['VIEW_CHANNEL'],
+        }]
+    }).then(category => {
+      console.log('Category created - ', category.name)
+      return category
+    })
+  }
+
+  async createChannel(guild, category, teamName) {
+    guild.channels.create(teamName, {
+      type: 'text',
+      parent: category.id,
+      permissionOverwrites: [
+        {
+          id: guild.id,
+          allow: ['VIEW_CHANNEL'],
+        }]
+    }).then(channel => {
+      console.log('Channel created - ', channel.name)
+      return channel
+    })
+  }
+
+  async createVoyageChannels(DISCORD_TOKEN, TEAMS) {
+    const rawTeams = FileOps.readFile(TEAMS)
+    const teams = JSON.parse(rawTeams)
+    console.log(teams)
 
     const client = new DiscordJS.Client()
     try {
       client.on('ready', async () => {
         // Create the Voyage channels
         console.log('\nConnected as ' + client.user.tag)
+
+        const channels = client.channels.cache.array()
+        const guild = channels[0].guild
+
+        const categoryName = 'v'.concat(teams.voyage_number,'-🔥')
+        const category = await this.createChannelCategory(guild, categoryName)
+        console.log('category: ', category)
+
+        for (let team of teams.teams) {
+          const channel = await this.createChannel(guild, category, team.team)
+        }
+
         this.createResolve('done')
       })
     }
@@ -40,6 +81,7 @@ class Discord {
     // Login to Discord
     try {
       await client.login(DISCORD_TOKEN)
+      console.log('Successful Discord login')
       return this.createPromise
     }
     catch (err) {
