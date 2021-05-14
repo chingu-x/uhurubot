@@ -68,8 +68,6 @@ class Discord {
 
         const channels = client.channels.cache.array()
         const guild = channels[0].guild
-        console.log('guild.categories: ', guild.channels.cache.array()
-          .filter(channel => channel.type === 'category'))
 
         const categoryName = 'v'.concat(teams.voyage_number,'-🔥')
         let category = this.isCategoryCreated(guild, categoryName)
