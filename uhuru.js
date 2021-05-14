@@ -24,10 +24,9 @@ program
   .description('Create team channels in Discord for an upcoming Chingu Voyage')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
   .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
-  .action( async (options) => {
+  .action(async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
-      voyage: options.voyage,
       teams: options.teams,
     })
 
@@ -37,10 +36,10 @@ program
     isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
-    const { DISCORD_TOKEN, VOYAGE, TEAMS } = environment.getOperationalVars()
+    const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
     const discord = new Discord(environment) 
-    await discord.createVoyageChannels(DISCORD_TOKEN, VOYAGE, TEAMS)
+    await discord.createVoyageChannels(DISCORD_TOKEN, TEAMS)
   })
 
 // Process a request to authorize Chingus to access their Voyage team channels
@@ -52,7 +51,6 @@ program
   .action( async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
-      voyage: options.voyage,
       teams: options.teams,
     })
 
