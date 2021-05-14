@@ -41,6 +41,10 @@ class Discord {
       .filter(channel => channel.type === 'text' && channel.name === teamName)
   }
 
+  postGreetingMessage(channel, greetingMessageText) {
+    channel.send(greetingMessageText)
+  }
+
   async createChannel(guild, category, teamName) {
     const channel = await guild.channels.create(teamName, {
       type: 'text',
@@ -69,16 +73,28 @@ class Discord {
         const channels = client.channels.cache.array()
         const guild = channels[0].guild
 
+        // Create the Voyage category
         const categoryName = 'v'.concat(teams.voyage_number,'-🔥')
         let category = this.isCategoryCreated(guild, categoryName)
         if (category.length === 0) {
           category = await this.createChannelCategory(guild, categoryName)
         }
 
+        // Create Shared Channels
+        for (let sharedChannel of teams.shared_channels) {
+          let channel = this.isChannelCreated(guild, sharedChannel.channel_name)
+          if (channel.length === 0) {
+            channel = await this.createChannel(guild, category, sharedChannel.channel_name)
+            this.postGreetingMessage(channel, sharedChannel.greeting)
+          }
+        }
+
+        // Create & populate team channels
         for (let team of teams.teams) {
           let channel = this.isChannelCreated(guild, team.team)
           if (channel.length === 0) {
             channel = await this.createChannel(guild, category, team.team)
+            this.postGreetingMessage(channel, teams.team_greeting)
           }
         }
 

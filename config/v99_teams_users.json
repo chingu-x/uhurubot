@@ -1,5 +1,37 @@
 {
   "voyage_number": "99", 
+  "shared_channels": [
+    { 
+      "channel_name": "team-advice",
+      "greeting": [
+        "**_Welcome to Sprint 1 Voyagers!_** :fireworks: :fireworks: :fireworks: :fireworks: :fireworks: :fireworks: :fireworks: :fireworks: :fireworks: :fireworks:\n",
+        "Today starts the first Sprint of your Voyage Project.\n",       
+        "There is a lot to be accomplished in this Sprint and these tasks are essential to building a solid foundation. Over many Voyages we’ve found that building this foundation helps the Sprints that follow go more smoothly. \n",
+        "Remember that you have made a commitment to completing the Voyage Project so you can increase your knowledge and experience not just in technical areas, but also in “soft” skills like teamwork and project management.\n",        
+        "Take the time to communicate openly, frankly, and with respect to your teammates. Spend time to define not just your project, but also the constraints you need to follow (like time off for work and family events). \n",       
+        "Remember the **three \"C\"s** - commitment, communication, collaboration. These are the essence of teamwork.\n",        
+        "https://media.giphy.com/media/DGwJRXVm6PmRa/giphy.gif"
+      ]
+    }, { 
+      "channel_name": "team-resources",
+      "greeting": [
+        "**__Welcome to the start of your Voyage adventure Chingus!__**\n",
+        "**Shared Team Documents**\n",
+        "We've posted  the link to your teams private Google Drive directory in your team channel. You can use this to share non-code resources, like meeting agendas & project idea lists, with your teammates. It also contains templates for various documents plus a copy of the Voyage Guide.\n",        
+        "**Team Channels**\n",
+        "Please use this chat as your primary space to communicate & collaborate with your teammates during this Voyage (if you DM each other you'll likely get emails from us asking why your team isn't active haha). For example, `#geckos-team-03`.\n",       
+        "In addition to this channel we've create three others for your use:\n",        
+        "- **_Team Meeting Channel_**: A place where you can meet in realtime using audio and optionally video. It also supports screen sharing for those time when you need to collaborate on code or a document. Example channel name #geckos-team-03av.\n",
+        "- **_Team Resources_**: A read-only channel where we'll place links to frequently used documents like the Voyage Guide.\n",
+        "- **_Team Advice_**: A read-only channel (this channel) we'll add daily advice to to help you keep going. \n",       
+        "https://www.icegif.com/wp-content/uploads/good-luck-icegif-5.gif\n\n",
+        "The preparation & Sprint 1 tasks in the Voyage Guide have been loaded into each team's repo, but to see the Zenhub tab within GitHub you'll need to install ZenHub's browser extension. \n",
+        "You can also access your board by signing up on https://zenhub.com using your GitHub credentials.\n",       
+        "Feel free to add the Backlog tasks for your Voyage Projects when you've defined your team's MVP.\n",       
+        "Good luck!"
+      ]
+    }
+  ],
   "teams": [
     {
       "team": "toucans-team-01>"
@@ -8,5 +40,14 @@
     }, {
       "team": "bears-team-03"
     }
+  ],
+  "team_greeting": [
+    ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
+    "**_Your First Steps _** \n",
+    "1. Say \"hi\" to your team-mates! Come in excited and help welcome your team-mates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, or myself (@chance#6481) are not your team-mate. :slight_smile:\n", 
+    "2. Go to #your-intros-here-🎤 and copy/paste your intro into the team chat This will allow your team-mates to get to know you and get the party started!\n",
+    "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n",
+    "**__Shared Team Documents__** \n",
+    "We've pinned the link to your team’s private Google Drive directory to this channel. You can use it to share non-code resources, like meeting agendas & project idea lists, with your teammates. It also contains templates for various documents plus a copy of the Voyage Guide."
   ]
 }
