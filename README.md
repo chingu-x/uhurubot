@@ -110,7 +110,26 @@ The following shows the format of the Teams & Users JSON file:
 
 ```
 {
-  "voyage_number": "nnnnn", 
+  "voyage_number": "nnnnn",
+    "shared_channels": [
+    { 
+      "channel_name": "<channel-name",
+      "greeting": [
+        "<line-1>",
+        "<line-2>",
+        ...
+        "<line-n>"
+      ]
+    }, { 
+      "channel_name": "channel-name",
+      "greeting": [
+        "<line-1>",
+        "<line-2>",
+        ...
+        "<line-n>"
+      ]
+    }
+  ], 
   "teams": [
     {
       "team": "<animalname-nn>",
@@ -122,12 +141,27 @@ The following shows the format of the Teams & Users JSON file:
       "team": "<animalname-nn>",
       "discord_names": ["user4", "user5", "user6"]
     },
+  ],
+  "team_greeting": [
+    "<line-1>",
+    "<line-2>",
+    ...
+    "<line-n>"
   ]
 }
 ```
+The `shared_channels` section defines the channels that are shared by all
+Voyage teams and the messages that should be added to them. By default these
+channels are private and read-only access is granted to Voyage particpants. 
+
+- `channel-name` defines the channels name (Duh!)
+- `greeting` specifies the message (Markdown) to be added to it
 
 `<animalname-nn>` should be replaced with a unique team name. For example,
-`toucans-01`. Any valid string value may be used for an animal name, but
+`toucans-01`. By default these are private channels and access is
+granted only to members of that team.
+
+Any valid string value may be used for an animal name, but
 the current practice is to use:
 
 - Tier 1 teams: `toucans`
@@ -141,6 +175,9 @@ server.
 The `team` key-value pair is only required for the `create` option. When
 the `authorize` option is requested both the `team` and the `discord_names`
 key-value pairs must be provided. 
+
+`team-greeting` defines the message (Markdown format) that is to be posted to
+each teams channel.
 
 #### Post Specifications
 
