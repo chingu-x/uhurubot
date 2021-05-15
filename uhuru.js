@@ -60,10 +60,12 @@ program
     isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
-    const { VOYAGE, TEAMS } = environment.getOperationalVars()
+    const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
     const discord = new Discord(environment) 
-    await discord.grantVoyageChannelAccess()
+    const result = await discord.grantVoyageChannelAccess(DISCORD_TOKEN, TEAMS)
+    console.log('result: ', result)
+    process.exit(0)
   })
 
   program.parse(process.argv)
