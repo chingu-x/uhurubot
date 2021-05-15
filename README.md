@@ -113,7 +113,7 @@ The following shows the format of the Teams & Users JSON file:
   "voyage_number": "nnnnn",
     "shared_channels": [
     { 
-      "channel_name": "<channel-name",
+      "channel_name": "<channel-name>",
       "greeting": [
         "<line-1>",
         "<line-2>",
@@ -121,7 +121,7 @@ The following shows the format of the Teams & Users JSON file:
         "<line-n>"
       ]
     }, { 
-      "channel_name": "channel-name",
+      "channel_name": "<channel-name>",
       "greeting": [
         "<line-1>",
         "<line-2>",
@@ -255,6 +255,21 @@ Example contents for the `v31_teams_users` file:
 ```
 {
   "voyage_number": "31", 
+  "shared_channels": [
+    { 
+      "channel_name": "team-advice",
+      "greeting": [
+        "**_Stay tuned!_**\n",
+        "This is where we'll be posting advice to help you navigate through your voyage"
+      ]
+    }, { 
+      "channel_name": "team-resources",
+      "greeting": [
+        "**_Stay tuned!_**\n",
+        "We'll periodically post links to different resources to help you during this Voyage"
+      ]
+    }
+  ], 
   "teams": [
     {
       "team": "toucans-team-01",
@@ -269,6 +284,10 @@ Example contents for the `v31_teams_users` file:
     },    }, {
       "team": "bears-team-06",
     }
+  ],
+  "team_greeting": [
+    "**__Welcome to your Voyage Team Channel__**\n",
+    "Use this channel to communicate & collaborate with your teammates!",
   ]
 }
 ```
