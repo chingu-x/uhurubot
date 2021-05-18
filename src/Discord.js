@@ -25,6 +25,10 @@ class Discord {
     })
   }
 
+  generateCategoryName(teams) {
+    return 'v'.concat(teams.voyage_number,'-🔥')
+  }
+
   isCategoryCreated(guild, categoryName) {
     return guild.channels.cache.array()
       .filter(channel => channel.type === 'category' && channel.name === categoryName)
@@ -57,8 +61,7 @@ class Discord {
     const channel = await guild.channels.create(teamName, {
       type: 'text',
       parent: category,
-      permissionOverwrites: [
-        {
+      permissionOverwrites: [{
           id: guild.id,
           allow: ['VIEW_CHANNEL'],
         }]
@@ -82,7 +85,7 @@ class Discord {
         const guild = channels[0].guild
 
         // Create the Voyage category
-        const categoryName = 'v'.concat(teams.voyage_number,'-🔥')
+        const categoryName = generateCategoryName(teams)
         let category = this.isCategoryCreated(guild, categoryName)
         if (category.length === 0) {
           category = await this.createChannelCategory(guild, categoryName)
@@ -136,13 +139,29 @@ class Discord {
     const client = new DiscordJS.Client()
     try {
       client.on('ready', async () => {
-        // Create the Voyage channels
+        // Authorize voyager access to the Voyage channels
         console.log('\nConnected as ' + client.user.tag)
 
         const channels = client.channels.cache.array()
         const guild = channels[0].guild
 
-        // TODO: Add authorization logic here
+        const categoryName = generateCategoryName(teams)
+        let category = this.isCategoryCreated(guild, categoryName)
+        if (category.length === 0) {
+          throw new Error(`This Voyage category (${ categoryName }) hasn't been \
+            defined yet. Please create it before continuing.`)
+          process.exit(1)
+        }
+
+        // Authorize teammember access to the team channels
+        for (let team of teams.teams) {
+          let channel = this.isChannelCreated(guild, team.team)
+          if (channel.length === 0) {
+            throw new Error(`This team channel (${ team.team }) hasn't been \
+            defined yet. Please create it before continuing.`)
+          }
+          // TODO: Authorize access to the channel
+        }
 
         this.authorizeResolve('done')
       })

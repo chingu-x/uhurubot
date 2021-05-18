@@ -6,7 +6,6 @@ const Environment = require('./src/Environment')
 
 const environment = new Environment()
 environment.initDotEnv('./')
-let isDebug = false
 
 const consoleLogOptions = (options) => {
   if (isDebug) {
@@ -23,17 +22,15 @@ program
   .command('create')
   .description('Create team channels in Discord for an upcoming Chingu Voyage')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
+  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
   .action(async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       teams: options.teams,
     })
 
-    isDebug = environment.isDebug()
-
-    isDebug && consoleLogOptions(options)
-    isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    environment.isDebug() && consoleLogOptions(options)
+    environment.isDebug() && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
@@ -48,17 +45,15 @@ program
   .command('authorize')
   .description('Authorize Chingus in a Voyage to access their Discord team channels')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
+  .option('-t, --teams <>', 'Path to the JSON file containing team channels to be created')
   .action( async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       teams: options.teams,
     })
 
-    isDebug = environment.isDebug()
-
-    isDebug && consoleLogOptions(options)
-    isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    environment.isDebug() && consoleLogOptions(options)
+    environment.isDebug() && console.log('\noperationalVars: ', environment.getOperationalVars())
     environment.isDebug() && environment.logEnvVars()
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
