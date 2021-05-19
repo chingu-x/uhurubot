@@ -1,7 +1,8 @@
-const { Command } = require('commander');
+import { Command } from 'commander'
 const program = new Command();
-const Discord = require('./src/Discord')
-const Environment = require('./src/Environment')
+import Environment from './src/Environment.js'
+import createVoyageChannels from './src/createVoyageChannels.js'
+import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 
 const environment = new Environment()
 environment.initDotEnv('./')
@@ -37,8 +38,7 @@ program
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    const discord = new Discord(environment) 
-    await discord.createVoyageChannels(DISCORD_TOKEN, TEAMS)
+    await createVoyageChannels(environment, DISCORD_TOKEN, TEAMS)
     process.exit(0)
   })
 
@@ -62,8 +62,7 @@ program
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    const discord = new Discord(environment) 
-    const result = await discord.grantVoyageChannelAccess(DISCORD_TOKEN, TEAMS)
+    await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
     console.log('result: ', result)
     process.exit(0)
   })

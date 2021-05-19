@@ -1,7 +1,7 @@
-const dotenv = require('dotenv')
-const FileOps = require('./FileOps')
+import dotenv from 'dotenv'
+import FileOps from './FileOps.js'
 
-class Environment {
+export default class Environment {
   constructor() {
     this.operationalVars = {}
   }
@@ -52,5 +52,3 @@ class Environment {
     this.operationalVars.TEAMS = options.teams ? options.teams : TEAMS
   }
 }
-
-module.exports = Environment
