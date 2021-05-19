@@ -38,8 +38,13 @@ program
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    await createVoyageChannels(environment, DISCORD_TOKEN, TEAMS)
-    process.exit(0)
+    try {
+      await createVoyageChannels(environment, DISCORD_TOKEN, TEAMS)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
   })
 
 // Process a request to authorize Chingus to access their Voyage team channels
@@ -62,9 +67,13 @@ program
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
-    console.log('result: ', result)
-    process.exit(0)
+    try {
+      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
   })
 
   program.parse(process.argv)

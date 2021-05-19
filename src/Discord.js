@@ -68,7 +68,7 @@ export default class Discord {
       parent: category,
       permissionOverwrites: [{
           id: guild.id,
-          allow: ['VIEW_CHANNEL'],
+          deny: ['VIEW_CHANNEL'],
         }]
     })
     console.log('Channel created - ', channel.name)

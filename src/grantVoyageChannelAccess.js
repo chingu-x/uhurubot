@@ -31,8 +31,20 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
           throw new Error(`This team channel (${ team.team.name }) hasn't been \
           defined yet. Please create it before continuing.`)
         }
-        // TODO: Authorize access to the channel
-        //await channel.createOverwrite(,,'Grant access to team member')
+        // Authorize access to the channel
+        if (team.team.discord_names.length > 0) {
+          for (let userName of team.team.discord_names) {
+            const user = await guild.members.fetch({ query: `${ userName }`, limit: 1 })
+            await channel[0].updateOverwrite(user.first().user,
+              {
+                'VIEW_CHANNEL': true,
+                'SEND_MESSAGES': true,
+                'EMBED_LINKS': true,
+                'ATTACH_FILES': true,
+              }
+            )
+          }
+        }
       }
 
       discordIntf.authorizeResolve('done')
