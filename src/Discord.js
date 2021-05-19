@@ -53,8 +53,8 @@ class Discord {
       .filter(channel => channel.type === 'text' && channel.name === teamName)
   }
 
-  postGreetingMessage(channel, greetingMessageText) {
-    channel.send(greetingMessageText)
+  async postGreetingMessage(channel, greetingMessageText) {
+    await channel.send(greetingMessageText)
   }
 
   async createChannel(guild, category, teamName) {
@@ -85,7 +85,7 @@ class Discord {
         const guild = channels[0].guild
 
         // Create the Voyage category
-        const categoryName = generateCategoryName(teams)
+        const categoryName = this.generateCategoryName(teams)
         let category = this.isCategoryCreated(guild, categoryName)
         if (category.length === 0) {
           category = await this.createChannelCategory(guild, categoryName)
@@ -102,10 +102,10 @@ class Discord {
 
         // Create & populate team channels
         for (let team of teams.teams) {
-          let channel = this.isChannelCreated(guild, team.team)
+          let channel = this.isChannelCreated(guild, team.team.name)
           if (channel.length === 0) {
-            channel = await this.createChannel(guild, category, team.team)
-            this.postGreetingMessage(channel, teams.team_greeting)
+            channel = await this.createChannel(guild, category, team.team.name)
+            await this.postGreetingMessage(channel, teams.team_greeting)
           }
         }
 
@@ -145,7 +145,7 @@ class Discord {
         const channels = client.channels.cache.array()
         const guild = channels[0].guild
 
-        const categoryName = generateCategoryName(teams)
+        const categoryName = this.generateCategoryName(teams)
         let category = this.isCategoryCreated(guild, categoryName)
         if (category.length === 0) {
           throw new Error(`This Voyage category (${ categoryName }) hasn't been \
@@ -155,12 +155,13 @@ class Discord {
 
         // Authorize teammember access to the team channels
         for (let team of teams.teams) {
-          let channel = this.isChannelCreated(guild, team.team)
+          let channel = this.isChannelCreated(guild, team.team.name)
           if (channel.length === 0) {
-            throw new Error(`This team channel (${ team.team }) hasn't been \
+            throw new Error(`This team channel (${ team.team.name }) hasn't been \
             defined yet. Please create it before continuing.`)
           }
           // TODO: Authorize access to the channel
+          //await channel.createOverwrite(,,'Grant access to team member')
         }
 
         this.authorizeResolve('done')

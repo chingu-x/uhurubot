@@ -1,14 +1,14 @@
 const { Command } = require('commander');
 const program = new Command();
-const { isDebugOn } = require('./src/Environment')
 const Discord = require('./src/Discord')
 const Environment = require('./src/Environment')
 
 const environment = new Environment()
 environment.initDotEnv('./')
+let debug = false
 
 const consoleLogOptions = (options) => {
-  if (isDebug) {
+  if (environment.isDebug()) {
     console.log('\Uhuru clone command options:')
     console.log('--------------------')
     console.log('- debug: ',options.debug)
@@ -29,9 +29,11 @@ program
       teams: options.teams,
     })
 
-    environment.isDebug() && consoleLogOptions(options)
-    environment.isDebug() && console.log('\noperationalVars: ', environment.getOperationalVars())
-    environment.isDebug() && environment.logEnvVars()
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
@@ -52,9 +54,11 @@ program
       teams: options.teams,
     })
 
-    environment.isDebug() && consoleLogOptions(options)
-    environment.isDebug() && console.log('\noperationalVars: ', environment.getOperationalVars())
-    environment.isDebug() && environment.logEnvVars()
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
