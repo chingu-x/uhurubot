@@ -40,6 +40,7 @@ program
     
     try {
       await createVoyageChannels(environment, DISCORD_TOKEN, TEAMS)
+      process.exit(0)
     }
     catch (err) {
       console.log(err)
@@ -69,6 +70,7 @@ program
     
     try {
       await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
+      process.exit(0)
     }
     catch (err) {
       console.log(err)

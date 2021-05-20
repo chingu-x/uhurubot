@@ -132,14 +132,20 @@ The following shows the format of the Teams & Users JSON file:
   ], 
   "teams": [
     {
-      "team": "<animalname-nn>",
-      "discord_names": ["user1", "user2", "user3"]
+      "team": { 
+        "name": "<animalname-nn>",
+        "discord_names": ["user1", "user2", "user3"]
+      }
     }, {
-      "team": "<animalname-nn>",
-      "discord_names": ["user4", "user5", "user6"]
+      "team": {
+        "name": "<animalname-nn>",
+        "discord_names": ["user4", "user5", "user6"]
+      }
     }, {
-      "team": "<animalname-nn>",
-      "discord_names": ["user4", "user5", "user6"]
+      "team": {
+        "name": "<animalname-nn>",
+        "discord_names": ["user4", "user5", "user6"]
+      }
     },
   ],
   "team_greeting": [
@@ -274,17 +280,17 @@ Example contents for the `v31_teams_users` file:
   ], 
   "teams": [
     {
-      "team": "toucans-team-01",
+      "team": { "name": "toucans-team-01" },
     }, {
-      "team": "toucans-team-02",
+      "team": { "name": "toucans-team-02" },
     }, {
-      "team": "geckos-team-03",
+      "team": { "name": "geckos-team-03" },
     }, {
-      "team": "bears-team-04",
+      "team": { "name": "bears-team-04" },
     }, {
-      "team": "bears-team-05",
-    },    }, {
-      "team": "bears-team-06",
+      "team": { "name": "bears-team-05" },
+    }, {
+      "team": { "name": "bears-team-06" },
     }
   ],
   "team_greeting": [
@@ -339,23 +345,35 @@ Example contents for the `v31_teams_users` file:
   "voyage_number": "31", 
   "teams": [
     {
-      "team": "toucans-team-01",
-      "discord_names": ["Freddie#3489", "Carol#1123", "Rakesh#6733"]
+      "team": { 
+        "name": "toucans-team-01",
+        "discord_names": ["Freddie#3489", "Carol#1123", "Rakesh#6733"]
+      }
     }, {
-      "team": "toucans-team-02",
-      "discord_names": ["Paulo#4921", "Perez#9275", "Johann#6373", "Judy#0987"]
+      "team": { 
+        "name": toucans-team-02",
+        "discord_names": ["Paulo#4921", "Perez#9275", "Johann#6373", "Judy#0987"]
+      }
     }, {
-      "team": "geckos-team-03",
-      "discord_names": ["Chu#4431", "Linda@0934", "Mark#7682", "Suzie#0472", "Maggie#7659"]
+      "team": { 
+        "name": geckos-team-03",
+        "discord_names": ["Chu#4431", "Linda@0934", "Mark#7682", "Suzie#0472", "Maggie#7659"]
+      }
     }, {
-      "team": "bears-team-04",
-      "discord_names": ["Frieda#8277", "Bart#5921", "Ian#1206"]
+      "team": { 
+        "name": bears-team-04",
+        "discord_names": ["Frieda#8277", "Bart#5921", "Ian#1206"]
+      }
     }, {
-      "team": "bears-team-05",
-      "discord_names": ["Christie#5112", "Franco#4689", "Adnan#0021", "Joh#7654", "Nghi#9812"]
-    },    }, {
-      "team": "bears-team-06",
-      "discord_names": ["Kay#8876", "Joey#3240", "Alan#6724", "Peggy#8894", "Julie#6513"]
+      "team": {
+        "name": "bears-team-05",
+        "discord_names": ["Christie#5112", "Franco#4689", "Adnan#0021", "Joh#7654", "Nghi#9812"]
+      }
+    } {
+      "team": {
+        "name": "bears-team-06",
+        "discord_names": ["Kay#8876", "Joey#3240", "Alan#6724", "Peggy#8894", "Julie#6513"]
+      }
     }
   ]
 }
