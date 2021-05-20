@@ -41,12 +41,12 @@
     }, {
       "team": { 
         "name": "geckos-team-02",
-        "discord_names": [] 
+        "discord_names": ["chance", "jim1955"] 
       }
     }, {
       "team": {
         "name": "bears-team-03",
-        "discord_names": [] 
+        "discord_names": ["chance", "jim1955", "jim"] 
       }
     }
   ],
