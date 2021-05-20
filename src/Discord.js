@@ -49,7 +49,6 @@ export default class Discord {
           allow: ['VIEW_CHANNEL'],
         }]
     })
-    console.log('Category created - ', category.name)
     return category
   }
 
@@ -71,7 +70,6 @@ export default class Discord {
           deny: ['VIEW_CHANNEL'],
         }]
     })
-    console.log('Channel created - ', channel.name)
     return channel
   }
 
