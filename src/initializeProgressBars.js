@@ -1,10 +1,10 @@
 import cliProgress from 'cli-progress'
 import _colors from 'colors'
 
-const initializeProgressBars = (teamsToCreate) => {
+const initializeProgressBars = (teamsToCreate, { includeCategory }) => {
   const ALL_TEAMS = 0
   const DESC_MAX_LTH = 30
-  const CATEGORY_NO = 1
+  const CATEGORY_NO = includeCategory ? 1 : -1
   let progressBars = []
 
   let overallProgress = new cliProgress.MultiBar({
