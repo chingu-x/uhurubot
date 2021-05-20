@@ -1,18 +1,22 @@
 import Discord from './Discord.js'
 import FileOps from './FileOps.js'
+import initializeProgressBars from './initializeProgressBars.js'
 
 const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
   const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS)
   const teams = JSON.parse(rawTeams)
-  console.log(teams)
+  
+  const ALL_TEAMS = 0
+  const CATEGORY_NO = 1
+  const teamNames = teams.teams.map(team => team.team.name)
+  let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false })
+
 
   const client = discordIntf.getDiscordClient()
   try {
     client.on('ready', async () => {
       // Authorize voyager access to the Voyage channels
-      console.log('\nConnected as ' + client.user.tag)
-
       const channels = client.channels.cache.array()
       const guild = channels[0].guild
 
@@ -25,6 +29,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
       }
 
       // Authorize teammember access to the team channels
+      let teamNo = 0
       for (let team of teams.teams) {
         let channel = discordIntf.isChannelCreated(guild, team.team.name)
         if (channel.length === 0) {
@@ -45,8 +50,12 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
             )
           }
         }
+        progressBars[teamNo+1].increment(1)
+        progressBars[ALL_TEAMS].increment(1) 
+        ++teamNo 
       }
 
+      overallProgress.stop()
       discordIntf.authorizeResolve('done')
     })
   }
@@ -59,7 +68,6 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
   // Login to Discord
   try {
     await client.login(DISCORD_TOKEN)
-    console.log('Successful Discord login')
     return discordIntf.authorizePromise
   }
   catch (err) {
