@@ -34,11 +34,20 @@
   ],
   "teams": [
     {
-      "team": "toucans-team-01>"
+      "team": { 
+        "name": "toucans-team-01",
+        "discord_names": ["jdmedlock"] 
+      }
     }, {
-      "team": "geckos-team-02"
+      "team": { 
+        "name": "geckos-team-02",
+        "discord_names": [] 
+      }
     }, {
-      "team": "bears-team-03"
+      "team": {
+        "name": "bears-team-03",
+        "discord_names": [] 
+      }
     }
   ],
   "team_greeting": [

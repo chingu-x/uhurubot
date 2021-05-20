@@ -181,6 +181,8 @@ each teams channel.
 
 #### Post Specifications
 
+> **_Coming Soon!_**
+
 The following shows the format of the Post specifications JSON file:
 
 ```

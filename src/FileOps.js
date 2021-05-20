@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs'
 
-class FileOps {
+export default class FileOps {
 
 	/**
 	 * Open the file for appending. The file will be created if it 
@@ -10,7 +10,7 @@ class FileOps {
 	 * @memberof FileOps
 	 */
 	static openAndAppendFile(filePath) {
-		return fs.openSync(filePath, 'a+');
+		return fs.openSync(filePath, 'a+')
 	}
 
 	/**
@@ -21,7 +21,7 @@ class FileOps {
 	 * @memberof FileOps
 	 */
 	static openAndClearFile(filePath) {
-		return fs.openSync(filePath, 'w+');
+		return fs.openSync(filePath, 'w+')
 	}
 
 	/**
@@ -31,7 +31,7 @@ class FileOps {
 	 * @memberof FileOps
 	 */
 	static closeFile(fd) {
-		fs.closeSync(fd);
+		fs.closeSync(fd)
 	}
 
 	/**
@@ -41,7 +41,7 @@ class FileOps {
 	 * @memberof FileOps
 	 */
 	static readFile(pathToFile) {
-		return fs.readFileSync(pathToFile);
+		return fs.readFileSync(pathToFile)
 	}
 
 	/**
@@ -53,13 +53,13 @@ class FileOps {
 	 */
 	static objectToFile(filePath, content) {
 		return new Promise((resolve, reject) => {
-			const file = fs.createWriteStream(filePath);
+			const file = fs.createWriteStream(filePath)
 			for (const row of content) {
-				file.write(row+'\n');
+				file.write(row+'\n')
 			}
 			file.end();
 			file.on('finish', () => {
-				resolve('File write completed');
+				resolve('File write completed')
 			});
 		})
 	}
@@ -74,11 +74,11 @@ class FileOps {
 	 */
 	static writeToFile(filePath, record) {
 		return new Promise((resolve, reject) => {
-			const file = fs.createWriteStream(filePath);
-			file.write(record+'\n');
-			file.end();
+			const file = fs.createWriteStream(filePath)
+			file.write(record+'\n')
+			file.end()
 			file.on('finish', () => {
-				resolve('File write completed');
+				resolve('File write completed')
 			});
 		})
 	}
@@ -92,16 +92,14 @@ class FileOps {
 	 */
 	static validateDirPath(pathToDir) {
 		try {
-			const pathStat = fs.statSync(pathToDir);
+			const pathStat = fs.statSync(pathToDir)
 			if (!pathStat.isDirectory()) {
-				return -2; // Not a directory
+				return -2 // Not a directory
 			}
-			return 0; // Path is a valid directory
+			return 0 // Path is a valid directory
 		}
 		catch(err) {
-			return -1; // Not found or inaccessible
+			return -1 // Not found or inaccessible
 		}
 	}
 }
-
-module.exports = FileOps;

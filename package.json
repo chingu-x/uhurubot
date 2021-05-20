@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Uhurubot automates the setup of Discord channels & authorizations for Voyage teams",
   "main": "uhuru.js",
+  "type": "module",
   "directories": {
     "doc": "docs"
   },

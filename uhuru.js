@@ -1,15 +1,15 @@
-const { Command } = require('commander');
+import { Command } from 'commander'
 const program = new Command();
-const { isDebugOn } = require('./src/Environment')
-const Discord = require('./src/Discord')
-const Environment = require('./src/Environment')
+import Environment from './src/Environment.js'
+import createVoyageChannels from './src/createVoyageChannels.js'
+import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 
 const environment = new Environment()
 environment.initDotEnv('./')
-let isDebug = false
+let debug = false
 
 const consoleLogOptions = (options) => {
-  if (isDebug) {
+  if (environment.isDebug()) {
     console.log('\Uhuru clone command options:')
     console.log('--------------------')
     console.log('- debug: ',options.debug)
@@ -23,23 +23,28 @@ program
   .command('create')
   .description('Create team channels in Discord for an upcoming Chingu Voyage')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
+  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
   .action(async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       teams: options.teams,
     })
 
-    isDebug = environment.isDebug()
+    debug = environment.isDebug()
 
-    isDebug && consoleLogOptions(options)
-    isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
-    environment.isDebug() && environment.logEnvVars()
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
 
     const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    const discord = new Discord(environment) 
-    await discord.createVoyageChannels(DISCORD_TOKEN, TEAMS)
+    try {
+      await createVoyageChannels(environment, DISCORD_TOKEN, TEAMS)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
   })
 
 // Process a request to authorize Chingus to access their Voyage team channels
@@ -47,23 +52,28 @@ program
   .command('authorize')
   .description('Authorize Chingus in a Voyage to access their Discord team channels')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <file-path>', 'Path to the JSON file containing team channels to be created')
+  .option('-t, --teams <>', 'Path to the JSON file containing team channels to be created')
   .action( async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       teams: options.teams,
     })
 
-    isDebug = environment.isDebug()
+    debug = environment.isDebug()
 
-    isDebug && consoleLogOptions(options)
-    isDebug && console.log('\noperationalVars: ', environment.getOperationalVars())
-    environment.isDebug() && environment.logEnvVars()
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
 
-    const { VOYAGE, TEAMS } = environment.getOperationalVars()
+    const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
     
-    const discord = new Discord(environment) 
-    await discord.grantVoyageChannelAccess()
+    try {
+      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
   })
 
   program.parse(process.argv)
