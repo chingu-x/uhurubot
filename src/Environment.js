@@ -50,5 +50,8 @@ export default class Environment {
     this.operationalVars.DEBUG = debugValue.toUpperCase() === 'YES' ? true : false
     this.operationalVars.DISCORD_TOKEN = DISCORD_TOKEN
     this.operationalVars.TEAMS = options.teams ? options.teams : TEAMS
+    this.operationalVars.VALIDATE = options.validate === undefined 
+      ? false 
+      : options.validate.toUpperCase() === 'Y' ? true : false
   }
 }

@@ -2,13 +2,12 @@ import Discord from './Discord.js'
 import FileOps from './FileOps.js'
 import initializeProgressBars from './initializeProgressBars.js'
 
-const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
+const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALIDATE) => {
   const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS)
   const teams = JSON.parse(rawTeams)
   
   const ALL_TEAMS = 0
-  const CATEGORY_NO = 1
   const teamNames = teams.teams.map(team => team.team.name)
   let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false })
 
@@ -40,14 +39,20 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS) => {
         if (team.team.discord_names.length > 0) {
           for (let userName of team.team.discord_names) {
             const user = await guild.members.fetch({ query: `${ userName }`, limit: 1 })
-            await channel[0].updateOverwrite(user.first().user,
-              {
-                'VIEW_CHANNEL': true,
-                'SEND_MESSAGES': true,
-                'EMBED_LINKS': true,
-                'ATTACH_FILES': true,
+            if (VALIDATE) {
+              if (user.size === 0) {
+                console.log('Validation failed for user: ', userName)
               }
-            )
+            } else {
+              await channel[0].updateOverwrite(user.first().user,
+                {
+                  'VIEW_CHANNEL': true,
+                  'SEND_MESSAGES': true,
+                  'EMBED_LINKS': true,
+                  'ATTACH_FILES': true,
+                }
+              )
+            }
           }
         }
         progressBars[teamNo+1].increment(1)

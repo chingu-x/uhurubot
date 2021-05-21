@@ -53,11 +53,13 @@ program
   .command('authorize')
   .description('Authorize Chingus in a Voyage to access their Discord team channels')
   .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <>', 'Path to the JSON file containing team channels to be created')
+  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
+  .option('-v, --validate <y|n>', 'Validate Discord user names without creating authorizations')
   .action( async (options) => {
     environment.setOperationalVars({
       debug: options.debug,
       teams: options.teams,
+      validate: options.validate,
     })
 
     debug = environment.isDebug()
@@ -66,10 +68,10 @@ program
     debug && console.log('\noperationalVars: ', environment.getOperationalVars())
     debug && environment.logEnvVars()
 
-    const { DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
+    const { DISCORD_TOKEN, TEAMS, VALIDATE } = environment.getOperationalVars()
     
     try {
-      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS)
+      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS, VALIDATE)
       process.exit(0)
     }
     catch (err) {
