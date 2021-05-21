@@ -1,0 +1,34 @@
+{
+  "name": "uhurubot",
+  "version": "1.0.0",
+  "description": "Uhurubot automates the setup of Discord channels & authorizations for Voyage teams",
+  "main": "uhuru.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "cli-progress": "^3.9.0",
+    "colors": "^1.4.0",
+    "commander": "^7.2.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^9.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chingu-x/uhurubot.git"
+  },
+  "keywords": [
+    "chingu",
+    "discord"
+  ],
+  "author": "Jim D. Medlock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chingu-x/uhurubot/issues"
+  },
+  "homepage": "https://github.com/chingu-x/uhurubot#readme"
+}
