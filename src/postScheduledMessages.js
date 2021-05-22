@@ -11,7 +11,6 @@ const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
   let { overallProgress } = initializeProgressBars([], { 
     includeDetailBars: false, includeCategory: false })
 
-
   const client = discordIntf.getDiscordClient()
   try {
     client.on('ready', async () => {
