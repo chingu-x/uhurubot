@@ -9,20 +9,13 @@ export default class Discord {
 
     // Since extraction occurs within the `client.on` block these promises are
     // returned to the extract/audit callers and resolved by calling 
-    // `this.xxxxxxResolve()` when functions like `createVoyageChannels()` 
+    // `this.commandResolve()` when functions like `createVoyageChannels()` 
     // have completed.
-    this.createResolve = null
-    this.createReject = null
-    this.createPromise = new Promise((resolve, reject) => {
-      this.createResolve = resolve
-      this.createReject = reject
-    })
-
-    this.authorizeResolve = null
-    this.authorizeReject = null
-    this.authorizePromise = new Promise((resolve, reject) => {
-      this.authorizeResolve = resolve
-      this.authorizeReject = reject
+    this.commandResolve = null
+    this.commandReject = null
+    this.commandPromise = new Promise((resolve, reject) => {
+      this.commandResolve = resolve
+      this.commandReject = reject
     })
   }
 

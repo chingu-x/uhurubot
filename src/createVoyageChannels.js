@@ -51,26 +51,26 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
       }
 
       overallProgress.stop()
-      discordIntf.createResolve('done')
+      discordIntf.commandResolve('done')
     })
   }
   catch(err) {
     console.log(err)
     overallProgress.stop()
     await client.destroy() // Terminate this Discord bot
-    discordIntf.createReject('fail')
+    discordIntf.commandReject('fail')
   }
 
   // Login to Discord
   try {
     await client.login(DISCORD_TOKEN)
-    return discordIntf.createPromise
+    return discordIntf.commandPromise
   }
   catch (err) {
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
     overallProgress.stop()
-    discordIntf.createReject('fail')
+    discordIntf.commandReject('fail')
   }
 }
 

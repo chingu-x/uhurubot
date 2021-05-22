@@ -12,6 +12,7 @@ export default class Environment {
     console.log('- DEBUG: ', process.env.DEBUG)
     console.log('- DISCORD_TOKEN: ', process.env.DISCORD_TOKEN)
     console.log('- TEAMS: ', process.env.TEAMS)
+    console.log('- POSTS: ', process.env.POSTS)
 
     return true
   }
@@ -42,7 +43,7 @@ export default class Environment {
 
   setOperationalVars(options) {
     // Retrieve the current variable values from `.env` file
-    let { DEBUG, DISCORD_TOKEN, TEAMS} = process.env
+    let { DEBUG, DISCORD_TOKEN, TEAMS, POSTS} = process.env
 
     // Initialize `operationalVars` allowing command line parameter values
     // to override `.env` parameters
@@ -53,5 +54,6 @@ export default class Environment {
     this.operationalVars.VALIDATE = options.validate === undefined 
       ? false 
       : options.validate.toUpperCase() === 'Y' ? true : false
+      this.operationalVars.POSTS = options.posts ? options.posts : POSTS
   }
 }

@@ -3,6 +3,7 @@ const program = new Command();
 import Environment from './src/Environment.js'
 import createVoyageChannels from './src/createVoyageChannels.js'
 import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
+import postScheduledMessages from './src/postScheduledMessages.js'
 
 const environment = new Environment()
 environment.initDotEnv('./')
@@ -15,6 +16,7 @@ const consoleLogOptions = (options) => {
     console.log('- debug: ',options.debug)
     console.log('- voyage: ', options.voyage)
     console.log('- teams: ', options.teams)
+    console.log('- posts: ', options.posts)
   }
 }
 
@@ -72,6 +74,36 @@ program
     
     try {
       await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS, VALIDATE)
+      process.exit(0)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
+  })
+
+  // Process a request to post scheduled messages to Discord channels
+  program 
+  .command('post')
+  .description('Post scheduled messages to specific Discord channels')
+  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-t, --posts <posts>', 'Path to the JSON file containing messages to be posted')
+  .action( async (options) => {
+    environment.setOperationalVars({
+      debug: options.debug,
+      posts: options.posts,
+    })
+
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
+
+    const { DISCORD_TOKEN, POSTS } = environment.getOperationalVars()
+    
+    try {
+      await postScheduledMessages(environment, DISCORD_TOKEN, POSTS)
       process.exit(0)
     }
     catch (err) {
