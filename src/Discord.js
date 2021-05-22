@@ -19,6 +19,21 @@ export default class Discord {
     })
   }
 
+  findChannel(channelName) {
+    const indexOfSlash = channelName.indexOf('/')
+    const categoryName = indexOfSlash >= 0 ? channelName.substring(0,indexOfSlash) : ''
+    const realChannelName = indexOfSlash >= 0 ? channelName.substring(indexOfSlash + 1) : channelName
+    console.log(`categoryName: ${ categoryName } realChannelName: ${ realChannelName }`)
+    // TODO: Validate category ownership if channel name is formatted as
+    // 'categoryname/channelname'
+    let category = this.isCategoryCreated(guild, categoryName)
+    if (category.length === 0) {
+      return [] // Category has not been defined
+    }  
+    // TBD
+    return [] 
+  }
+
   getDiscordClient() {
     return this.client
   }
@@ -45,9 +60,15 @@ export default class Discord {
     return category
   }
 
-  isChannelCreated(guild, teamName) {
-    return guild.channels.cache.array()
-      .filter(channel => channel.type === 'text' && channel.name === teamName)
+  isChannelCreated(guild, categoryName = '', channelName) {
+    const channel = guild.channels.cache.array()
+      .filter(channel => channel.type === 'text' && channel.name === channelName)
+    // TODO: Validate that channel is owned by a category based on an optional category name parm
+    if (categoryName !== '') {
+      let category = discordIntf.isCategoryCreated(guild, categoryName)
+      return category.length > 0 && category.name === categoryName ? channel : []
+    }
+    return channel
   }
 
   async postGreetingMessage(channel, greetingMessageText) {
