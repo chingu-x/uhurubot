@@ -2,19 +2,14 @@ import Discord from './Discord.js'
 import FileOps from './FileOps.js'
 import initializeProgressBars from './initializeProgressBars.js'
 
-const isInCurrentSprint = (sprintSchedule, currentDate) => {
+const isInCurrentSprint = (sprintSchedule, currentDate, currentDay) => {
+  const today = new Date()
+  const currentDayOfWeek = ['sun','mon','tue','wed','thu','fri','sat'][today.getDay()]
   const currentSprint = sprintSchedule.filter(sprint => 
-    currentDate >= sprint.start_date && currentDate <= sprint.end_date
+    currentDate >= sprint.start_date && currentDate <= sprint.end_date && currentDay === currentDayOfWeek
   )
+  console.log('currentSprint: ', currentSprint)
   return currentSprint.length > 0 ? true : false
-}
-
-const findChannel = (channelName) => {
-  const indexOfSlash = channelName.indexOf('/')
-  const categoryName = indexOfSlash >= 0 ? channelName.substring(0,indexOfSlash) : ''
-  const realChannelName = indexOfSlash >= 0 ? channelName.substring(indexOfSlash + 1) : channelName
-  console.log(`categoryName: ${ categoryName } realChannelName: ${ realChannelName }`)
-  return 0 
 }
 
 const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
@@ -24,7 +19,6 @@ const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
 
   const today = new Date()
   const currentDate = today.toISOString().substring(0,10)
-  const currentDayOfWeek = ['sun','mon','tue','wed','thu','fri','sat'][today.getDay()]
   
   let { overallProgress } = initializeProgressBars([], { 
     includeDetailBars: false, includeCategory: false })
@@ -40,12 +34,13 @@ const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
       for (let post of posts.posts) {
         console.log(`post to : ${ post.channel } on day: ${ post.sprint_day } of sprint: ${ post.sprint_number }`)
         console.log('shouldPostToday: ', 
-          isInCurrentSprint(posts.voyage.schedule, currentDate))
+          isInCurrentSprint(posts.voyage.schedule, currentDate, post.sprint_day))
         
-        if (isInCurrentSprint(posts.voyage.schedule, currentDate) && post.sprint_day === currentDayOfWeek) {
-          //let channel = discordIntf.isChannelCreated(guild, team.team.name)
-          const channel = findChannel(post.channel)
-
+        if (isInCurrentSprint(posts.voyage.schedule, currentDate, post.sprint_day)) {
+          console.log('here post.message: ', post.message)
+          const channel = discordIntf.findChannel(guild, post.channel)
+          console.log('channel: ', channel)
+          await discordIntf.postGreetingMessage(channel, post.message)
         }
 
       }

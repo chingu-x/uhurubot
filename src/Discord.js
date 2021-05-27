@@ -19,19 +19,19 @@ export default class Discord {
     })
   }
 
-  findChannel(channelName) {
+  findChannel(guild, channelName) {
+    // Validate category ownership if channel name is formatted as
+    // 'categoryname/channelname'
     const indexOfSlash = channelName.indexOf('/')
     const categoryName = indexOfSlash >= 0 ? channelName.substring(0,indexOfSlash) : ''
     const realChannelName = indexOfSlash >= 0 ? channelName.substring(indexOfSlash + 1) : channelName
-    console.log(`categoryName: ${ categoryName } realChannelName: ${ realChannelName }`)
-    // TODO: Validate category ownership if channel name is formatted as
-    // 'categoryname/channelname'
-    let category = this.isCategoryCreated(guild, categoryName)
+    const channel = guild.channels.cache.find(channel => channel.name === realChannelName)
+    let category = guild.channels.cache.find(category => 
+      category.id === channel.parentID && category.type === 'category' && category.name === categoryName)
     if (category.length === 0) {
-      return [] // Category has not been defined
+      return null
     }  
-    // TBD
-    return [] 
+    return channel
   }
 
   getDiscordClient() {
