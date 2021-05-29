@@ -61,24 +61,24 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALID
       }
 
       overallProgress.stop()
-      discordIntf.authorizeResolve('done')
+      discordIntf.commandResolve('done')
     })
   }
   catch(err) {
     console.log(err)
     await client.destroy() // Terminate this Discord bot
-    discordIntf.authorizeReject('fail')
+    discordIntf.commandReject('fail')
   }
 
   // Login to Discord
   try {
     await client.login(DISCORD_TOKEN)
-    return discordIntf.authorizePromise
+    return discordIntf.commandPromise
   }
   catch (err) {
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
-    discordIntf.authorizeReject('fail')
+    discordIntf.commandReject('fail')
   }
 }
 

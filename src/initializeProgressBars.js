@@ -1,7 +1,7 @@
 import cliProgress from 'cli-progress'
 import _colors from 'colors'
 
-const initializeProgressBars = (teamsToCreate, { includeCategory }) => {
+const initializeProgressBars = (teamsToCreate, { includeCategory, includeDetailBars } = { includeCategory: true, includeDetailBars: true }) => {
   const ALL_TEAMS = 0
   const DESC_MAX_LTH = 30
   const CATEGORY_NO = includeCategory ? 1 : -1
@@ -15,16 +15,18 @@ const initializeProgressBars = (teamsToCreate, { includeCategory }) => {
     hideCursor: true
   }, cliProgress.Presets.shades_classic)
 
-  progressBars[ALL_TEAMS] = overallProgress.create(teamsToCreate.length, 0)
-  progressBars[ALL_TEAMS].update(0, { description: 'Overall progress'.padEnd(DESC_MAX_LTH+10, ' ') })
-  
-  for (let teamNo = 0; teamNo < teamsToCreate.length; ++teamNo) {
-    progressBars[teamNo+1] = overallProgress.create(1, 0)
-    progressBars[teamNo+1].update(0, { 
-      description: teamNo+1 === CATEGORY_NO 
-        ? 'Category: '.concat(teamsToCreate[teamNo].padEnd(DESC_MAX_LTH, ' ')) 
-        : 'Channel:  '.concat(teamsToCreate[teamNo].padEnd(DESC_MAX_LTH, ' '))
-    })
+  if (includeDetailBars) {
+    progressBars[ALL_TEAMS] = overallProgress.create(teamsToCreate.length, 0)
+    progressBars[ALL_TEAMS].update(0, { description: 'Overall progress'.padEnd(DESC_MAX_LTH+10, ' ') })
+    
+    for (let teamNo = 0; teamNo < teamsToCreate.length; ++teamNo) {
+      progressBars[teamNo+1] = overallProgress.create(1, 0)
+      progressBars[teamNo+1].update(0, { 
+        description: teamNo+1 === CATEGORY_NO 
+          ? 'Category: '.concat(teamsToCreate[teamNo].padEnd(DESC_MAX_LTH, ' ')) 
+          : 'Channel:  '.concat(teamsToCreate[teamNo].padEnd(DESC_MAX_LTH, ' '))
+      })
+    }
   }
 
   return { overallProgress, progressBars }
