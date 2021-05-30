@@ -12,7 +12,10 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
   const teamNames = teams.teams.map(team => team.team.name)
   const categoryName = discordIntf.generateCategoryName(teams)
   teamNames.splice(0, 0, categoryName)
-  let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: true })
+  let { overallProgress, progressBars } = initializeProgressBars(
+    teamNames, 
+    { includeDetailBars: true, includeCategory: true }
+  )
 
   const client = discordIntf.getDiscordClient()
   try {
