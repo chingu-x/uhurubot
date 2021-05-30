@@ -65,7 +65,7 @@ export default class Discord {
       .filter(channel => channel.type === 'text' && channel.name === channelName)
     // TODO: Validate that channel is owned by a category based on an optional category name parm
     if (categoryName !== '') {
-      let category = discordIntf.isCategoryCreated(guild, categoryName)
+      let category = this.isCategoryCreated(guild, categoryName)
       return category.length > 0 && category.name === categoryName ? channel : []
     }
     return channel
