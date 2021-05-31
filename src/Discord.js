@@ -50,11 +50,12 @@ export default class Discord {
   async createChannelCategory(guild, categoryName) {
     const category = await guild.channels.create(categoryName, {
       type: 'category',
+      topic: `${ categoryName }`,
       position: 1,
       permissionOverwrites: [
         {
           id: guild.id,
-          allow: ['VIEW_CHANNEL'],
+          deny: ['VIEW_CHANNEL'],
         }]
     })
     return category
@@ -79,11 +80,8 @@ export default class Discord {
   async createChannel(guild, category, teamName) {
     const channel = await guild.channels.create(teamName, {
       type: 'text',
+      topic: `${ teamName }`,
       parent: category.id,
-      permissionOverwrites: [{
-          id: guild.id,
-          deny: ['VIEW_CHANNEL'],
-        }]
     })
     return channel
   }
