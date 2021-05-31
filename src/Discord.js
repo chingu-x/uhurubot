@@ -77,9 +77,9 @@ export default class Discord {
     await channel.send(greetingMessageText)
   }
 
-  async createChannel(guild, category, teamName) {
+  async createChannel(guild, category, channelType, teamName) {
     const channel = await guild.channels.create(teamName, {
-      type: 'text',
+      type: `${ channelType }`,
       topic: `${ teamName }`,
       parent: category.id,
     })

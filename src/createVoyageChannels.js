@@ -35,7 +35,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
       for (let sharedChannel of teams.shared_channels) {
         let channel = discordIntf.isChannelCreated(guild, sharedChannel.channel_name)
         if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, sharedChannel.channel_name)
+          channel = await discordIntf.createChannel(guild, category, 'text', sharedChannel.channel_name)
           discordIntf.postGreetingMessage(channel, sharedChannel.greeting)
         }
       }
@@ -45,15 +45,14 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
       for (let team of teams.teams) {
         let channel = discordIntf.isChannelCreated(guild, team.team.name)
         if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, team.team.name)
+          channel = await discordIntf.createChannel(guild, category, 'text', team.team.name)
+          const voiceChannel = await discordIntf.createChannel(guild, category, 'voice', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(channel, teams.team_greeting)
         }
         progressBars[teamNo+1].increment(1)
         progressBars[ALL_TEAMS].increment(1) 
         ++teamNo 
       }
-
-      // TODO: Create team voice channels
 
       overallProgress.stop()
       discordIntf.commandResolve('done')
