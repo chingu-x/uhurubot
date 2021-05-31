@@ -12,7 +12,7 @@ const isInCurrentSprint = (sprintSchedule, currentDate, currentDay) => {
   return currentSprint.length > 0 ? true : false
 }
 
-const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
+const postScheduledMessages = async (environment, GUILD_ID, DISCORD_TOKEN, POSTS) => {
   const discordIntf = new Discord(environment)
   const rawPosts = FileOps.readFile(POSTS)
   const posts = JSON.parse(rawPosts)
@@ -24,10 +24,10 @@ const postScheduledMessages = async (environment, DISCORD_TOKEN, POSTS) => {
     includeDetailBars: false, includeCategory: false })
 
   const client = discordIntf.getDiscordClient()
+  const guild = await client.guilds.fetch(GUILD_ID)
+
   try {
     client.on('ready', async () => {
-      const channels = client.channels.cache.array()
-      const guild = channels[0].guild
     
       // Loop through the scheduled messages and post any for today to the
       // specified Discord channel

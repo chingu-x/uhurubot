@@ -2,7 +2,7 @@ import Discord from './Discord.js'
 import FileOps from './FileOps.js'
 import initializeProgressBars from './initializeProgressBars.js'
 
-const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
+const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS) => {
   const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS)
   const teams = JSON.parse(rawTeams)
@@ -18,10 +18,10 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
   )
 
   const client = discordIntf.getDiscordClient()
+  const guild = await client.guilds.fetch(GUILD_ID)
+
   try {
     client.on('ready', async () => {
-      const channels = client.channels.cache.array()
-      const guild = channels[0].guild
 
       // Create the Voyage category
       let category = discordIntf.isCategoryCreated(guild, categoryName)

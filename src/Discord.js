@@ -63,10 +63,11 @@ export default class Discord {
   isChannelCreated(guild, categoryName = '', channelName) {
     const channel = guild.channels.cache.array()
       .filter(channel => channel.type === 'text' && channel.name === channelName)
-    // TODO: Validate that channel is owned by a category based on an optional category name parm
+    
+    // Validate that channel is owned by a category based on an optional category name parm
     if (categoryName !== '') {
       let category = this.isCategoryCreated(guild, categoryName)
-      return category.length > 0 && category.name === categoryName ? channel : []
+      return category.length > 0 && category[0].name === categoryName ? channel : []
     }
     return channel
   }
