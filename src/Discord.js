@@ -79,7 +79,7 @@ export default class Discord {
   async createChannel(guild, category, teamName) {
     const channel = await guild.channels.create(teamName, {
       type: 'text',
-      parent: category,
+      parent: category.id,
       permissionOverwrites: [{
           id: guild.id,
           deny: ['VIEW_CHANNEL'],

@@ -53,6 +53,8 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
         ++teamNo 
       }
 
+      // TODO: Create team voice channels
+
       overallProgress.stop()
       discordIntf.commandResolve('done')
     })
