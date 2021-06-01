@@ -40,6 +40,7 @@ defined yet. Please create it before continuing.`)
               'CONNECT': true,
               'SPEAK': true,
             }
+        // TODO: Add error handling & reporting for unknown users
         const updatedChannel = await channel.updateOverwrite(user, permissions)
       }
     }
