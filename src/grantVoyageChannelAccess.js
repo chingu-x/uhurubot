@@ -4,34 +4,43 @@ import initializeProgressBars from './initializeProgressBars.js'
 
 const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS, VALIDATE) => {
   
-  const getChannel = (discordIntf, guild, categoryName, team) => {
-    let channel = discordIntf.isChannelCreated(guild, categoryName, team.team.name)
+  const getChannel = (discordIntf, guild, categoryName, teamName) => {
+    let channel = discordIntf.isChannelCreated(guild, categoryName, teamName)
     if (channel.length === 0) {
-      throw new Error(`This team channel (${ team.team.name }) hasn't been \
-      defined yet. Please create it before continuing.`)
+      throw new Error(`This channel (${ teamName }) hasn't been \
+defined yet. Please create it before continuing.`)
     }
+    return channel[0]
   }
 
-  const grantUserAccess = async (type, channel, team) => {
+  const grantUserAccess = async (type, guild, channel, team) => {
+    const allUsers = await guild.members.fetch()
+    
     for (let userName of team.team.discord_names) {
-      const user = await guild.members.fetch({ query: `${ userName }`, limit: 1 })
+      const user = allUsers.find(member => member.user.username === userName)
       if (VALIDATE) {
         if (user.size === 0) {
           console.log('Validation failed for user: ', userName)
         }
       } else {
-        await channel.updateOverwrite(user.first().user,
-          {
-            'VIEW_CHANNEL': true,
-            'SEND_MESSAGES': true,
-            'EMBED_LINKS': true,
-            'ATTACH_FILES': true,
-            'ADD_REACTIONS': true,
-            'MENTION_EVERYONE': true,
-            'MANAGE_MESSAGES': true,
-            'READ_MESSAGE_HISTORY': true
-          }
-        )
+        const permissions = type === 'text'
+          ? {
+              'VIEW_CHANNEL': true,
+              'SEND_MESSAGES': true,
+              'EMBED_LINKS': true,
+              'ATTACH_FILES': true,
+              'ADD_REACTIONS': true,
+              'MENTION_EVERYONE': true,
+              'MANAGE_MESSAGES': true,
+              'READ_MESSAGE_HISTORY': true
+            }
+          : {
+              'VIEW_CHANNEL': true,
+              'STREAM': true,
+              'CONNECT': true,
+              'SPEAK': true,
+            }
+        const updatedChannel = await channel.updateOverwrite(user, permissions)
       }
     }
   }
@@ -41,7 +50,7 @@ const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TE
   
   const ALL_TEAMS = 0
   const teamNames = teams.teams.map(team => team.team.name)
-  let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false })
+  let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false, includeDetailBars: true })
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(GUILD_ID)
@@ -54,17 +63,16 @@ const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TE
       if (category.length === 0) {
         throw new Error(`This Voyage category (${ categoryName }) hasn't been \
           defined yet. Please create it before continuing.`)
-        process.exit(1)
       }
 
       // Authorize teammember access to the team channels
       let teamNo = 0
       for (let team of teams.teams) {
         if (team.team.discord_names.length > 0) {
-          let textChannel = getChannel(discordIntf, guild, categoryName, team)
-          grantUserAccess('text', textChannel, team)
-          //let voiceChannel = getChannel(discordIntf, guild, categoryName, team.team.name.concat('av'))
-          //grantUserAccess('voice', voiceChannel, team)
+          let textChannel = getChannel(discordIntf, guild, categoryName, team.team.name)
+          await grantUserAccess('text', guild, textChannel, team)
+          let voiceChannel = getChannel(discordIntf, guild, categoryName, team.team.name.concat('av'))
+          grantUserAccess('voice', guild, voiceChannel, team)
         }
         progressBars[teamNo+1].increment(1)
         progressBars[ALL_TEAMS].increment(1) 
@@ -79,6 +87,7 @@ const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TE
     console.log(err)
     await client.destroy() // Terminate this Discord bot
     discordIntf.commandReject('fail')
+    process.exit(1)
   }
 
   // Login to Discord
@@ -90,6 +99,7 @@ const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TE
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
     discordIntf.commandReject('fail')
+    process.exit(1)
   }
 }
 
