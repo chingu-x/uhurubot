@@ -2,7 +2,7 @@ import Discord from './Discord.js'
 import FileOps from './FileOps.js'
 import initializeProgressBars from './initializeProgressBars.js'
 
-const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
+const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS) => {
   const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS)
   const teams = JSON.parse(rawTeams)
@@ -18,10 +18,10 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
   )
 
   const client = discordIntf.getDiscordClient()
+  const guild = await client.guilds.fetch(GUILD_ID)
+
   try {
     client.on('ready', async () => {
-      const channels = client.channels.cache.array()
-      const guild = channels[0].guild
 
       // Create the Voyage category
       let category = discordIntf.isCategoryCreated(guild, categoryName)
@@ -35,7 +35,7 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
       for (let sharedChannel of teams.shared_channels) {
         let channel = discordIntf.isChannelCreated(guild, sharedChannel.channel_name)
         if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, sharedChannel.channel_name)
+          channel = await discordIntf.createChannel(guild, category, 'text', sharedChannel.channel_name)
           discordIntf.postGreetingMessage(channel, sharedChannel.greeting)
         }
       }
@@ -45,7 +45,8 @@ const createVoyageChannels = async (environment, DISCORD_TOKEN, TEAMS) => {
       for (let team of teams.teams) {
         let channel = discordIntf.isChannelCreated(guild, team.team.name)
         if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, team.team.name)
+          channel = await discordIntf.createChannel(guild, category, 'text', team.team.name)
+          const voiceChannel = await discordIntf.createChannel(guild, category, 'voice', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(channel, teams.team_greeting)
         }
         progressBars[teamNo+1].increment(1)

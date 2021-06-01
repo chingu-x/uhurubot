@@ -50,11 +50,12 @@ export default class Discord {
   async createChannelCategory(guild, categoryName) {
     const category = await guild.channels.create(categoryName, {
       type: 'category',
+      topic: `${ categoryName }`,
       position: 1,
       permissionOverwrites: [
         {
           id: guild.id,
-          allow: ['VIEW_CHANNEL'],
+          deny: ['VIEW_CHANNEL'],
         }]
     })
     return category
@@ -62,11 +63,12 @@ export default class Discord {
 
   isChannelCreated(guild, categoryName = '', channelName) {
     const channel = guild.channels.cache.array()
-      .filter(channel => channel.type === 'text' && channel.name === channelName)
-    // TODO: Validate that channel is owned by a category based on an optional category name parm
+      .filter(channel => channel.name === channelName)
+    
+    // Validate that channel is owned by a category based on an optional category name parm
     if (categoryName !== '') {
       let category = this.isCategoryCreated(guild, categoryName)
-      return category.length > 0 && category.name === categoryName ? channel : []
+      return category.length > 0 && category[0].name === categoryName ? channel : []
     }
     return channel
   }
@@ -75,14 +77,11 @@ export default class Discord {
     await channel.send(greetingMessageText)
   }
 
-  async createChannel(guild, category, teamName) {
+  async createChannel(guild, category, channelType, teamName) {
     const channel = await guild.channels.create(teamName, {
-      type: 'text',
-      parent: category,
-      permissionOverwrites: [{
-          id: guild.id,
-          deny: ['VIEW_CHANNEL'],
-        }]
+      type: `${ channelType }`,
+      topic: `${ teamName }`,
+      parent: category.id,
     })
     return channel
   }
