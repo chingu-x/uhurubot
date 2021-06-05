@@ -1,5 +1,5 @@
 {
-  "voyage_number": "99", 
+  "voyage_number": "31", 
   "shared_channels": [
     { 
       "channel_name": "team-advice",
@@ -36,17 +36,22 @@
     {
       "team": { 
         "name": "toucans-team-01",
-        "discord_names": ["jdmedlock"] 
+        "discord_names": ["monikat", "Rozi", "Huda", "Paolo"] 
       }
     }, {
       "team": { 
-        "name": "geckos-team-02",
-        "discord_names": ["chance", "jim1955"] 
+        "name": "bears-team-02",
+        "discord_names": ["jim_medlock", "kapre", "Anjana", "randomwalk2021", "ruffy", "mcardona9015", "wayfaringjou"] 
       }
     }, {
       "team": {
         "name": "bears-team-03",
-        "discord_names": ["chance", "jim1955"] 
+        "discord_names": ["NELLY", "curlos", "aaronv", "SethA", "TBurdett"] 
+      }
+    }, {
+      "team": {
+        "name": "bears-team-04",
+        "discord_names": ["Tchouken", "valentine"] 
       }
     }
   ],

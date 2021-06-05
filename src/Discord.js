@@ -9,21 +9,29 @@ export default class Discord {
 
     // Since extraction occurs within the `client.on` block these promises are
     // returned to the extract/audit callers and resolved by calling 
-    // `this.xxxxxxResolve()` when functions like `createVoyageChannels()` 
+    // `this.commandResolve()` when functions like `createVoyageChannels()` 
     // have completed.
-    this.createResolve = null
-    this.createReject = null
-    this.createPromise = new Promise((resolve, reject) => {
-      this.createResolve = resolve
-      this.createReject = reject
+    this.commandResolve = null
+    this.commandReject = null
+    this.commandPromise = new Promise((resolve, reject) => {
+      this.commandResolve = resolve
+      this.commandReject = reject
     })
+  }
 
-    this.authorizeResolve = null
-    this.authorizeReject = null
-    this.authorizePromise = new Promise((resolve, reject) => {
-      this.authorizeResolve = resolve
-      this.authorizeReject = reject
-    })
+  findChannel(guild, channelName) {
+    // Validate category ownership if channel name is formatted as
+    // 'categoryname/channelname'
+    const indexOfSlash = channelName.indexOf('/')
+    const categoryName = indexOfSlash >= 0 ? channelName.substring(0,indexOfSlash) : ''
+    const realChannelName = indexOfSlash >= 0 ? channelName.substring(indexOfSlash + 1) : channelName
+    const channel = guild.channels.cache.find(channel => channel.name === realChannelName)
+    let category = guild.channels.cache.find(category => 
+      category.id === channel.parentID && category.type === 'category' && category.name === categoryName)
+    if (category.length === 0) {
+      return null
+    }  
+    return channel
   }
 
   getDiscordClient() {
@@ -42,33 +50,38 @@ export default class Discord {
   async createChannelCategory(guild, categoryName) {
     const category = await guild.channels.create(categoryName, {
       type: 'category',
+      topic: `${ categoryName }`,
       position: 1,
       permissionOverwrites: [
         {
           id: guild.id,
-          allow: ['VIEW_CHANNEL'],
+          deny: ['VIEW_CHANNEL'],
         }]
     })
     return category
   }
 
-  isChannelCreated(guild, teamName) {
-    return guild.channels.cache.array()
-      .filter(channel => channel.type === 'text' && channel.name === teamName)
+  isChannelCreated(guild, categoryName = '', channelName) {
+    const channel = guild.channels.cache.array()
+      .filter(channel => channel.name === channelName)
+    
+    // Validate that channel is owned by a category based on an optional category name parm
+    if (categoryName !== '') {
+      let category = this.isCategoryCreated(guild, categoryName)
+      return category.length > 0 && category[0].name === categoryName ? channel : []
+    }
+    return channel
   }
 
   async postGreetingMessage(channel, greetingMessageText) {
     await channel.send(greetingMessageText)
   }
 
-  async createChannel(guild, category, teamName) {
+  async createChannel(guild, category, channelType, teamName) {
     const channel = await guild.channels.create(teamName, {
-      type: 'text',
-      parent: category,
-      permissionOverwrites: [{
-          id: guild.id,
-          deny: ['VIEW_CHANNEL'],
-        }]
+      type: `${ channelType }`,
+      topic: `${ teamName }`,
+      parent: category.id,
     })
     return channel
   }
