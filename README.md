@@ -253,7 +253,7 @@ slash (i.e. '/') and the channel name.
 #### Example #1 - Create Channels prior to New Voyage
 
 In a terminal session issue the following to create Discord channels for a
-specific voyage:
+specific voyage: 
 ```
 node uhuru create -v 31 -t v31_teams_users
 ```
