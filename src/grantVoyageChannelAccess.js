@@ -54,7 +54,7 @@ defined yet. Please create it before continuing.`)
   let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false, includeDetailBars: true })
 
   const client = discordIntf.getDiscordClient()
-  const guild = await client.guilds.fetch(GUILD_ID)
+  const guild = await client.guilds.fetch(`${ process.env.GUILD_ID }`)
 
   try {
     client.on('ready', async () => {
@@ -71,6 +71,8 @@ defined yet. Please create it before continuing.`)
       for (let team of teams.teams) {
         if (team.team.discord_names.length > 0) {
           let textChannel = getChannel(discordIntf, guild, categoryName, team.team.name)
+          console.log('channel: ', textChannel)
+          console.log('team: ', team)
           await grantUserAccess('text', guild, textChannel, team)
           let voiceChannel = getChannel(discordIntf, guild, categoryName, team.team.name.concat('av'))
           grantUserAccess('voice', guild, voiceChannel, team)
