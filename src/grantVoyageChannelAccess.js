@@ -17,7 +17,9 @@ defined yet. Please create it before continuing.`)
     const allUsers = await guild.members.fetch()
     
     for (let userName of team.team.discord_names) {
-      const user = allUsers.find(member => member.user.username === userName)
+      const user = allUsers.find(member => 
+        member.user.username === userName || member.nickname === userName
+      )
       if (VALIDATE) {
         if (user.size === 0) {
           console.log('Validation failed for user: ', userName)
@@ -41,6 +43,7 @@ defined yet. Please create it before continuing.`)
               'SPEAK': true,
             }
         // TODO: Add error handling & reporting for unknown users
+        //console.log(`channel.name: ${ channel.name } user: ${ userName }`)
         const updatedChannel = await channel.updateOverwrite(user, permissions)
       }
     }
@@ -71,8 +74,6 @@ defined yet. Please create it before continuing.`)
       for (let team of teams.teams) {
         if (team.team.discord_names.length > 0) {
           let textChannel = getChannel(discordIntf, guild, categoryName, team.team.name)
-          console.log('channel: ', textChannel)
-          console.log('team: ', team)
           await grantUserAccess('text', guild, textChannel, team)
           let voiceChannel = getChannel(discordIntf, guild, categoryName, team.team.name.concat('av'))
           grantUserAccess('voice', guild, voiceChannel, team)
