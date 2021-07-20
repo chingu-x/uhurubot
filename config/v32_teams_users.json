@@ -1,5 +1,5 @@
 {
-  "voyage_number": "99", 
+  "voyage_number": "32", 
   "shared_channels": [
     { 
       "channel_name": "team-advice",
@@ -36,17 +36,52 @@
     {
       "team": { 
         "name": "toucans-team-01",
-        "discord_names": ["jdmedlock"] 
+        "discord_names": ["R2rito", "Ency"] 
       }
     }, {
       "team": { 
-        "name": "geckos-team-02",
-        "discord_names": ["chance", "jim1955"] 
+        "name": "toucans-team-02",
+        "discord_names": ["AvaKim", "mu_yui", "Rozi"] 
       }
-    }, {
-      "team": {
-        "name": "bears-team-03",
-        "discord_names": ["chance", "jim1955", "jim_medlock"] 
+    }, { 
+      "team": { 
+        "name": "geckos-team-03",
+        "discord_names": ["ThiagoSouza", "Kapre", "gordonruby", "Grand", "Rayhan23"] 
+      }
+    }, { 
+      "team": { 
+        "name": "geckos-team-04",
+        "discord_names": ["Chunkypumpkinhead", "Olivia C.", "chi", "Coding_Junkie99"] 
+      }
+    }, { 
+      "team": { 
+        "name": "chimeras-team-05",
+        "discord_names": ["Stealth", "Amit Karnam", "eddydev", "JBR"] 
+      }
+    }, { 
+      "team": { 
+        "name": "bears-team-06",
+        "discord_names": ["kusayp", "snipii", "Davido"] 
+      }
+    }, { 
+      "team": { 
+        "name": "bears-team-07",
+        "discord_names": ["tgilmore", "Kyle Eriss", "Another_Human", "jemic"] 
+      }
+    }, { 
+      "team": { 
+        "name": "bears-team-08",
+        "discord_names": ["halfbeardmishap", "Daniel Denney", "jahova", "Arun 7"] 
+      }
+    }, { 
+      "team": { 
+        "name": "bears-team-09",
+        "discord_names": ["brennankapollock", "aaronv", "Ken", "Joshikgs"] 
+      }
+    }, { 
+      "team": { 
+        "name": "bears-team-10",
+        "discord_names": ["zxcv", "Charles Ybarra", "Rot𝒜nimecB𝒜iduMe"] 
       }
     }
   ],
