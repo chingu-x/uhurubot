@@ -79,7 +79,7 @@ in both the command line and the CLI `.env` file.
 
 | CLI Flag        | `.env` Parm    | Description                              |
 |-----------------|----------------|------------------------------------------|
-| -v, --voyage    | VOYAGE         | Voyage number |
+| -v, --validate  | VALIDATE       | Validate (Y/N) authorization actions     |
 | -t, --teams     | TEAMS          | Teams & users (JSON file) path |
 | -p, --posts     | POSTS          | Channel post specifications (JSON file) path |
  
@@ -255,7 +255,7 @@ slash (i.e. '/') and the channel name.
 In a terminal session issue the following to create Discord channels for a
 specific voyage: 
 ```
-node uhuru create -v 31 -t v31_teams_users
+node uhuru create -t v31_teams_users
 ```
 
 Example contents for the `v31_teams_users` file:
@@ -335,7 +335,7 @@ be ignored.
 In a terminal session issue the following to authorize Chingu's to access
 their team channels for a voyage:
 ```
-node uhuru authorize -v 31 -t v31_teams_users
+node uhuru authorize -t v31_teams_users
 ```
 
 Example contents for the `v31_teams_users` file:
