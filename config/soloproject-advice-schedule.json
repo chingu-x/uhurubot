@@ -1,0 +1,30 @@
+{
+  "schedule": [
+    {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 1,
+      "messageID": "SOLOPROJECT_NOTIFICATION_1",
+      "messageDescription": "How to select project?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 4,
+      "messageID": "SOLOPROJECT_NOTIFICATION_2",
+      "messageDescription": "What is Pair Prog. & how to use it for Solo Project?"
+    }, {
+      "dayOfWeek": "Wednesday",
+      "admissionOffset": 6,
+      "messageType": "SOLOPROJECT_NOTIFICATION_3",
+      "messageDescription": "How to submit Solo Project & signup for Voyage?"
+    }, {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 8,
+      "messageType": "SOLOPROJECT_NOTIFICATION_4",
+      "messageDescription": "How to add Solo Project to your social media profile?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 11,
+      "messageType": "SOLOPROJECT_NOTIFICATION_5",
+      "messageDescription": "Last Solo Project notification, but don't give up!"
+    }
+  ]
+}

@@ -43,6 +43,8 @@ team, add team members to the channels
 defined by Chingu administrators. Advice will be maintained in another data
 source and must allow certain names and dates to be customized based on the
 Voyage schedule.
+8. Post helpful information to new Chingu's to help them get started on their
+Solo Project. These are available
 
 These functions are not executed at the same point in time:
 
