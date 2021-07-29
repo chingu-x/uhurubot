@@ -75,6 +75,7 @@ node uhuru <option> <flags>
 | create     | Create channels for a Voyage                | -v, -t            |
 | authorize  | Authorize users to access channels          | -v, -t            |
 | post       | Post a message in the `#team-advice` channel | -v, -p           |
+| email      | Email members based on a specific schedule  |                   |
 
 Before running it you'll first need to identify option values you'll using 
 in both the command line and the CLI `.env` file. 
@@ -186,6 +187,56 @@ key-value pairs must be provided.
 
 `team-greeting` defines the message (Markdown format) that is to be posted to
 each teams channel.
+
+#### Email Scheduled
+
+The following shows the format of the Email Schedule specifications JSON file
+```
+{
+  "name": "soloproject_notification",
+  "schedule": [
+    {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 1,
+      "messageID": "SOLOPROJECT_NOTIFICATION_1",
+      "messageDescription": "How to select project?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 4,
+      "messageID": "SOLOPROJECT_NOTIFICATION_2",
+      "messageDescription": "What is Pair Prog. & how to use it for Solo Project?"
+    }, {
+      "dayOfWeek": "Wednesday",
+      "admissionOffset": 6,
+      "messageType": "SOLOPROJECT_NOTIFICATION_3",
+      "messageDescription": "How to submit Solo Project & signup for Voyage?"
+    }, {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 8,
+      "messageType": "SOLOPROJECT_NOTIFICATION_4",
+      "messageDescription": "How to add Solo Project to your social media profile?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 11,
+      "messageType": "SOLOPROJECT_NOTIFICATION_5",
+      "messageDescription": "Last Solo Project notification, but don't give up!"
+    }
+  ]
+}
+```
+
+The `name` attribute uniquely identifies the schedule. For a given run the 
+CLI `-s` parameter specifies which schedule is to be used.
+
+The `schedule` section includes one entry for each email that could be sent.
+
+- `dayOfWeek` defines the day name of the week the email is to be sent, but is
+purely documentational and is not used for scheduling.
+- `admissionOffset` specifies the relative day after the Chingu's admission date
+the email is to be sent.
+- `messageType` is a logical identifier UhuruBE uses to identify which unique
+MailJet template is to be used. 
+- `messageDescription` is purely documentational and is not used for scheduling.
 
 #### Post Specifications
 
@@ -410,7 +461,50 @@ default have access to all channels in the server.
 Note that the `v31_teams_users` file MUST contain the `discord_names` attributes
 since it's required to grant access.
 
-#### Example #3 - Schedule Discord Posts for a Voyage
+#### Example #3 - Email Chingus based on a Schedule
+
+In a terminal session issue the following to send emails to Chingu's based on
+the specified schedule:
+```
+node uhuru email -s soloproject_advice_schedule
+```
+Example contents for the `soloproject_advice_schedule` file:
+```
+{
+  "name": "soloproject_notification",
+  "schedule": [
+    {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 1,
+      "messageID": "SOLOPROJECT_NOTIFICATION_1",
+      "messageDescription": "How to select project?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 4,
+      "messageID": "SOLOPROJECT_NOTIFICATION_2",
+      "messageDescription": "What is Pair Prog. & how to use it for Solo Project?"
+    }, {
+      "dayOfWeek": "Wednesday",
+      "admissionOffset": 6,
+      "messageType": "SOLOPROJECT_NOTIFICATION_3",
+      "messageDescription": "How to submit Solo Project & signup for Voyage?"
+    }, {
+      "dayOfWeek": "Friday",
+      "admissionOffset": 8,
+      "messageType": "SOLOPROJECT_NOTIFICATION_4",
+      "messageDescription": "How to add Solo Project to your social media profile?"
+    }, {
+      "dayOfWeek": "Monday",
+      "admissionOffset": 11,
+      "messageType": "SOLOPROJECT_NOTIFICATION_5",
+      "messageDescription": "Last Solo Project notification, but don't give up!"
+    }
+  ]
+}
+```
+
+
+#### Example #4 - Schedule Discord Posts for a Voyage
 
 TBD
 

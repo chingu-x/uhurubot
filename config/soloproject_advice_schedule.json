@@ -1,4 +1,5 @@
 {
+  "name": "soloproject_notification",
   "schedule": [
     {
       "dayOfWeek": "Friday",
