@@ -14,6 +14,7 @@ export default class Environment {
     console.log('- DISCORD_TOKEN: ', process.env.DISCORD_TOKEN)
     console.log('- TEAMS: ', process.env.TEAMS)
     console.log('- POSTS: ', process.env.POSTS)
+    console.log('- SCHEDULE: ', process.env.SCHEDULE)
 
     return true
   }
@@ -44,7 +45,7 @@ export default class Environment {
 
   setOperationalVars(options) {
     // Retrieve the current variable values from `.env` file
-    let { DEBUG, GUILD_ID, DISCORD_TOKEN, TEAMS, POSTS} = process.env
+    let { DEBUG, GUILD_ID, DISCORD_TOKEN, TEAMS, POSTS, SCHEDULE} = process.env
 
     // Initialize `operationalVars` allowing command line parameter values
     // to override `.env` parameters
@@ -53,6 +54,7 @@ export default class Environment {
     this.operationalVars.GUILD_ID = GUILD_ID
     this.operationalVars.DISCORD_TOKEN = DISCORD_TOKEN
     this.operationalVars.TEAMS = options.teams ? options.teams : TEAMS
+    this.operationalVars.SCHEDULE = options.schedule ? options.schedule : SCHEDULE
     this.operationalVars.VALIDATE = options.validate === undefined 
       ? false 
       : options.validate.toUpperCase() === 'Y' ? true : false

@@ -75,7 +75,7 @@ node uhuru <option> <flags>
 | create     | Create channels for a Voyage                | -v, -t            |
 | authorize  | Authorize users to access channels          | -v, -t            |
 | post       | Post a message in the `#team-advice` channel | -v, -p           |
-| email      | Email members based on a specific schedule  |                   |
+| email      | Email members based on a specific schedule  | -s                |
 
 Before running it you'll first need to identify option values you'll using 
 in both the command line and the CLI `.env` file. 
@@ -85,6 +85,7 @@ in both the command line and the CLI `.env` file.
 | -v, --validate  | VALIDATE       | Validate (Y/N) authorization actions     |
 | -t, --teams     | TEAMS          | Teams & users (JSON file) path |
 | -p, --posts     | POSTS          | Channel post specifications (JSON file) path |
+| -s, --schedule  | SCHEDULE       | Email schedule specifications (JSON file) path |
  
 It's important to keep in mind that options you supply on the command line
 ALWAYS override the same option you specify in the `.env` file.
@@ -232,10 +233,13 @@ The `schedule` section includes one entry for each email that could be sent.
 
 - `dayOfWeek` defines the day name of the week the email is to be sent, but is
 purely documentational and is not used for scheduling.
+
 - `admissionOffset` specifies the relative day after the Chingu's admission date
 the email is to be sent.
+
 - `messageType` is a logical identifier UhuruBE uses to identify which unique
 MailJet template is to be used. 
+
 - `messageDescription` is purely documentational and is not used for scheduling.
 
 #### Post Specifications
