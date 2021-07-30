@@ -12,6 +12,8 @@ export default class Environment {
     console.log('- DEBUG: ', process.env.DEBUG)
     console.log('- GUILD_ID: ', process.env.GUILD_ID)
     console.log('- DISCORD_TOKEN: ', process.env.DISCORD_TOKEN)
+    console.log('- AIRTABLE_API_KEY: ', process.env.AIRTABLE_API_KEY)
+    console.log('- AIRTABLE_BASE: ', process.env.AIRTABLE_BASE)
     console.log('- TEAMS: ', process.env.TEAMS)
     console.log('- POSTS: ', process.env.POSTS)
     console.log('- SCHEDULE: ', process.env.SCHEDULE)
@@ -45,7 +47,8 @@ export default class Environment {
 
   setOperationalVars(options) {
     // Retrieve the current variable values from `.env` file
-    let { DEBUG, GUILD_ID, DISCORD_TOKEN, TEAMS, POSTS, SCHEDULE} = process.env
+    let { DEBUG, GUILD_ID, DISCORD_TOKEN, AIRTABLE_API_KEY, AIRTABLE_BASE, 
+      TEAMS, POSTS, SCHEDULE} = process.env
 
     // Initialize `operationalVars` allowing command line parameter values
     // to override `.env` parameters
@@ -59,5 +62,8 @@ export default class Environment {
       ? false 
       : options.validate.toUpperCase() === 'Y' ? true : false
       this.operationalVars.POSTS = options.posts ? options.posts : POSTS
+    this.operationalVars.AIRTABLE_API_KEY = AIRTABLE_API_KEY
+    this.operationalVars.AIRTABLE_BASE = AIRTABLE_BASE
+
   }
 }

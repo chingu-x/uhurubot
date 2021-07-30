@@ -1,4 +1,5 @@
 import FileOps from './FileOps.js'
+import { getEligibleMembers } from './Airtable/NotificationQueue.js'
 
 const emailScheduledMessages = async (environment, SCHEDULE) => {
   const rawSchedule = FileOps.readFile(SCHEDULE)
@@ -8,9 +9,9 @@ const emailScheduledMessages = async (environment, SCHEDULE) => {
   // Scan Notification Queue table to identify members where at least one
   // email remains to be sent and have not:
   // 1. Unsubscribed from emails
-  // 2. Submitted a Solo Project Status
+  // 2. Submitted a Solo Project
   // 3. Become an inactive member
-  
+  await getEligibleMembers()
 
   // Using the current date, for each member calculate how many days have 
   // elapsed since their application was approved & which email should be sent
