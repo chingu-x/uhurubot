@@ -30,17 +30,27 @@ const emailScheduledMessages = async (environment, SCHEDULE) => {
     // notificationType is due
     // - Events have been added see if the next one for the notificationType
     // is due
-
-    
-    // Process the list of emails to be sent. Hand these off to
-    // UhuruBE for transmission 
-    
+    if (member.notificationEvents.length === 0) {
+      if (schedule[0].admissionOffset <= daysSinceApplication) {
+        console.log(`Matched against user ${ member.email } with no events`)
+        // Create a Notification Event row for the first notification of this type
+        // Send the email
+      }
+    } else {
+      for (let event of member.notificationEvents) {
+        if (['Sent', 'Cancelled'].indexOf(event.status) < 0 && 
+          schedule.schedule[0].admissionOffset <= daysSinceApplication) {
+          console.log(`Matched against user: ${ event.email } with event: ${ event.notificationType}, status: ${ event.status }` )
+          // Send the email
+        }
+      }
+    }
 
     // If the email was successful update the Notification Events table 
     // to record the event
     
 
-    // If the last email for this notifycation type has been sent update the
+    // If the last email for this notification type has been sent update the
     // Notification Queue table to mark the notification as finished.
 
   }
