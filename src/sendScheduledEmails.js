@@ -11,17 +11,41 @@ const emailScheduledMessages = async (environment, SCHEDULE) => {
   // 1. Unsubscribed from emails
   // 2. Submitted a Solo Project
   // 3. Become an inactive member
-  const eligibleMembers = await getEligibleMembers()
+  let eligibleMembers = await getEligibleMembers()
   console.log('eligibleMembers: ', eligibleMembers)
 
-  // Using the current date, for each member calculate how many days have 
-  // elapsed since their application was approved & which email should be sent
-  // based on the schedule
 
-  // Process the list of emails to be sent. Each entry will be sent to
-  // UhuruBE for transmission and the Notifications table will be updated
-  // to record the event and the Notification Queue table will be update when
-  // the last email is sent to mark the notification as finished.
+  for (let member of eligibleMembers) {
+    console.log('member: ', member)
+    // Using the current date, calculate for each member how many days have 
+    // elapsed since their application was approved & which email should be sent
+    // based on the schedule.
+    const oneDay = 1000 * 60 * 60 * 24
+    const now = new Date()
+    const approvalDate = new Date(member.applicationApprovalDate)
+    let daysSinceApplication = Math.floor((now.getTime() - approvalDate.getTime()) / oneDay)
+
+    // Set the status and status date for the event if:
+    // - No events have been recorded see if the first one for the 
+    // notificationType is due
+    // - Events have been added see if the next one for the notificationType
+    // is due
+
+    
+    // Process the list of emails to be sent. Hand these off to
+    // UhuruBE for transmission 
+    
+
+    // If the email was successful update the Notification Events table 
+    // to record the event
+    
+
+    // If the last email for this notifycation type has been sent update the
+    // Notification Queue table to mark the notification as finished.
+
+  }
+
+
 }
 
 export default emailScheduledMessages

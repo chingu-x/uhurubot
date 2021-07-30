@@ -27,16 +27,15 @@ const getEligibleMembers = async () => {
       // Return the number of matching events that haven't been sent from the
       // Notification Events table
       let notificationQueue = []
-      for (let i = 0; i < records.length; ++i) {
-        if (records.length > 0) {
-          const notificationEvents = await getEventsForMember(records[i].fields.Email, records[i].fields['Notification type'])
-          notificationQueue.push({
-            email: `${ records[i].fields.Email }`, 
-            notificationType: `${ records[i].fields['Notification type'] }`, 
-            notificationEventCount: `${ records[i].fields['Count (Notification Events Link)']}`,
-            notificationEvents: notificationEvents
-          })
-        }
+      for (let record of records) {
+        const notificationEvents = await getEventsForMember(record.fields.Email, record.fields['Notification type'])
+        notificationQueue.push({
+          email: `${ record.fields.Email }`, 
+          notificationType: `${ record.fields['Notification type'] }`, 
+          notificationEventCount: `${ record.fields['Count (Notification Events Link)'] }`,
+          applicationApprovalDate: `${ record.fields['Timestamp (from Applications)'].toString().slice(0,10) }`,
+          notificationEvents: notificationEvents
+        })
       }
       resolve(notificationQueue)
     })
