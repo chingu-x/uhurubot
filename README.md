@@ -68,7 +68,7 @@ permissions.
 
 Uhurubot is a command line application (CLI). The basic command to run it is:
 ```
-node uhuru <option> <flags>
+node uhurubot <option> <flags>
 ```
 | Option     | Description                                 | Permissable flags |
 |------------|---------------------------------------------|-------------------|
@@ -312,7 +312,7 @@ slash (i.e. '/') and the channel name.
 In a terminal session issue the following to create Discord channels for a
 specific voyage: 
 ```
-node uhuru create -t v31_teams_users
+node uhurubot create -t v31_teams_users
 ```
 
 Example contents for the `v31_teams_users` file:
@@ -392,7 +392,7 @@ be ignored.
 In a terminal session issue the following to authorize Chingu's to access
 their team channels for a voyage:
 ```
-node uhuru authorize -t v31_teams_users
+node uhurubot authorize -t v31_teams_users
 ```
 
 Example contents for the `v31_teams_users` file:
@@ -470,7 +470,7 @@ since it's required to grant access.
 In a terminal session issue the following to send emails to Chingu's based on
 the specified schedule:
 ```
-node uhuru email -s soloproject_advice_schedule
+node uhurubot email -s soloproject_advice_schedule
 ```
 Example contents for the `soloproject_advice_schedule` file:
 ```

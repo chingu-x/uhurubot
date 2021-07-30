@@ -11,7 +11,8 @@ const emailScheduledMessages = async (environment, SCHEDULE) => {
   // 1. Unsubscribed from emails
   // 2. Submitted a Solo Project
   // 3. Become an inactive member
-  await getEligibleMembers()
+  const eligibleMembers = await getEligibleMembers()
+  console.log('eligibleMembers: ', eligibleMembers)
 
   // Using the current date, for each member calculate how many days have 
   // elapsed since their application was approved & which email should be sent

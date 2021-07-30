@@ -26,14 +26,19 @@ const getEligibleMembers = async () => {
 
       // Return the number of matching events that haven't been sent from the
       // Notification Events table
-      console.log('records: ', records)
+      let notificationQueue = []
       for (let i = 0; i < records.length; ++i) {
         if (records.length > 0) {
-          console.log(`Email: ${ records[i].fields.Email } Notification type: ${ records[i].fields['Notification type'] }`)
-          await getEventsForMember(records[i].fields.Email, records[i].fields['Notification type'])
+          const notificationEvents = await getEventsForMember(records[i].fields.Email, records[i].fields['Notification type'])
+          notificationQueue.push({
+            email: `${ records[i].fields.Email }`, 
+            notificationType: `${ records[i].fields['Notification type'] }`, 
+            notificationEventCount: `${ records[i].fields['Count (Notification Events Link)']}`,
+            notificationEvents: notificationEvents
+          })
         }
       }
-      resolve(null)
+      resolve(notificationQueue)
     })
   })
 }

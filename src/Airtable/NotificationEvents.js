@@ -23,12 +23,20 @@ const getEventsForMember = async (email, notificationType) => {
 
       // Return the number of matching events that haven't been sent from the
       // Notification Events table
+      let notificationEvents = []
       for (let i = 0; i < records.length; ++i) {
         if (records.length > 0) {
-          console.log(records[i])
+          notificationEvents.push({ 
+            email: `${ records[i].fields.Email }`, 
+            notificationType: `${ records[i].fields['Notification type'] }`, 
+            statusDate: `${ records[i].fields['Status date'] }`, 
+            status: `${ records[i].fields.Status }`, 
+            messageID: `${ records[i].fields['Message ID'] }`,
+            messageDescription: `${ records[i].fields['Message description'] }`
+          })
         }
       }
-      resolve(null)
+      resolve(notificationEvents)
     })
   })
 }
