@@ -34,6 +34,7 @@ const getEligibleMembers = async () => {
           notificationType: `${ record.fields['Notification type'] }`, 
           notificationEventCount: `${ record.fields['Count (Notification Events Link)'] }`,
           applicationApprovalDate: `${ record.fields['Timestamp (from Applications)'].toString().slice(0,10) }`,
+          firstName: `${ record.fields['First name (from Applications)'] }`,
           notificationEvents: notificationEvents
         })
       }

@@ -1,4 +1,5 @@
-import FileOps from './FileOps.js'
+import FileOps from './util/FileOps.js'
+import UhuruBE from './util/UhuruBE.js'
 import { getEligibleMembers } from './Airtable/NotificationQueue.js'
 import { addEvent } from './Airtable/NotificationEvents.js'
 
@@ -13,7 +14,6 @@ const emailScheduledMessages = async (environment, schedule) => {
   // 3. Become an inactive member
   let eligibleMembers = await getEligibleMembers()
   console.log('eligibleMembers: ', eligibleMembers)
-
 
   for (let member of eligibleMembers) {
     console.log('member: ', member)
@@ -33,12 +33,12 @@ const emailScheduledMessages = async (environment, schedule) => {
     if (member.notificationEvents.length === 0) {
       if (notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
         console.log(`Matched against user ${ member.email } with no events`)
-        // Create a Notification Event row for the first notification of this type
-        // Send the email
-        await addEvent(member.email, member.notificationType, 
-          now.toISOString.slice(0,10), 'Scheduled', 
+        const result = await UhuruBE.sendEmail(
+          member.notificationType, member.email, member.firstName, 
           schedule.getFirstEvent(notificationType).messageID,
-          schedule.getFirstEvent(notificationType).messageDescription)
+          schedule.getFirstEvent(notificationType).messageDescription
+        )
+        console.log('...result: ', result)
       }
     } else {
       for (let event of member.notificationEvents) {
@@ -46,6 +46,15 @@ const emailScheduledMessages = async (environment, schedule) => {
         notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
           console.log(`Matched against user: ${ event.email } with event: ${ event.notificationType}, status: ${ event.status }` )
           // Send the email
+          // get the next notification message id from the schedule
+          /*
+          const result = await UhuruBE.sendEmail(
+            member.notificationType, member.email, member.firstName, 
+            schedule.getNextEvent(member.notificationType).messageID,
+            schedule.getNextEvent(member.notificationType).messageDescription
+          )
+          */
+          console.log('...result: ', result)
         }
       }
     }
