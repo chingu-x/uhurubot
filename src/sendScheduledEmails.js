@@ -1,10 +1,10 @@
 import FileOps from './FileOps.js'
 import { getEligibleMembers } from './Airtable/NotificationQueue.js'
+import { addEvent } from './Airtable/NotificationEvents.js'
 
-const emailScheduledMessages = async (environment, SCHEDULE) => {
-  const rawSchedule = FileOps.readFile(SCHEDULE)
-  const schedule = JSON.parse(rawSchedule)
-  console.log('schedule: ', schedule)
+const emailScheduledMessages = async (environment, schedule) => {
+  const notificationSchedule = schedule.getSchedule()
+  console.log('schedule: ', notificationSchedule)
 
   // Scan Notification Queue table to identify members where at least one
   // email remains to be sent and have not:
@@ -31,15 +31,19 @@ const emailScheduledMessages = async (environment, SCHEDULE) => {
     // - Events have been added see if the next one for the notificationType
     // is due
     if (member.notificationEvents.length === 0) {
-      if (schedule[0].admissionOffset <= daysSinceApplication) {
+      if (notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
         console.log(`Matched against user ${ member.email } with no events`)
         // Create a Notification Event row for the first notification of this type
         // Send the email
+        await addEvent(member.email, member.notificationType, 
+          now.toISOString.slice(0,10), 'Scheduled', 
+          schedule.getFirstEvent(notificationType).messageID,
+          schedule.getFirstEvent(notificationType).messageDescription)
       }
     } else {
       for (let event of member.notificationEvents) {
         if (['Sent', 'Cancelled'].indexOf(event.status) < 0 && 
-          schedule.schedule[0].admissionOffset <= daysSinceApplication) {
+        notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
           console.log(`Matched against user: ${ event.email } with event: ${ event.notificationType}, status: ${ event.status }` )
           // Send the email
         }

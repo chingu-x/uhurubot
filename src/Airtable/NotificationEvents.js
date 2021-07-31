@@ -1,5 +1,30 @@
 import Airtable from 'airtable'
 
+// Add a new event
+const addEvent = async (email, notificationType, statusDate, status, messageID, messageDescription) => {
+  return new Promise(async (resolve, reject) => {
+    const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
+      .base(process.env.AIRTABLE_BASE)
+    base('Notification Events').create([
+      {
+        "fields": {
+          "Email": email,
+          "Notification type": notificationType,
+          "Message ID": messageID,
+          "Message description": messageDescription,
+          "Status date": statusDate,
+          "Status": status,
+      }
+    }], (err, records) => {
+      if (err) {
+        console.error(err)
+        reject(err)
+      }
+      resolve(records[0].id)
+    })
+  })
+}
+
 // Retrieve matching events from the Notification Events table
 const getEventsForMember = async (email, notificationType) => {
   return new Promise(async (resolve, reject) => {
@@ -39,4 +64,4 @@ const getEventsForMember = async (email, notificationType) => {
   })
 }
 
-export { getEventsForMember }
+export { addEvent, getEventsForMember }

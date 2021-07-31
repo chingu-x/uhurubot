@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 const program = new Command();
 import Environment from './src/Environment.js'
+import Schedule from './src/Schedule.js'
 import createVoyageChannels from './src/createVoyageChannels.js'
 import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 import postScheduledMessages from './src/postScheduledMessages.js'
@@ -103,10 +104,11 @@ program
     debug && console.log('\noperationalVars: ', environment.getOperationalVars())
     debug && environment.logEnvVars()
 
-    const { SCHEDULE } = environment.getOperationalVars()
     
     try {
-      await sendScheduledEmails(environment, SCHEDULE)
+      const { SCHEDULE } = environment.getOperationalVars()
+      const schedule = new Schedule(SCHEDULE)
+      await sendScheduledEmails(environment, schedule)
       process.exit(0)
     }
     catch (err) {
