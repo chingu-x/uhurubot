@@ -1,6 +1,6 @@
 {
   "name": "Solo Project Advice",
-  "schedule": [
+  "events": [
     {
       "dayOfWeek": "Friday",
       "admissionOffset": 1,

@@ -1,7 +1,6 @@
-import dotenv from 'dotenv'
+import fetch from 'node-fetch'
 
-export default class UhuruBE {
-  async sendEmail(notificationType, email, name, messageID, messageDescription) {
+  const sendEmail = async (notificationType, email, name, messageID, messageDescription) => {
     return new Promise(async (resolve, reject) => {
       let response = await fetch('https://uhurube.herokuapp.com/messagemanager', {
         method: 'POST',
@@ -33,4 +32,4 @@ export default class UhuruBE {
     })
   }
 
-}
+export { sendEmail }

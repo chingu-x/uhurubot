@@ -1,7 +1,5 @@
-import FileOps from './util/FileOps.js'
-import UhuruBE from './util/UhuruBE.js'
+import { sendEmail } from './util/UhuruBE.js'
 import { getEligibleMembers } from './Airtable/NotificationQueue.js'
-import { addEvent } from './Airtable/NotificationEvents.js'
 
 const emailScheduledMessages = async (environment, schedule) => {
   const notificationSchedule = schedule.getSchedule()
@@ -25,35 +23,33 @@ const emailScheduledMessages = async (environment, schedule) => {
     const approvalDate = new Date(member.applicationApprovalDate)
     let daysSinceApplication = Math.floor((now.getTime() - approvalDate.getTime()) / oneDay)
 
-    // Set the status and status date for the event if:
-    // - No events have been recorded see if the first one for the 
-    // notificationType is due
-    // - Events have been added see if the next one for the notificationType
-    // is due
     if (member.notificationEvents.length === 0) {
-      if (notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
+      // If the user has no events recorded add the first event for this application
+      // notification type
+      if (['Sent', 'Cancelled'].indexOf(member.notificationEvents.status) < 0 &&
+          notificationSchedule.events[0].admissionOffset <= daysSinceApplication) {
         console.log(`Matched against user ${ member.email } with no events`)
-        const result = await UhuruBE.sendEmail(
+        const result = await sendEmail(
           member.notificationType, member.email, member.firstName, 
-          schedule.getFirstEvent(notificationType).messageID,
-          schedule.getFirstEvent(notificationType).messageDescription
+          schedule.getFirstEvent(member.notificationType).messageID,
+          schedule.getFirstEvent(member.notificationType).messageDescription
         )
         console.log('...result: ', result)
       }
     } else {
+      // If prior events exist for the user for this notification type use the
+      // the last one completed to determine what the next event in the event
+      // sequence is so it can be added.
       for (let event of member.notificationEvents) {
-        if (['Sent', 'Cancelled'].indexOf(event.status) < 0 && 
-        notificationSchedule.schedule[0].admissionOffset <= daysSinceApplication) {
+        if (notificationSchedule.events[0].admissionOffset <= daysSinceApplication) {
           console.log(`Matched against user: ${ event.email } with event: ${ event.notificationType}, status: ${ event.status }` )
+          const nextEvent = schedule.getNextEvent(event.notificationType, event.messageID)
+          console.log('nextEvent: ', nextEvent)
           // Send the email
-          // get the next notification message id from the schedule
-          /*
-          const result = await UhuruBE.sendEmail(
+          const result = await sendEmail(
             member.notificationType, member.email, member.firstName, 
-            schedule.getNextEvent(member.notificationType).messageID,
-            schedule.getNextEvent(member.notificationType).messageDescription
+            nextEvent.messageID, nextEvent.messageDescription
           )
-          */
           console.log('...result: ', result)
         }
       }
