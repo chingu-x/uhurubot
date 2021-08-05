@@ -30,11 +30,6 @@
       "dayOfWeek": "Monday",
       "admissionOffset": 18,
       "messageType": "SOLOPROJECT_ADVICE_6",
-      "messageDescription": "How to add Solo Project to your social media profile?"
-    }, {
-      "dayOfWeek": "Thursday",
-      "admissionOffset": 21,
-      "messageType": "SOLOPROJECT_ADVICE_7",
       "messageDescription": "Last Solo Project notification, but don't give up!"
     }
   ]
