@@ -53,7 +53,7 @@ const updateQueueStatus = async (recordID, newStatus) => {
       {
         "id": recordID,
         "fields": {
-          status: `${ newStatus }`,
+          "Status": `${ newStatus }`,
         }
       }
     ], (err, records) => {

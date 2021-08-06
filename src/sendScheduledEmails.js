@@ -36,6 +36,12 @@ const emailScheduledMessages = async (environment, schedule) => {
           schedule.getFirstEvent(member.notificationType).messageDescription
         )
         console.log('...result: ', result)
+        // If the last email for this notification type has been sent update the
+        // Notification Queue table to mark the notification as finished.
+        const nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
+        if (nextEvent === null) {
+          await updateQueueStatus(member.recordID, 'Completed')
+        }
       }
     } else {
       // If prior events exist for the user for this notification type use the
@@ -43,7 +49,7 @@ const emailScheduledMessages = async (environment, schedule) => {
       // sequence is so it can be added.
       const lastEventIndex = member.notificationEvents.length - 1
       const lastEvent = member.notificationEvents[lastEventIndex]
-      const nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
+      let nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
       if (typeof nextEvent === 'object' && 
           isMessageEligibleToSend(member.status, member.applicationApprovalDate, nextEvent.admissionOffset)) {
         // Send the email
@@ -54,6 +60,7 @@ const emailScheduledMessages = async (environment, schedule) => {
         
         // If the last email for this notification type has been sent update the
         // Notification Queue table to mark the notification as finished.
+        nextEvent = schedule.getNextEvent(member.notificationType, nextEvent.messageID)
         if (nextEvent === null) {
           await updateQueueStatus(member.recordID, 'Completed')
         }

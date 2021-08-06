@@ -2,34 +2,28 @@
   "name": "Solo Project Advice",
   "events": [
     {
-      "dayOfWeek": "Friday",
       "admissionOffset": 1,
       "messageID": "SOLOPROJECT_ADVICE_1",
       "messageDescription": "Discord info"
     }, {
-      "dayOfWeek": "Monday",
       "admissionOffset": 4,
       "messageID": "SOLOPROJECT_ADVICE_2",
       "messageDescription": "How to select your tier?"
     }, {
-      "dayOfWeek": "Thursday",
       "admissionOffset": 7,
       "messageID": "SOLOPROJECT_ADVICE_3",
       "messageDescription": "How to select project?"
     }, {
-      "dayOfWeek": "Monday",
       "admissionOffset": 11,
       "messageID": "SOLOPROJECT_ADVICE_4",
       "messageDescription": "What is Pair Prog. & how to use it for Solo Project?"
     }, {
-      "dayOfWeek": "Thursday",
       "admissionOffset": 14,
-      "messageType": "SOLOPROJECT_ADVICE_5",
+      "messageID": "SOLOPROJECT_ADVICE_5",
       "messageDescription": "How to submit Solo Project & signup for Voyage?"
     }, {
-      "dayOfWeek": "Monday",
       "admissionOffset": 18,
-      "messageType": "SOLOPROJECT_ADVICE_6",
+      "messageID": "SOLOPROJECT_ADVICE_6",
       "messageDescription": "Last Solo Project notification, but don't give up!"
     }
   ]
