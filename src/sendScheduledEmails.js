@@ -18,7 +18,11 @@ const emailScheduledMessages = async (environment, schedule) => {
   const notificationSchedule = schedule.getSchedule()
 
   // Scan Notification Queue table to identify members where at least one
-  // email remains to be sent and have not:
+  // email remains to be sent. Chingus are added to the Notification Queue 
+  // by an Airtable automation script when their Chingu application is approved.
+  //
+  // None of the following must be true for a Chingu to be eligilbe to receive
+  // an email:
   // 1. Unsubscribed from emails
   // 2. Submitted a Solo Project
   // 3. Become an inactive member
@@ -30,15 +34,15 @@ const emailScheduledMessages = async (environment, schedule) => {
       // notification type
       if (isMessageEligibleToSend(member.status, member.applicationApprovalDate, notificationSchedule.events[0].admissionOffset)) {
         console.log(`Matched against user ${ member.email } with no events`)
+        const firstEvent = schedule.getFirstEvent(member.notificationType)
         const result = await sendEmail(
           environment, member.notificationType, member.email, member.firstName, 
-          schedule.getFirstEvent(member.notificationType).messageID,
-          schedule.getFirstEvent(member.notificationType).messageDescription
+          firstEvent.messageID, firstEvent.messageDescription
         )
         console.log('...result: ', result)
         // If the last email for this notification type has been sent update the
         // Notification Queue table to mark the notification as finished.
-        const nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
+        const nextEvent = schedule.getNextEvent(member.notificationType, firstEvent.messageID)
         if (nextEvent === null) {
           await updateQueueStatus(member.recordID, 'Completed')
         }
@@ -52,7 +56,6 @@ const emailScheduledMessages = async (environment, schedule) => {
       let nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
       if (typeof nextEvent === 'object' && 
           isMessageEligibleToSend(member.status, member.applicationApprovalDate, nextEvent.admissionOffset)) {
-        // Send the email
         const result = await sendEmail(
           environment, member.notificationType, member.email, member.firstName, 
           nextEvent.messageID, nextEvent.messageDescription
