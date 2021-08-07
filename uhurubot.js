@@ -1,9 +1,11 @@
 import { Command } from 'commander'
 const program = new Command();
-import Environment from './src/Environment.js'
+import Environment from './src/util/Environment.js'
+import Schedule from './src/util/Schedule.js'
 import createVoyageChannels from './src/createVoyageChannels.js'
 import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 import postScheduledMessages from './src/postScheduledMessages.js'
+import sendScheduledEmails from './src/sendScheduledEmails.js'
 
 const environment = new Environment()
 environment.initDotEnv('./')
@@ -18,6 +20,7 @@ const consoleLogOptions = (options) => {
     console.log('- voyage: ', options.voyage)
     console.log('- teams: ', options.teams)
     console.log('- posts: ', options.posts)
+    console.log('- schedule: ', options.schedule)
   }
 }
 
@@ -75,6 +78,37 @@ program
     
     try {
       await grantVoyageChannelAccess(environment, GUILD_ID, DISCORD_TOKEN, TEAMS, VALIDATE)
+      process.exit(0)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
+  })
+
+  // Process a request to send scheduled emails to specific Chingu's
+  program 
+  .command('email')
+  .description('send scheduled emails to specific Chingu\'s')
+  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-s, --schedule <path>', 'Path to the JSON file containing the email schedule')
+  .action( async (options) => {
+    environment.setOperationalVars({
+      debug: options.debug,
+      schedule: options.posts,
+    })
+
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
+
+    
+    try {
+      const { SCHEDULE } = environment.getOperationalVars()
+      const schedule = new Schedule(SCHEDULE)
+      await sendScheduledEmails(environment, schedule)
       process.exit(0)
     }
     catch (err) {

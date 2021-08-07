@@ -1,6 +1,6 @@
-import Discord from './Discord.js'
-import FileOps from './FileOps.js'
-import initializeProgressBars from './initializeProgressBars.js'
+import Discord from './util/Discord.js'
+import FileOps from './util/FileOps.js'
+import initializeProgressBars from './util/initializeProgressBars.js'
 
 const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS, VALIDATE) => {
   
