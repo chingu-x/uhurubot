@@ -14,7 +14,10 @@ defined yet. Please create it before continuing.`)
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
+    console.log('grantUserAccess: guild: ', guild.members)
     const allUsers = await guild.members.fetch()
+
+    throw new Error('grantUserAccess - Debugging')
     
     for (let userName of team.team.discord_names) {
       const user = allUsers.find(member => 
