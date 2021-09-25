@@ -17,7 +17,7 @@ defined yet. Please create it before continuing.`)
     console.log('grantUserAccess: guild: ', guild.members)
     const allUsers = await guild.members.fetch()
 
-    throw new Error('grantUserAccess - Debugging')
+    // throw new Error('grantUserAccess - Debugging')
     
     for (let userName of team.team.discord_names) {
       const user = allUsers.find(member => 
@@ -46,7 +46,7 @@ defined yet. Please create it before continuing.`)
               'SPEAK': true,
             }
         // TODO: Add error handling & reporting for unknown users
-        //console.log(`channel.name: ${ channel.name } user: ${ userName }`)
+        console.log(`channel.name: ${ channel.name } user: ${ userName }`)
         const updatedChannel = await channel.updateOverwrite(user, permissions)
       }
     }
