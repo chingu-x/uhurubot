@@ -54,7 +54,7 @@ const emailScheduledMessages = async (environment, schedule) => {
       const lastEventIndex = member.notificationEvents.length - 1
       const lastEvent = member.notificationEvents[lastEventIndex]
       let nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
-      if (typeof nextEvent === 'object' && 
+      if (nextEvent && typeof nextEvent === 'object' && 
           isMessageEligibleToSend(member.status, member.applicationApprovalDate, nextEvent.admissionOffset)) {
         console.log(`Matched against user ${ member.email } (status:${ member.status } with prior events`)    
         const result = await sendEmail(
