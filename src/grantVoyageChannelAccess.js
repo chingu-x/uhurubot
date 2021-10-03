@@ -14,14 +14,17 @@ defined yet. Please create it before continuing.`)
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    const allUsers = guild.members
+    const allUsers = guild.members.cache
     
-    for (let userName of team.team.discord_names) {
-      const user = allUsers.find(member => 
-        member.user.username === userName || member.nickname === userName
+    for (let userID of team.team.discord_names) {
+      const userName = userID.split('#')[0]
+      const user = allUsers.find(member => {
+          return member.user.username === userName || member.nickname === userName
+        }
       )
+
       if (VALIDATE) {
-        if (user.size === 0) {
+        if (!user || user.size === 0) {
           console.log('Validation failed for user: ', userName)
         }
       } else {
@@ -45,6 +48,7 @@ defined yet. Please create it before continuing.`)
         // TODO: Add error handling & reporting for unknown users
         console.log(`channel.name: ${ channel.name } user: ${ userName }`)
         const updatedChannel = await channel.updateOverwrite(user, permissions)
+        console.log('updatedChannel: ', updatedChannel)
       }
     }
   }
