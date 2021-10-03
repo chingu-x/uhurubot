@@ -312,7 +312,7 @@ slash (i.e. '/') and the channel name.
 In a terminal session issue the following to create Discord channels for a
 specific voyage: 
 ```
-node uhurubot create -t v31_teams_users
+node uhurubot create -t /Users/jim/Development/uhurubot/config/v31_teams_users.json
 ```
 
 Example contents for the `v31_teams_users` file:
@@ -392,7 +392,7 @@ be ignored.
 In a terminal session issue the following to authorize Chingu's to access
 their team channels for a voyage:
 ```
-node uhurubot authorize -t v31_teams_users
+node uhurubot authorize -t /Users/jim/Development/uhurubot/config/v31_teams_users.json
 ```
 
 Example contents for the `v31_teams_users` file:
