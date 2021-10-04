@@ -14,7 +14,7 @@ defined yet. Please create it before continuing.`)
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    const allUsers = guild.members.cache
+    const allUsers = await guild.members.fetch()
     
     for (let userID of team.team.discord_names) {
       const userName = userID.split('#')[0]
