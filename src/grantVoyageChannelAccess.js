@@ -2,8 +2,9 @@ import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
 import initializeProgressBars from './util/initializeProgressBars.js'
 
-const grantVoyageChannelAccess = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS, VALIDATE) => {
-  
+const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALIDATE) => {
+          
+  // TODO: Add verification of the parent category when a match is made on the channel name to ensure we have the right one
   const getChannel = (discordIntf, guild, categoryName, teamName) => {
     let channel = discordIntf.isChannelCreated(guild, categoryName, teamName)
     if (channel.length === 0) {
@@ -47,8 +48,9 @@ defined yet. Please create it before continuing.`)
             }
         // TODO: Add error handling & reporting for unknown users
         console.log(`channel.name: ${ channel.name } user: ${ userName }`)
+        console.log('...permissions: ', permissions)
         const updatedChannel = await channel.updateOverwrite(user, permissions)
-        console.log('updatedChannel: ', updatedChannel)
+        console.log('updatedChannel: ', updatedChannel.name)
       }
     }
   }
@@ -80,7 +82,7 @@ defined yet. Please create it before continuing.`)
           let textChannel = getChannel(discordIntf, guild, categoryName, team.team.name)
           await grantUserAccess('text', guild, textChannel, team)
           let voiceChannel = getChannel(discordIntf, guild, categoryName, team.team.name.concat('av'))
-          grantUserAccess('voice', guild, voiceChannel, team)
+          await grantUserAccess('voice', guild, voiceChannel, team)
         }
         progressBars[teamNo+1].increment(1)
         progressBars[ALL_TEAMS].increment(1) 

@@ -77,7 +77,7 @@ program
     const { DISCORD_TOKEN, GUILD_ID, TEAMS, VALIDATE } = environment.getOperationalVars()
     
     try {
-      await grantVoyageChannelAccess(environment, GUILD_ID, DISCORD_TOKEN, TEAMS, VALIDATE)
+      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS, VALIDATE)
       process.exit(0)
     }
     catch (err) {
