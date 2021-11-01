@@ -1,5 +1,5 @@
 {
-  "voyage_number": "34", 
+  "voyage_number": "35", 
   "shared_channels": [],
   "teams": [
     {
@@ -19,7 +19,7 @@
       }
     }, {
       "team": { 
-        "name": "toucanskos-team-04",
+        "name": "toucans-team-04",
         "discord_names": ["BlueDragon#8932", "sg98#7909", "hertanto#0834", "It_is_42#2145", "Yushi#8385"] 
       }
     }, {
@@ -60,7 +60,7 @@
     }, {
       "team": { 
         "name": "bears-team-12",
-        "discord_names": ["A13XXC#7898", "Biz#5298", "posh#4596", "vinclou#1616", "zxcv#5859", "vandnakapoor#9804"] 
+        "discord_names": ["A13XXC#7898", "Biz#5298", "posh#4596", "vinclou#1616", "zxcv#5859"] 
       }
     }, {
       "team": { 

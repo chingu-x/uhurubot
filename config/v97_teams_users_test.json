@@ -1,16 +1,16 @@
 {
-  "voyage_number": "98", 
+  "voyage_number": "97", 
   "shared_channels": [],
   "teams": [
     {
       "team": { 
-        "name": "toucans-team-01",
-        "discord_names": ["ZumDeWald#5461", "Tudi#7672"] 
+        "name": "geckos-team-01",
+        "discord_names": ["ZumDeWald#5461", "virgilt#5332"] 
       }
     }, {
       "team": { 
         "name": "bears-team-02",
-        "discord_names": ["ZumDeWald#5461", "Tudi#7672"] 
+        "discord_names": ["ZumDeWald#5461", "virgilt#5332"] 
       }
     }
   ],
