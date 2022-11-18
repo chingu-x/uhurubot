@@ -36,7 +36,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
         let channel = discordIntf.isChannelCreated(guild, sharedChannel.channel_name)
         if (channel.length === 0) {
           channel = await discordIntf.createChannel(guild, category, 'text', sharedChannel.channel_name)
-          discordIntf.postGreetingMessage(channel, sharedChannel.greeting)
+          await discordIntf.postGreetingMessage(channel, sharedChannel.greeting)
         }
       }
 
