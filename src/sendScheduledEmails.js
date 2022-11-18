@@ -10,7 +10,7 @@ const isMessageEligibleToSend = (queueStatus, applicationApprovalDate, messageOf
   const approvalDate = new Date(applicationApprovalDate)
   let daysSinceApplication = Math.floor((now.getTime() - approvalDate.getTime()) / oneDay)
 
-  return (queueStatus === 'In-progress' && messageOffsetInDays <= daysSinceApplication 
+  return (queueStatus.startsWith('In-progress') && messageOffsetInDays <= daysSinceApplication 
     ? true : false)
 }
 
@@ -33,13 +33,13 @@ const emailScheduledMessages = async (environment, schedule) => {
       // If the user has no events recorded add the first event for this application
       // notification type
       if (isMessageEligibleToSend(member.status, member.applicationApprovalDate, notificationSchedule.events[0].admissionOffset)) {
-        console.log(`Matched against user ${ member.email } with no events`)
+        console.log(`Matched against user ${ member.email } (status:${ member.status } with no events`)
         const firstEvent = schedule.getFirstEvent(member.notificationType)
         const result = await sendEmail(
           environment, member.notificationType, member.email, member.firstName, 
           firstEvent.messageID, firstEvent.messageDescription
         )
-        console.log('...result: ', result)
+        
         // If the last email for this notification type has been sent update the
         // Notification Queue table to mark the notification as finished.
         const nextEvent = schedule.getNextEvent(member.notificationType, firstEvent.messageID)
@@ -54,8 +54,9 @@ const emailScheduledMessages = async (environment, schedule) => {
       const lastEventIndex = member.notificationEvents.length - 1
       const lastEvent = member.notificationEvents[lastEventIndex]
       let nextEvent = schedule.getNextEvent(lastEvent.notificationType, lastEvent.messageID)
-      if (typeof nextEvent === 'object' && 
+      if (nextEvent && typeof nextEvent === 'object' && 
           isMessageEligibleToSend(member.status, member.applicationApprovalDate, nextEvent.admissionOffset)) {
+        console.log(`Matched against user ${ member.email } (status:${ member.status } with prior events`)    
         const result = await sendEmail(
           environment, member.notificationType, member.email, member.firstName, 
           nextEvent.messageID, nextEvent.messageDescription
@@ -70,8 +71,6 @@ const emailScheduledMessages = async (environment, schedule) => {
       }
     }
   }
-
-
 }
 
 export default emailScheduledMessages

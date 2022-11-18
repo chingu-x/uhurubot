@@ -1,0 +1,26 @@
+{
+  "voyage_number": "97", 
+  "shared_channels": [],
+  "teams": [
+    {
+      "team": { 
+        "name": "geckos-team-01",
+        "discord_names": ["ZumDeWald#5461", "virgilt#5332"] 
+      }
+    }, {
+      "team": { 
+        "name": "bears-team-02",
+        "discord_names": ["ZumDeWald#5461", "virgilt#5332"] 
+      }
+    }
+  ],
+  "team_greeting": [
+    ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
+    "**_Your First Steps _** \n",
+    "1. Say \"hi\" to your team-mates! Come in excited and help welcome your team-mates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, or myself (@chance#6481) are not your team-mate. :slight_smile:\n", 
+    "2. Go to #your-intros-here-🎤 and copy/paste your intro into the team chat This will allow your team-mates to get to know you and get the party started!\n",
+    "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n",
+    "**__Shared Team Documents__** \n",
+    "We've pinned the link to your team’s private Google Drive directory to this channel. You can use it to share non-code resources, like meeting agendas & project idea lists, with your teammates. It also contains templates for various documents plus a copy of the Voyage Guide."
+  ]
+}
