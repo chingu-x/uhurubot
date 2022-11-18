@@ -17,9 +17,8 @@
 
 # uhurubot
 
-Uhuru automates the process of creating Discord channels for Chingu Voyages. It's purpose is
-to automate the process to reduce the amount of manual time spent preparing for Voyages,
-while improving quality and reducing the chance of errors.
+Uhuru automates the process of sending and posting routine adivice to members
+of Chingu.
 
 [Process Overview](#process-overview) - [Installation](#installation) - [Usage](#usage) - [Release History](#release-history) - [License](#license)
 
@@ -27,30 +26,9 @@ while improving quality and reducing the chance of errors.
 
 ## Process Overview
 
-Uhurubot does the following to setup the Chingu Discord server with the
-channels needed for a particular Voyage:
-
-1. Create a category for the voyage
-2. Create the `#team-advice` channel in the voyage category. Ensure that
-`@everyone` may view it, but are restricted from posting messages.
-3. Create the `#team-resources` channel in the voyage category. Ensure that
-`@everyone` may view it, but are restricted from posting messages.
-4. Create a chat & a voice channel for each team in the voyage category
-5. Post the call to action message for the Voyage kickoff into the channel.
-6. From a user supplied list of Discord account names for members of each 
-team, add team members to the channels
-7. Post daily advice to the `#team-advice` channel based on a schedule 
-defined by Chingu administrators. Advice will be maintained in another data
-source and must allow certain names and dates to be customized based on the
-Voyage schedule.
-8. Post helpful information to new Chingu's to help them get started on their
-Solo Project. These are available
-
-These functions are not executed at the same point in time:
-
-- Items 1-5 above may be requested anytime prior to the start of the voyage.
-- Item 6 may be requested at anytime
-- Item 7 will be run based on a predefined schedule using an external scheduler
+Uhurubot posts helpful information to new Chingu's to help them get started on their
+Solo Project. This is  run based on a predefined schedule using an external 
+scheduler
 
 ## Installation
 
