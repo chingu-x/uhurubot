@@ -1,5 +1,5 @@
 {
-  "voyage_number": "42", 
+  "voyage_number": "42",  
   "shared_channels": [],
   "teams": [
     { "team": { "name": "bears-team-26", "discord_names": [] } },
