@@ -2,33 +2,6 @@
   "voyage_number": "42", 
   "shared_channels": [],
   "teams": [
-    { "team": { "name": "toucans-team-01", "discord_names": [] } },
-    { "team": { "name": "toucans-team-02", "discord_names": [] } },
-    { "team": { "name": "toucans-team-03", "discord_names": [] } },
-    { "team": { "name": "toucans-team-04", "discord_names": [] } },
-    { "team": { "name": "toucans-team-05", "discord_names": [] } },
-    { "team": { "name": "toucans-team-06", "discord_names": [] } },
-    { "team": { "name": "toucans-team-07", "discord_names": [] } },
-    { "team": { "name": "toucans-team-08", "discord_names": [] } },
-    { "team": { "name": "toucans-team-09", "discord_names": [] } },
-    { "team": { "name": "toucans-team-10", "discord_names": [] } },
-
-    { "team": { "name": "geckos-team-11", "discord_names": [] } },
-    { "team": { "name": "geckos-team-12", "discord_names": [] } },
-    { "team": { "name": "geckos-team-13", "discord_names": [] } },
-    { "team": { "name": "geckos-team-14", "discord_names": [] } },
-    { "team": { "name": "geckos-team-15", "discord_names": [] } },
-    { "team": { "name": "geckos-team-16", "discord_names": [] } },
-    { "team": { "name": "geckos-team-17", "discord_names": [] } },
-    { "team": { "name": "geckos-team-18", "discord_names": [] } },
-    { "team": { "name": "geckos-team-19", "discord_names": [] } },
-    { "team": { "name": "geckos-team-20", "discord_names": [] } },
-    { "team": { "name": "geckos-team-21", "discord_names": [] } },
-    { "team": { "name": "geckos-team-22", "discord_names": [] } },
-    { "team": { "name": "geckos-team-23", "discord_names": [] } },
-    { "team": { "name": "geckos-team-24", "discord_names": [] } },
-    { "team": { "name": "geckos-team-25", "discord_names": [] } },
- 
     { "team": { "name": "bears-team-26", "discord_names": [] } },
     { "team": { "name": "bears-team-27", "discord_names": [] } },
     { "team": { "name": "bears-team-28", "discord_names": [] } },
@@ -56,11 +29,6 @@
     "2. Go to #🖐introduce-yourself and copy/paste your intro into this channel. This let your teammates get to know you so get the party can get started!\n",
     "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n",
     "**__Tier 1 Team Project__**\n",
-    "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris.\n",
-    "**__Your Team Resouces__** \n",
-    "GitHub repo --> https://github.com/chingu-voyages/v42-tbd",
-    "Google Drive directory --> https://drive.google.com/drive/folders/tbd",
-    "Chingu Handbook: Voyages --> https://chingucohorts.notion.site/Voyages-1e528dcbf1d241c9a93b4627f6f1c809",
-    "Your Mentor: N/a"
+    "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris.\n"
   ] 
 }
