@@ -1,21 +1,36 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
-import initializeProgressBars from './util/initializeProgressBars.js'
+// import initializeProgressBars from './util/initializeProgressBars.js'
 
-const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS) => {
+const lookupDiscordCategory = (categoryNames, categoryName) => {
+  return categoryNames.find(category => category.name === categoryName)
+}
+
+const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_FILE_NAME) => {
   const discordIntf = new Discord(environment)
-  const rawTeams = FileOps.readFile(TEAMS)
-  const teams = JSON.parse(rawTeams)
+
+  // Load the teams configuration file into a JS object
+  const rawTeamsConfig = FileOps.readFile(TEAMS_FILE_NAME)
+  const teamsConfig = JSON.parse(rawTeamsConfig)
 
   const ALL_TEAMS = 0
   const CATEGORY_NO = 1
-  const teamNames = teams.teams.map(team => team.team.name)
-  const categoryName = discordIntf.generateCategoryName(teams)
+  const categoryNames = teamsConfig.categories.map(category => {
+    return { 
+      "name": category.name, 
+      "created": false,
+      "discordCategory": null,
+    }
+  })
+
+  /*
+  const teamNames = teamsConfig.teams.map(team => team.team.name)
   teamNames.splice(0, 0, categoryName)
   let { overallProgress, progressBars } = initializeProgressBars(
     teamNames, 
     { includeDetailBars: true, includeCategory: true }
   )
+  */
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(GUILD_ID)
@@ -24,37 +39,38 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
     client.on('ready', async () => {
 
       // Create the Voyage category
-      let category = discordIntf.isCategoryCreated(guild, categoryName)
-      if (category.length === 0) {
-        category = await discordIntf.createChannelCategory(guild, categoryName)
-      }
-      progressBars[CATEGORY_NO].increment(1)
-      progressBars[ALL_TEAMS].increment(1) 
-
-      // Create Shared Channels
-      for (let sharedChannel of teams.shared_channels) {
-        let channel = discordIntf.isChannelCreated(guild, sharedChannel.channel_name)
-        if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, 'text', sharedChannel.channel_name)
-          await discordIntf.postGreetingMessage(channel, sharedChannel.greeting)
+      for (let i = 0; i < categoryNames.length; i++) {
+        let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
+        if (discordCategory.length === 0) {
+          discordCategory = await discordIntf.createChannelCategory(guild, categoryNames[i].name)
+          categoryNames[i].discordCategory = discordCategory
         }
       }
+
+      // progressBars[CATEGORY_NO].increment(1)
+      // progressBars[ALL_TEAMS].increment(1) 
 
       // Create & populate team channels
-      let teamNo = CATEGORY_NO
-      for (let team of teams.teams) {
-        let channel = discordIntf.isChannelCreated(guild, team.team.name)
-        if (channel.length === 0) {
-          channel = await discordIntf.createChannel(guild, category, 'text', team.team.name)
-          const voiceChannel = await discordIntf.createChannel(guild, category, 'voice', team.team.name.concat('av'))
-          await discordIntf.postGreetingMessage(channel, teams.team_greeting)
+      // let teamNo = CATEGORY_NO
+      for (let team of teamsConfig.teams) {
+        let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
+        let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
+        if (discordCategory === undefined) {
+          console.log('categoryNames: ', categoryNames)
+          console.log('team.team:', team.team)
+          throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
         }
-        progressBars[teamNo+1].increment(1)
-        progressBars[ALL_TEAMS].increment(1) 
-        ++teamNo 
+        if (discordChannel.length === 0) {
+          discordChannel = await discordIntf.createChannel(guild, discordCategory, 'text', team.team.name)
+          const voiceChannel = await discordIntf.createChannel(guild, discordCategory, 'voice', team.team.name.concat('av'))
+          await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
+        }
+        // progressBars[teamNo+1].increment(1)
+        // progressBars[ALL_TEAMS].increment(1) 
+        // ++teamNo 
       }
 
-      overallProgress.stop()
+      // overallProgress.stop()
       discordIntf.commandResolve('done')
     })
   }
@@ -73,7 +89,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
   catch (err) {
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
-    overallProgress.stop()
+    // overallProgress.stop()
     discordIntf.commandReject('fail')
   }
 }

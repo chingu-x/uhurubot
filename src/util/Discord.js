@@ -38,10 +38,6 @@ export default class Discord {
     return this.client
   }
 
-  generateCategoryName(teams) {
-    return 'v'.concat(teams.voyage_number,'-🔥')
-  }
-
   isCategoryCreated(guild, categoryName) {
     return guild.channels.cache.array()
       .filter(channel => channel.type === 'category' && channel.name === categoryName)
