@@ -1,6 +1,6 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
-// import initializeProgressBars from './util/initializeProgressBars.js'
+import initializeProgressBars from './util/initializeProgressBars.js'
 
 const lookupDiscordCategory = (categoryNames, categoryName) => {
   const category = categoryNames.find(category => category.name === categoryName)
@@ -14,8 +14,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   const rawTeamsConfig = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeamsConfig)
 
-  const ALL_TEAMS = 0
-  const CATEGORY_NO = 1
   const categoryNames = teamsConfig.categories.map(category => {
     return { 
       "name": category.name, 
@@ -24,14 +22,8 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
     }
   })
 
-  /*
-  const teamNames = teamsConfig.teams.map(team => team.team.name)
-  teamNames.splice(0, 0, categoryName)
-  let { overallProgress, progressBars } = initializeProgressBars(
-    teamNames, 
-    { includeDetailBars: true, includeCategory: true }
-  )
-  */
+  let categoryNoForProgressBar = 0
+  let { overallProgress, progressBars } = initializeProgressBars(categoryNames)
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(GUILD_ID)
@@ -48,11 +40,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         }
       }
 
-      // progressBars[CATEGORY_NO].increment(1)
-      // progressBars[ALL_TEAMS].increment(1) 
-
       // Create & populate team channels
-      // let teamNo = CATEGORY_NO
       for (let team of teamsConfig.teams) {
         let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
         let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
@@ -66,12 +54,11 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
           const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'voice', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
         }
-        // progressBars[teamNo+1].increment(1)
-        // progressBars[ALL_TEAMS].increment(1) 
-        // ++teamNo 
+        progressBars[categoryNoForProgressBar].increment(1)
+        ++categoryNoForProgressBar
       }
 
-      // overallProgress.stop()
+      overallProgress.stop()
       discordIntf.commandResolve('done')
     })
   }
@@ -90,7 +77,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   catch (err) {
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
-    // overallProgress.stop()
+    overallProgress.stop()
     discordIntf.commandReject('fail')
   }
 }
