@@ -1,5 +1,4 @@
 import DiscordJS from 'discord.js'
-import FileOps from './FileOps.js'
 
 export default class Discord {
   constructor(environment) {
@@ -78,6 +77,12 @@ export default class Discord {
       type: `${ channelType }`,
       topic: `${ teamName }`,
       parent: categoryId,
+      permissionOverwrites: [
+        {
+          id: guild.roles.everyone,
+          deny: ['VIEW_CHANNEL'],
+        },
+      ],
     })
     return channel
   }
