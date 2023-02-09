@@ -3,7 +3,8 @@ import FileOps from './util/FileOps.js'
 // import initializeProgressBars from './util/initializeProgressBars.js'
 
 const lookupDiscordCategory = (categoryNames, categoryName) => {
-  return categoryNames.find(category => category.name === categoryName)
+  const category = categoryNames.find(category => category.name === categoryName)
+  return category
 }
 
 const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_FILE_NAME) => {
@@ -61,8 +62,8 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
           throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
         }
         if (discordChannel.length === 0) {
-          discordChannel = await discordIntf.createChannel(guild, discordCategory, 'text', team.team.name)
-          const voiceChannel = await discordIntf.createChannel(guild, discordCategory, 'voice', team.team.name.concat('av'))
+          discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'text', team.team.name)
+          const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'voice', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
         }
         // progressBars[teamNo+1].increment(1)
