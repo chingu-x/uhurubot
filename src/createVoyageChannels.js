@@ -50,8 +50,8 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
           throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
         }
         if (discordChannel.length === 0) {
-          discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'text', team.team.name)
-          const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'voice', team.team.name.concat('av'))
+          discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_TEXT', team.team.name)
+          const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_VOICE', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
         }
         progressBars[categoryNoForProgressBar].increment(1)
