@@ -6,7 +6,7 @@
     { "name": "v99-tier3-🔥" }
   ],
   "teams": [
-    { "team": { "category": "v99-tier1-🔥", "name": "tier1-team-01", "discord_names": [] } },
+    { "team": { "category": "v99-tier1-🔥", "name": "tier1-team-01", "discord_names": ["jdmedlock#4582"] } },
     { "team": { "category": "v99-tier2-🔥", "name": "tier2-team-02", "discord_names": [] } },
     { "team": { "category": "v99-tier3-🔥", "name": "tier3-team-03", "discord_names": [] } }
   ],

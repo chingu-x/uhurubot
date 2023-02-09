@@ -1,8 +1,8 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
-import initializeProgressBars from './util/initializeProgressBars.js'
+// import initializeProgressBars from './util/initializeProgressBars.js'
 
-const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALIDATE) => {
+const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_NAME, VALIDATE) => {
           
   // TODO: Add verification of the parent category when a match is made on the channel name to ensure we have the right one
   const getChannel = (guild, category, teamName) => {
@@ -57,12 +57,12 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALID
   }
 
   const discordIntf = new Discord(environment)
-  const rawTeams = FileOps.readFile(TEAMS)
-  const teams = JSON.parse(rawTeams)
+  const rawTeams = FileOps.readFile(TEAMS_FILE_NAME)
+  const teamsConfig = JSON.parse(rawTeams)
   
-  const ALL_TEAMS = 0
-  const teamNames = teams.teams.map(team => team.team.name)
-  let { overallProgress, progressBars } = initializeProgressBars(teamNames, { includeCategory: false, includeDetailBars: true })
+  //const ALL_TEAMS = 0
+  const teamNames = teamsConfig.teams.map(team => team.team.name)
+  //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(`${ process.env.GUILD_ID }`)
@@ -70,7 +70,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALID
   try {
     client.on('ready', async () => {
       // Authorize voyagers access to their Voyage channels
-      const categoryName = discordIntf.generateCategoryName(teams)
+      const categoryName = discordIntf.generateCategoryName(teamsConfig)
       let category = discordIntf.isCategoryCreated(guild, categoryName)
       console.log('grantVoyageChannelAccess - category: ', category[0])
       if (category.length === 0) {
@@ -80,7 +80,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALID
 
       // Authorize teammember access to the team channels
       let teamNo = 0
-      for (let team of teams.teams) {
+      for (let team of teamsConfig.teams) {
         console.log('...team: ', team)
         if (team.team.discord_names.length > 0) {
           let textChannel = getChannel(guild, category[0], team.team.name)
@@ -88,12 +88,12 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS, VALID
           let voiceChannel = getChannel(guild, category[0], team.team.name.concat('av'))
           await grantUserAccess('voice', guild, voiceChannel, team)
         }
-        progressBars[teamNo+1].increment(1)
-        progressBars[ALL_TEAMS].increment(1) 
-        ++teamNo 
+        //progressBars[teamNo+1].increment(1)
+        //progressBars[ALL_TEAMS].increment(1) 
+        //++teamNo 
       }
 
-      overallProgress.stop()
+      //overallProgress.stop()
       discordIntf.commandResolve('done')
     })
   }
