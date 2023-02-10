@@ -6,9 +6,9 @@
     { "name": "v99-tier3-🔥" }
   ],
   "teams": [
-    { "team": { "category": "v99-tier1-🔥", "name": "tier1-team-01", "discord_names": ["jdmedlock#4582"] } },
-    { "team": { "category": "v99-tier2-🔥", "name": "tier2-team-02", "discord_names": ["syntax#7986"] } },
-    { "team": { "category": "v99-tier3-🔥", "name": "tier3-team-03", "discord_names": ["syntax#7986"] } }
+    { "team": { "category": "v99-tier1-🔥", "name": "tier1-team-01", "tier": "tier1", "discord_names": ["jdmedlock#4582"] } },
+    { "team": { "category": "v99-tier2-🔥", "name": "tier2-team-02", "tier": "tier2", "discord_names": ["syntax#7986"] } },
+    { "team": { "category": "v99-tier3-🔥", "name": "tier3-team-03", "tier": "tier3", "discord_names": ["syntax#7986"] } }
   ],
   "team_greeting": [
     ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
