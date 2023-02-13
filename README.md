@@ -50,7 +50,7 @@ node uhurubot <option> <flags>
 ```
 | Option     | Description                                 | Permissable flags |
 |------------|---------------------------------------------|-------------------|
-| build      | Build the config file for Voyage teams      | -v                |
+| build      | Build the config file for Voyage teams      | -voyage           |
 | create     | Create channels for a Voyage                | -v, -t            |
 | authorize  | Authorize users to access channels          | -v, -t            |
 | post       | Post a message in the `#team-advice` channel | -v, -p           |
@@ -61,6 +61,7 @@ in both the command line and the CLI `.env` file.
 
 | CLI Flag        | `.env` Parm    | Description                              |
 |-----------------|----------------|------------------------------------------|
+| -c, --voyage    | VOYAGE         | Voyage number |
 | -v, --validate  | VALIDATE       | Validate (Y/N) authorization actions     |
 | -t, --teams     | TEAMS          | Teams & users (JSON file) path |
 | -p, --posts     | POSTS          | Channel post specifications (JSON file) path |

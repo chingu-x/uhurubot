@@ -2,6 +2,7 @@ import { Command } from 'commander'
 const program = new Command();
 import Environment from './src/util/Environment.js'
 import Schedule from './src/util/Schedule.js'
+import buildVoyageTeamConfig from './src/buildVoyageTeamConfig.js'
 import createVoyageChannels from './src/createVoyageChannels.js'
 import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 import postScheduledMessages from './src/postScheduledMessages.js'
@@ -23,6 +24,36 @@ const consoleLogOptions = (options) => {
     console.log('- schedule: ', options.schedule)
   }
 }
+
+// Process a request to create new Voyage team channels
+program 
+  .command('build')
+  .description('Build the teams json config file for the next Chingu Voyage')
+  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
+  .action(async (options) => {
+    environment.setOperationalVars({
+      debug: options.debug,
+      teams: options.teams,
+    })
+
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
+
+    const { VOYAGE } = environment.getOperationalVars()
+    
+    try {
+      await buildVoyageTeamConfig(environment, VOYAGE)
+      process.exit(0)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
+  })
 
 // Process a request to create new Voyage team channels
 program 
