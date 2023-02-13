@@ -15,6 +15,7 @@ const getVoyageTeam = async (voyage) => {
     console.log('getVoyageTeam - filter: ', filter)
 
     base('Voyage Signups').select({ 
+      fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Discord ID', 'GitHub ID'],
       filterByFormula: filter,
       view: 'Teamsort - for Bots' 
     })
@@ -26,8 +27,12 @@ const getVoyageTeam = async (voyage) => {
         voyagerNo = ++voyagerNo
         voyagers.push({ 
           number: `${ voyagerNo }`,
-          email: `${ record.fields.Email }`,
-          voyage: `${ record.fields.Voyage }` 
+          email: `${ record.get('Email') }`,
+          voyage: `${ record.get('Voyage') }`,
+          team_name: `${ record.get('Team Name') }`,
+          tier: `${ record.get('Tier') }`,
+          discord_name: `${ record.get('Discord ID') }`,
+          github_name: `${ record.get('GitHub ID') }`,
         })
       }
 
