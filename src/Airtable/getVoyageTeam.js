@@ -7,15 +7,15 @@ const getVoyageTeam = async (voyage) => {
 
     const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
 
-    const filter = "AND(" +
-      "{Voyage} = \"" + voyage + "\", " +
-      "{Team No.} != BLANK()" +
-      ")"
+    const filter = 'AND(' +
+      '{Voyage} = "' + voyage + '", ' +
+      '{Team No.} != ""' +
+      ')'
 
-    console.log('getVoyageTeam - filter: ', filter)
+    console.log('filter: ', filter)
 
     base('Voyage Signups').select({ 
-      fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Discord ID', 'GitHub ID'],
+      fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID'],
       filterByFormula: filter,
       view: 'Teamsort - for Bots' 
     })
@@ -36,6 +36,7 @@ const getVoyageTeam = async (voyage) => {
           voyage: `${ record.get('Voyage') }`,
           team_name: `${ record.get('Team Name') }`,
           tier: `${ tierName }`,
+          team_no: `${ record.get('Team No.') }`,
           discord_name: `${ record.get('Discord ID') }`,
           github_name: `${ record.get('GitHub ID') }`,
         })

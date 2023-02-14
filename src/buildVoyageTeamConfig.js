@@ -23,19 +23,36 @@ const addCategory = (categories, voyager) => {
   }
 
   // Return the current category name
-  return categories.slice(-1)
+  return categories.slice(-1)[0]
 }
 
-const addVoyagerToTeam = (teams, voyagerCategory, voyager) => {
-  
+const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
+  if (currentTeamNo !== voyager.team_no) {
+    currentTeamNo = voyager.team_no
+    const teamName = voyager.tier.concat('-team-',voyager.team_no.padStart(2,0))
+    teams.push({
+      "team": { 
+        "category": voyagerCategory, 
+        "name": teamName, 
+        "tier": voyager.tier,
+        "discord_names": [voyager.discord_name],
+        "github_names": [voyager.github_name]
+      }
+    })
+    return voyager.team_no
+  }
+
+  const team = teams.slice(-1)[0]
+  const discordNames = team.team.discord_names
+  const githubNames = team.team.github_names
+  discordNames.push(voyager.discord_name)
+  githubNames.push(voyager.github_name)
+  return voyager.team_no
 }
 
 const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   // Retrieve the roster of Voyagers in a specific Voyage
   const voyagers = await getVoyageTeam('v'.concat(VOYAGE).toUpperCase())
-  voyagers.forEach((voyager) => {
-    console.log(voyager)
-  })
 
   let config = {
     voyage_number: VOYAGE,
@@ -45,12 +62,17 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     tier_greeting: []
   }
 
+  let teamData = { currentTeamNo: 0 }
+
   for (let voyager of voyagers) {
     const voyagerCategory = addCategory(config.categories, voyager)
-    addVoyagerToTeam(config.teams, voyagerCategory, voyager)
+    teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)
   }
 
   console.log('config: ', config)
+  for (let team of config.teams) {
+    console.log('...team: ', team)
+  }
 }
 
 export default buildVoyageTeamConfig
