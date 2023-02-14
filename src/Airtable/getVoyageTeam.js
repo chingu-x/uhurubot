@@ -25,12 +25,17 @@ const getVoyageTeam = async (voyage) => {
       let voyagerNo = 0
       for (let record of records) {
         voyagerNo = ++voyagerNo
+        const tierName = record.get('Tier')
+          .slice(0,6)
+          .toLowerCase()
+          .split(' ')
+          .join('')
         voyagers.push({ 
           number: `${ voyagerNo }`,
           email: `${ record.get('Email') }`,
           voyage: `${ record.get('Voyage') }`,
           team_name: `${ record.get('Team Name') }`,
-          tier: `${ record.get('Tier') }`,
+          tier: `${ tierName }`,
           discord_name: `${ record.get('Discord ID') }`,
           github_name: `${ record.get('GitHub ID') }`,
         })
