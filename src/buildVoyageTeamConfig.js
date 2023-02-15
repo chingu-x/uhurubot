@@ -58,8 +58,22 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     voyage_number: VOYAGE,
     categories: [],
     teams: [],
-    team_greeting: [],
-    tier_greeting: []
+    team_greeting: [
+      ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
+      "**_Your First Steps _** \n",
+      "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n", 
+      "2. Go to #🖐introduce-yourself and copy/paste your intro into this channel. This let your teammates get to know you so get the party can get started!\n",
+      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible."
+    ],
+    tier_greeting: [
+      { 
+        "tier": "tier1", 
+        "greeting": [
+          "**__Tier 1 Team Project__**\n",
+          "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris."
+        ]
+      }
+    ]
   }
 
   let teamData = { currentTeamNo: 0 }
