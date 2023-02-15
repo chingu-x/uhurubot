@@ -69,10 +69,8 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)
   }
 
-  console.log('config: ', config)
-  for (let team of config.teams) {
-    console.log('...team: ', team)
-  }
+  const configJSON = JSON.stringify(config, null, 2)
+  console.log('configJSON: ', configJSON)
 }
 
 export default buildVoyageTeamConfig
