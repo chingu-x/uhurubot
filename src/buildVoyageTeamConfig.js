@@ -1,3 +1,4 @@
+const fs = require('fs')
 import { getVoyageTeam } from './Airtable/getVoyageTeam.js'
 
 let groupNo = 1
@@ -15,8 +16,9 @@ const addCategory = (categories, voyager) => {
     categories.push(getCategoryName(voyager))
   }
 
-  // If there's a change in tier push a new category name onto categores
+  // If there's a change in tier push a new category name onto categories
   const mostRecentCategory = categories.slice(-1)[0]
+  //console.log(`mostRecentCategory: ${ mostRecentCategory } voyager.tier: ${ voyager.tier }`)
   if (mostRecentCategory.slice(4,9) !== voyager.tier) {
     groupNo = ++groupNo
     categories.push(getCategoryName(voyager))
@@ -70,7 +72,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
         "tier": "tier1", 
         "greeting": [
           "**__Tier 1 Team Project__**\n",
-          "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris."
+          "If you are a Toucans (tier 1) team you are required to create the **_Mad Libs word game_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-MadLibs."
         ]
       }
     ]
@@ -84,7 +86,8 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   }
 
   const configJSON = JSON.stringify(config, null, 2)
-  console.log('configJSON: ', configJSON)
+  //console.log('configJSON: ', configJSON)
+  fs.writeFileSync('/Users/jim/Downloads/v43_teams_users_test.json', configJSON);
 }
 
 export default buildVoyageTeamConfig

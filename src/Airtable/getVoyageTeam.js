@@ -9,10 +9,10 @@ const getVoyageTeam = async (voyage) => {
 
     const filter = 'AND(' +
       '{Voyage} = "' + voyage + '", ' +
-      '{Team No.} != ""' +
+      '{Team No.} != " "' +
       ')'
 
-    console.log('filter: ', filter)
+    //console.log('filter: ', filter)
 
     base('Voyage Signups').select({ 
       fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID'],
@@ -20,6 +20,7 @@ const getVoyageTeam = async (voyage) => {
       view: 'Teamsort - for Bots' 
     })
     .eachPage(function page(records, fetchNextPage) {
+      console.log('got here.')
       // Return the number of matching events that haven't been sent from the
       // Notification Events table
       let voyagerNo = 0
@@ -40,6 +41,8 @@ const getVoyageTeam = async (voyage) => {
           discord_name: `${ record.get('Discord ID') }`,
           github_name: `${ record.get('GitHub ID') }`,
         })
+        //console.log(`number: ${ voyagerNo } email: ${ record.get('Email') } voyage: ${ record.get('Voyage') } team_name: ${ record.get('Team Name') }
+        //  tier: ${ tierName } team_no: ${ record.get('Team No.') } discord_name: ${ record.get('Discord ID') } github_name: ${ record.get('GitHub ID') }`)
       }
 
       // To fetch the next page of records, call `fetchNextPage`.
