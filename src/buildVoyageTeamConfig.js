@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 import { getVoyageTeam } from './Airtable/getVoyageTeam.js'
 
 let groupNo = 1

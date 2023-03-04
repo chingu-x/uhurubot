@@ -20,7 +20,6 @@ const getVoyageTeam = async (voyage) => {
       view: 'Teamsort - for Bots' 
     })
     .eachPage(function page(records, fetchNextPage) {
-      console.log('got here.')
       // Return the number of matching events that haven't been sent from the
       // Notification Events table
       let voyagerNo = 0
