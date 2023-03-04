@@ -38,7 +38,7 @@ const getVoyageTeam = async (voyage) => {
           tier: `${ tierName }`,
           team_no: `${ record.get('Team No.') }`,
           discord_name: `${ record.get('Discord ID') }`,
-          github_name: `${ record.get('GitHub ID') }`,
+          github_name: `${ record.get('GitHub ID') ? record.get('GitHub ID') : '' }`,
         })
         //console.log(`number: ${ voyagerNo } email: ${ record.get('Email') } voyage: ${ record.get('Voyage') } team_name: ${ record.get('Team Name') }
         //  tier: ${ tierName } team_no: ${ record.get('Team No.') } discord_name: ${ record.get('Discord ID') } github_name: ${ record.get('GitHub ID') }`)

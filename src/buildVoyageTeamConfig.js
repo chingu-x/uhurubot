@@ -38,7 +38,7 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
         "name": teamName, 
         "tier": voyager.tier,
         "discord_names": [voyager.discord_name],
-        "github_names": [voyager.github_name]
+        "github_names": [voyager.github_name] ? [voyager.github_name] : ''
       }
     })
     return voyager.team_no
