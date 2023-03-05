@@ -13,14 +13,17 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   // Load the teams configuration file into a JS object
   const rawTeamsConfig = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeamsConfig)
+  console.log('teamsConfig: ', teamsConfig)
 
   const categoryNames = teamsConfig.categories.map(category => {
     return { 
-      "name": category.name, 
+      "name": category, 
       "created": false,
       "discordCategory": null,
     }
   })
+
+  console.log('categoryNames: ', categoryNames)
 
   let categoryNoForProgressBar = 0
   let { overallProgress, progressBars } = initializeProgressBars(categoryNames)
@@ -63,8 +66,9 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
             }
           }
         }
-        progressBars[categoryNoForProgressBar].increment(1)
-        ++categoryNoForProgressBar
+
+        //progressBars[categoryNoForProgressBar].increment(1)
+        //++categoryNoForProgressBar
       }
 
       overallProgress.stop()
