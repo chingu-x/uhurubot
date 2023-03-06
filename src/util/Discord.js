@@ -39,7 +39,9 @@ export default class Discord {
 
   isCategoryCreated(guild, categoryName) {
     return guild.channels.cache.array()
-      .filter(channel => channel.type === 'category' && channel.name === categoryName)
+      .filter((channel) => {
+        return channel.type === 'category' && channel.name === categoryName
+      })
   }
 
   async createChannelCategory(guild, categoryName) {
