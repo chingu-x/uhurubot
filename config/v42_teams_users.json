@@ -1,0 +1,34 @@
+{
+  "voyage_number": "42",  
+  "shared_channels": [],
+  "teams": [
+    { "team": { "name": "bears-team-26", "discord_names": [] } },
+    { "team": { "name": "bears-team-27", "discord_names": [] } },
+    { "team": { "name": "bears-team-28", "discord_names": [] } },
+    { "team": { "name": "bears-team-29", "discord_names": [] } },
+    { "team": { "name": "bears-team-30", "discord_names": [] } },
+    { "team": { "name": "bears-team-31", "discord_names": [] } },
+    { "team": { "name": "bears-team-32", "discord_names": [] } },
+    { "team": { "name": "bears-team-33", "discord_names": [] } },
+    { "team": { "name": "bears-team-34", "discord_names": [] } },
+    { "team": { "name": "bears-team-35", "discord_names": [] } },
+    { "team": { "name": "bears-team-36", "discord_names": [] } },
+    { "team": { "name": "bears-team-37", "discord_names": [] } },
+    { "team": { "name": "bears-team-38", "discord_names": [] } },
+    { "team": { "name": "bears-team-39", "discord_names": [] } },
+    { "team": { "name": "bears-team-40", "discord_names": [] } },
+    { "team": { "name": "bears-team-41", "discord_names": [] } },
+    { "team": { "name": "bears-team-42", "discord_names": [] } },
+    { "team": { "name": "bears-team-43", "discord_names": [] } },
+    { "team": { "name": "bears-team-44", "discord_names": [] } }
+  ],
+  "team_greeting": [
+    ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
+    "**_Your First Steps _** \n",
+    "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n", 
+    "2. Go to #🖐introduce-yourself and copy/paste your intro into this channel. This let your teammates get to know you so get the party can get started!\n",
+    "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n",
+    "**__Tier 1 Team Project__**\n",
+    "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris.\n"
+  ] 
+}

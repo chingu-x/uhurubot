@@ -1,25 +1,30 @@
 {
-  "voyage_number": "99", 
+  "voyage_number": "43",
   "categories": [
-    "V99-tier1-01-🔥",
-    "V99-tier3-03-🔥"
+    "V43-tier1-01-🔥"
   ],
   "teams": [
     {
-      "team": { 
-        "name": "toucans-team-01",
-        "category": "V99-tier1-01-🔥",
+      "team": {
+        "category": "V43-tier1-01-🔥",
+        "name": "tier1-team-09",
         "tier": "tier1",
-        "discord_names": ["Alecia#9269", "danneytrieuwork#2558"],
-        "github_names": ["ale-cia", "Danneytrieu"] 
-      }
-    }, {
-      "team": { 
-        "name": "bears-team-02",
-        "category": "V99-tier3-03-🔥",
-        "tier": "tier3",
-        "discord_names": ["Hypno#9777", "syntax#7986"],
-        "github_names": ["ellrub", "Danneytrieu"]  
+        "discord_names": [
+          "Gabriela de Paula#4224",
+          "Emimint#8106",
+          "Nazile#5259",
+          "medic1111#7440",
+          "MNix#5589",
+          "PriscaRamazani#1391"
+        ],
+        "github_names": [
+          "PaulaR-05",
+          "Emimint",
+          "Nazile-Tag",
+          "",
+          "Mnichols08",
+          "PriscaRamazani"
+        ]
       }
     }
   ],

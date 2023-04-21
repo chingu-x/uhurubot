@@ -50,6 +50,7 @@ node uhurubot <option> <flags>
 ```
 | Option     | Description                                 | Permissable flags |
 |------------|---------------------------------------------|-------------------|
+| build      | Build the config file for Voyage teams      | -voyage           |
 | create     | Create channels for a Voyage                | -v, -t            |
 | authorize  | Authorize users to access channels          | -v, -t            |
 | post       | Post a message in the `#team-advice` channel | -v, -p           |
@@ -60,6 +61,7 @@ in both the command line and the CLI `.env` file.
 
 | CLI Flag        | `.env` Parm    | Description                              |
 |-----------------|----------------|------------------------------------------|
+| -c, --voyage    | VOYAGE         | Voyage number |
 | -v, --validate  | VALIDATE       | Validate (Y/N) authorization actions     |
 | -t, --teams     | TEAMS          | Teams & users (JSON file) path |
 | -p, --posts     | POSTS          | Channel post specifications (JSON file) path |
@@ -92,18 +94,31 @@ The following shows the format of the Teams & Users JSON file:
 
 ```
 {
-  "voyage_number": "nnnnn",
-    "shared_channels": [
+  "voyage_number": "nn",
+  "categories": [
+    { "name": "vnn-tier1-01-🔥" },
+    ...
+  ],
+  "teams": [
+    {
+      "team": { 
+        "name": "tiern-team-nn",
+        "category": "category-name",
+        "tier": "tier1|tier2|tier3",
+        "discord_names": ["user1", "user2", "user3",...]
+        "github_names": ["user1", "user2", "user3", ...]
+      }
+    }, ...
+  ],
+  "team_greeting": [
+    "<line-1>",
+    "<line-2>",
+    ...
+    "<line-n>"
+  ],
+    "tier_greeting": [
     { 
-      "channel_name": "<channel-name>",
-      "greeting": [
-        "<line-1>",
-        "<line-2>",
-        ...
-        "<line-n>"
-      ]
-    }, { 
-      "channel_name": "<channel-name>",
+      "tier": "tier1|tier2|tier3", 
       "greeting": [
         "<line-1>",
         "<line-2>",
@@ -111,61 +126,41 @@ The following shows the format of the Teams & Users JSON file:
         "<line-n>"
       ]
     }
-  ], 
-  "teams": [
-    {
-      "team": { 
-        "name": "<animalname-nn>",
-        "discord_names": ["user1", "user2", "user3"]
-      }
-    }, {
-      "team": {
-        "name": "<animalname-nn>",
-        "discord_names": ["user4", "user5", "user6"]
-      }
-    }, {
-      "team": {
-        "name": "<animalname-nn>",
-        "discord_names": ["user4", "user5", "user6"]
-      }
-    },
-  ],
-  "team_greeting": [
-    "<line-1>",
-    "<line-2>",
-    ...
-    "<line-n>"
-  ]
+  ] 
 }
 ```
-The `shared_channels` section defines the channels that are shared by all
-Voyage teams and the messages that should be added to them. By default these
-channels are private and read-only access is granted to Voyage particpants. 
+`voyage_number` defines the number of this voyage and is used to construct the
+voyage name `Vnn`.
 
 - `channel-name` defines the channels name (Duh!)
 - `greeting` specifies the message (Markdown) to be added to it
 
-`<animalname-nn>` should be replaced with a unique team name. For example,
-`toucans-01`. By default these are private channels and access is
-granted only to members of that team.
+`<tiern-team-nn>` should be replaced with a unique team name. For example,
+`tier1-team-01`. By default these are private Discord team channels and access 
+is granted only to members of that team.
 
-Any valid string value may be used for an animal name, but
-the current practice is to use:
+`categories` defines the unique category names used to group Discord team 
+channels. These are restricted to 50 team channels per category and category
+names should be formatted as `vnn-tiern-gg-🔥` where:
 
-- Tier 1 teams: `toucans`
-- Tier 2 teams: `geckos`
-- Tier 3 teams: `bears`
+- `vnn` is the Voyage name
+- `tiern` is the tier name - `tier1`, `tier2`, or `tier3`
+- `gg` is the group number used to make the category unique and distinct from
+other category names in the same Voyage.
 
 `discord_names` defines the Discord users that are in that team. The user
 names in this array must be valid Discord users who have joined the Chingu
 server.
 
-The `team` key-value pair is only required for the `create` option. When
-the `authorize` option is requested both the `team` and the `discord_names`
-key-value pairs must be provided. 
+`github_names` defines the Github account names for everyone in a team. The
+names in this array must be valid GitHub user names for those who are in this
+team.
 
 `team-greeting` defines the message (Markdown format) that is to be posted to
 each teams channel.
+
+`tier-greeting` defines a message (Markdown format) that is to be posted to
+every team channel in the matching tier, as specified by the `tier` attribute.
 
 #### Email Scheduled
 
@@ -285,7 +280,15 @@ slash (i.e. '/') and the channel name.
 
 ### CLI Examples
 
-#### Example #1 - Create Channels prior to New Voyage
+#### Example #1 - Build Users config file from Airtable
+
+Prior to provisioning Discord channels and GitHub repos (through `zeldabot`) 
+for a Voyage the `build`command can be used to generate the users config file.
+```
+node uhurubot build -t /Users/jim/Development/uhurubot/config/v31_teams_users.json
+```
+
+#### Example #2 - Create Channels prior to New Voyage
 
 In a terminal session issue the following to create Discord channels for a
 specific voyage: 
@@ -298,60 +301,96 @@ Example contents for the `v31_teams_users` file:
 ```
 {
   "voyage_number": "31", 
-  "shared_channels": [
-    { 
-      "channel_name": "team-advice",
-      "greeting": [
-        "**_Stay tuned!_**\n",
-        "This is where we'll be posting advice to help you navigate through your voyage"
-      ]
-    }, { 
-      "channel_name": "team-resources",
-      "greeting": [
-        "**_Stay tuned!_**\n",
-        "We'll periodically post links to different resources to help you during this Voyage"
-      ]
-    }
-  ], 
+  "categories": [
+    { "name": "v31-tier1-01-🔥" },
+    { "name": "v31-tier2-02-🔥" },
+    { "name": "v31-tier3-03-🔥" }
+  ]
   "teams": [
     {
-      "team": { "name": "toucans-team-01" },
+      "team": { 
+        "name": "toucans-team-01", 
+        "category": "v31-tier1-01-🔥",
+        "tier": "tier1"
+        "discord_names": ["fred#9871", "mary#7626", "rakesh#8878"],
+        "github_names": ["fredgh", "marygh", "rakeshgh"]
+      },
     }, {
-      "team": { "name": "toucans-team-02" },
+      "team": { 
+        "name": "toucans-team-02",
+        "category": "v31-tier1-01-🔥",
+        "tier": "tier1"
+        "discord_names": ["princess#1774", "grace#7716", "charles#8928"],
+        "github_names": ["princessgh", "gracegh", "charlesgh"]
+      },
     }, {
-      "team": { "name": "geckos-team-03" },
+      "team": { 
+        "name": "geckos-team-03",
+        "category": "v31-tier2-02-🔥",
+        "tier": "tier2"
+        "discord_names": ["nygen#4762", "tim#4888", "bethany0925"],
+        "github_names": ["nygengh", "timgh", "bethanygh"] 
+      },
     }, {
-      "team": { "name": "bears-team-04" },
+      "team": { 
+        "name": "bears-team-04",
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier1"
+        "discord_names": ["singh#1243", "marcus#0997", "frieda#9661"],
+        "github_names": ["singhgh", "marcusgh", "friedagh"] 
+      },
     }, {
-      "team": { "name": "bears-team-05" },
+      "team": { 
+        "name": "bears-team-05",
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier3"
+        "discord_names": ["maria#9684", "mailia#6165", "nicola#3333"],
+        "github_names": ["mariagh", "mailiagh", "nicolagh"] 
+      },
     }, {
-      "team": { "name": "bears-team-06" },
+      "team": { 
+        "name": "bears-team-06",
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier3"
+        "discord_names": ["ralph#1234", "jane#3489", "ling#2345"],
+        "github_names": ["princessgh", "gracegh", "charlesgh"] 
+      },
     }
   ],
   "team_greeting": [
     "**__Welcome to your Voyage Team Channel__**\n",
     "Use this channel to communicate & collaborate with your teammates!",
-  ]
+  ],
+  "tier_greeting": [
+    { 
+      "tier": "tier1", 
+      "greeting": [
+          "**__Tier 1 Team Project__**\n",
+          "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris."
+        ]
+    }
+  ] 
 }
 ```
 
 After completion the Chingu Discord server will contain the following new
-channels in the new `VOYAGE-31` category:
+categories and channels organized as follows:
 
-- `#team-advice`
-- `#team-resources`
-- `#toucans-team-01`
-- `#toucans-team-02`
-- `#geckos-team-03`
-- `#bears-team-04`
-- `#bears-team-05`
-- `#bears-team-06`
-- `#toucans-team-01av`
-- `#toucans-team-02av`
-- `#geckos-team-03av`
-- `#bears-team-04av`
-- `#bears-team-05av`
-- `#bears-team-06av`
+- `#v31-tier1-01-🔥`
+  - `#tier1-team-01`
+  - `#tier1-team-02`
+  - `#toucans-team-01av`
+  - `#toucans-team-02av`
+- `#v31-tier2-02-🔥`
+  - `#geckos-team-03`
+  - `#geckos-team-03av`
+- `#v31-tier3-03-🔥`
+  - `#bears-team-04`
+  - `#bears-team-05`
+  - `#bears-team-06`
+  - `#bears-team-04av`
+  - `#bears-team-05av`
+  - `#bears-team-06av`
 
 All channels are private channels and are not visible to `@everyone`. The 
 `create` function doesn't grant any team access to the channels it creates.
@@ -361,11 +400,11 @@ in advance.
 Team channels ending in the team number are text channels. Those ending in `av`
 are voice channels.
 
-Note that the `v31_teams_users` file omitted the `discord_names` attributes
-since it's optional for the `create` function. However, if included they will 
-be ignored.
+Note that the `v31_teams_users` file omitted the `discord_names` and 
+`github_names` attributes since it's optional for the `create` function. 
+However, if included they will be ignored.
 
-#### Example #2 - Authorize Discord Users to access their Voyage Channels
+#### Example #3 - Authorize Discord Users to access their Voyage Channels
 
 In a terminal session issue the following to authorize Chingu's to access
 their team channels for a voyage:
@@ -378,72 +417,91 @@ Example contents for the `v31_teams_users` file:
 ```
 {
   "voyage_number": "31", 
+  "categories": [
+    { "name": "v31-tier1-01-🔥" },
+    { "name": "v31-tier2-02-🔥" },
+    { "name": "v31-tier3-03-🔥" }
+  ]
   "teams": [
     {
       "team": { 
-        "name": "toucans-team-01",
-        "discord_names": ["Freddie#3489", "Carol#1123", "Rakesh#6733"]
-      }
+        "name": "toucans-team-01", 
+        "category": "v31-tier1-01-🔥",
+        "tier": "tier1"
+        "discord_names": ["fred#9871", "mary#7626", "rakesh#8878"],
+        "github_names": ["fredgh", "marygh", "rakeshgh"]
+      },
     }, {
       "team": { 
-        "name": toucans-team-02",
-        "discord_names": ["Paulo#4921", "Perez#9275", "Johann#6373", "Judy#0987"]
-      }
+        "name": "toucans-team-02",
+        "category": "v31-tier1-01-🔥",
+        "tier": "tier1"
+        "discord_names": ["princess#1774", "grace#7716", "charles#8928"],
+        "github_names": ["princessgh", "gracegh", "charlesgh"]
+      },
     }, {
       "team": { 
-        "name": geckos-team-03",
-        "discord_names": ["Chu#4431", "Linda@0934", "Mark#7682", "Suzie#0472", "Maggie#7659"]
-      }
+        "name": "geckos-team-03",
+        "category": "v31-tier2-02-🔥",
+        "tier": "tier2"
+        "discord_names": ["nygen#4762", "tim#4888", "bethany0925"],
+        "github_names": ["nygengh", "timgh", "bethanygh"] 
+      },
     }, {
       "team": { 
-        "name": bears-team-04",
-        "discord_names": ["Frieda#8277", "Bart#5921", "Ian#1206"]
-      }
+        "name": "bears-team-04",
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier1"
+        "discord_names": ["singh#1243", "marcus#0997", "frieda#9661"],
+        "github_names": ["singhgh", "marcusgh", "friedagh"] 
+      },
     }, {
-      "team": {
+      "team": { 
         "name": "bears-team-05",
-        "discord_names": ["Christie#5112", "Franco#4689", "Adnan#0021", "Joh#7654", "Nghi#9812"]
-      }
-    } {
-      "team": {
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier3"
+        "discord_names": ["maria#9684", "mailia#6165", "nicola#3333"],
+        "github_names": ["mariagh", "mailiagh", "nicolagh"] 
+      },
+    }, {
+      "team": { 
         "name": "bears-team-06",
-        "discord_names": ["Kay#8876", "Joey#3240", "Alan#6724", "Peggy#8894", "Julie#6513"]
-      }
+        "category": "v31-tier3-03-🔥",
+        "tier": "tier3"
+        "discord_names": ["ralph#1234", "jane#3489", "ling#2345"],
+        "github_names": ["princessgh", "gracegh", "charlesgh"] 
+      },
     }
-  ]
+  ],
+  "team_greeting": [
+    "**__Welcome to your Voyage Team Channel__**\n",
+    "Use this channel to communicate & collaborate with your teammates!",
+  ],
+  "tier_greeting": [
+    { 
+      "tier": "tier1", 
+      "greeting": [
+          "**__Tier 1 Team Project__**\n",
+          "If you are a Toucans (tier 1) team you are required to create the **_Chuck Norris Quotes_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-norris."
+        ]
+    }
+  ] 
 }
 ```
 
-After completion the Chingu Discord server will contain the following new
-channels in the new `VOYAGE-31` category:
-
-- `#team-advice`
-- `#team-resources`
-- `#toucans-team-01`
-- `#toucans-team-02` 
-- `#geckos-team-03`
-- `#bears-team-04`
-- `#bears-team-05`
-- `#bears-team-06`
-- `#toucans-team-01av`
-- `#toucans-team-02av`
-- `#geckos-team-03av`
-- `#bears-team-04av`
-- `#bears-team-05av`
-- `#bears-team-06av`
-
-All users in all teams are granted read-only access along with permission to
-post emoji reactions to the `team-advice` and `team-resources` channels.
-
-Team members are granted update access to their team text channel, and access
-to their teams voice channel (e.g. `toucans-team-01av`). No access, read-only or
+Upon completion of this command team members are granted update access to their team text channel and access
+to their teams voice channel (e.g. `tier1-team-01av`). No access, read-only or
 otherwise, is granted to non-team members other than administrators who by 
 default have access to all channels in the server.
 
 Note that the `v31_teams_users` file MUST contain the `discord_names` attributes
 since it's required to grant access.
 
-#### Example #3 - Email Chingus based on a Schedule
+In addition, even though GitHub user names are included in users config file 
+it is not used by Uhurubot at this time. However, these are used by Zeldabot to
+authorize GitHub teams access to the team repos it creates.
+
+#### Example #4 - Email Chingus based on a Schedule
 
 In a terminal session issue the following to send emails to Chingu's based on
 the specified schedule:
@@ -486,7 +544,7 @@ Example contents for the `soloproject_advice_schedule` file:
 ```
 
 
-#### Example #4 - Schedule Discord Posts for a Voyage
+#### Example #5 - Schedule Discord Posts for a Voyage
 
 TBD
 
@@ -496,7 +554,7 @@ You can find what changed, when in the [release history](./docs/RELEASE_HISTORY.
 
 ## License
 
-Copyright 2021 &copy; Chingu, Inc.
+Copyright 2021-2022 &copy; Chingu, Inc.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 

@@ -1,5 +1,4 @@
 import DiscordJS from 'discord.js'
-import FileOps from './FileOps.js'
 
 export default class Discord {
   constructor(environment) {
@@ -38,13 +37,11 @@ export default class Discord {
     return this.client
   }
 
-  generateCategoryName(teams) {
-    return 'v'.concat(teams.voyage_number,'-🔥')
-  }
-
   isCategoryCreated(guild, categoryName) {
     return guild.channels.cache.array()
-      .filter(channel => channel.type === 'category' && channel.name === categoryName)
+      .filter((channel) => {
+        return channel.type === 'category' && channel.name === categoryName
+      })
   }
 
   async createChannelCategory(guild, categoryName) {
@@ -55,6 +52,7 @@ export default class Discord {
       permissionOverwrites: [
         {
           id: guild.id,
+          allow: ['MANAGE_MESSAGES'],
           deny: ['VIEW_CHANNEL'],
         }]
     })
@@ -77,11 +75,17 @@ export default class Discord {
     await channel.send(greetingMessageText)
   }
 
-  async createChannel(guild, category, channelType, teamName) {
+  async createChannel(guild, categoryId, channelType, teamName) {
     const channel = await guild.channels.create(teamName, {
       type: `${ channelType }`,
       topic: `${ teamName }`,
-      parent: category.id,
+      parent: categoryId,
+      permissionOverwrites: [
+        {
+          id: guild.roles.everyone,
+          deny: ['VIEW_CHANNEL'],
+        },
+      ],
     })
     return channel
   }
