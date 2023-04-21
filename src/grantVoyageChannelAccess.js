@@ -63,6 +63,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   
   //const ALL_TEAMS = 0
   const teamNames = teamsConfig.teams.map(team => team.team.name)
+  console.log('teamNames: ', teamNames)
   //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
   const client = discordIntf.getDiscordClient()
@@ -80,19 +81,23 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           defined yet. Please create it before continuing.`)
       }
       */
+      console.log('teamsConfig: ', teamsConfig)
+      console.log('teamsConfig.categories: ', teamsConfig.categories)
       const categoryNames = teamsConfig.categories.map(category => {
         return { 
-          "name": category.name, 
+          "name": category, 
           "discordCategory": null,
         }
       })
-
+      console.log('categoryNames: ', categoryNames)
+      
       for (let i = 0; i < categoryNames.length; i++) {
         let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
+        console.log('discordCategory: ', discordCategory.name)
         if (discordCategory.length > 0) {
           categoryNames[i].discordCategory = discordCategory
         } else {
-          throw new Error(`This Voyage category (${ categoryName }) hasn't been \
+          throw new Error(`This Voyage category (${ discordCategory }) hasn't been \
           defined yet. Please create it before continuing.`) 
         }
       }
