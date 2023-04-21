@@ -282,8 +282,8 @@ slash (i.e. '/') and the channel name.
 
 #### Example #1 - Build Users config file from Airtable
 
-Prior to provisioning Discord channels for a Voyage the `build`
-command can be used to generate the users config file.
+Prior to provisioning Discord channels and GitHub repos (through `zeldabot`) 
+for a Voyage the `build`command can be used to generate the users config file.
 ```
 node uhurubot build -t /Users/jim/Development/uhurubot/config/v31_teams_users.json
 ```
