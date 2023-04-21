@@ -52,6 +52,7 @@ export default class Discord {
       permissionOverwrites: [
         {
           id: guild.id,
+          allow: ['MANAGE_MESSAGES'],
           deny: ['VIEW_CHANNEL'],
         }]
     })
