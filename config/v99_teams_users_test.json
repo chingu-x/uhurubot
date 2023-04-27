@@ -2,12 +2,13 @@
   "voyage_number": "99", 
   "categories": [
     "V99-tier1-01-🔥",
+    "V99-tier2-02-🔥",
     "V99-tier3-03-🔥"
   ],
   "teams": [
     {
       "team": { 
-        "name": "toucans-team-01",
+        "name": "tier1-team-01",
         "category": "V99-tier1-01-🔥",
         "tier": "tier1",
         "discord_names": ["Alecia#9269", "danneytrieuwork#2558"],
@@ -15,29 +16,51 @@
       }
     }, {
       "team": { 
-        "name": "bears-team-02",
-        "category": "V99-tier3-03-🔥",
-        "tier": "tier3",
-        "discord_names": ["Hypno#9777", "syntax#7986"],
-        "github_names": ["ellrub", "Danneytrieu"]  
+        "name": "tier2-team-02",
+        "category": "V99-tier2-02-🔥",
+        "tier": "tier2",
+        "discord_names": ["Hypno#9777", "Alecia#9269"],
+        "github_names": ["ellrub", "ale-cia"]  
       }
-    }
-  ],
+    }, {
+        "team": { 
+          "name": "tier3-team-03",
+          "category": "V99-tier3-03-🔥",
+          "tier": "tier3",
+          "discord_names": ["Hypno#9777", "syntax#7986"],
+          "github_names": ["ellrub", "Danneytrieu"]  
+        }
+      }  
+    ],
   "team_greeting": [
     ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start.\n",
     "**_Your First Steps _** \n",
-    "1. Say \"Hi\" to your team-mates! Share your excitement and help welcome your teammates! (Note: Members of the Chingu Admin Team + Chingu-X bot have access to this channel, but are not your teammates. :slight_smile:)\n",
-    "2. Go to #🖐introduce-yourself and copy/paste your intro into this channel. This will let your teammates get to know you so get the party can get started!\n",
-    "3. Follow the steps in the Voyage Guide (https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809) to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.",
-    "\n\nhttps://giphy.com/gifs/F9hQLAVhWnL56\n"
+    "1. Say \"Hi\" to your teammates! Share your excitement and welcome them to the team! Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n", 
+    "2. Go to <#553103063649353738> and copy/paste your intro here. Let your teammates get to know you so the party can get started!\n",
+    "3. Follow the steps in the Voyage Guide (see link below) to set a solid foundation for your project.\n",
+    "**_In your first Sprint you should concentrate on completing these tasks_**:\n",
+    "1. Meet your team & schedule kickoff meeting",
+    "2. Conduct kickoff meeting",
+    "3. Choose a project & create a Vision Statement (Tier 3 only)",
+    "4. Define & prioritize MVP features",
+    "5. ...and if you finish these before the end of Sprint 1 then immediately start working on Sprint 2 tasks!\n",
+    "You can find out more about each of these in the Voyage Guide (https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n",
+    "Finally, stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily communication & collaboration with your teammates_**.\n",
+    "https://giphy.com/gifs/F9hQLAVhWnL56\n"
   ],
   "tier_greeting": [
-    {
-      "tier": "tier1",
+    { 
+      "tier": "tier1", 
       "greeting": [
-        "\n.\n",
-        "**__Tier 1 Team Project__**\n",
-        "Since you are a Toucans (tier 1) team you are required to create the **_Mad Libs word game_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-MadLibs."
+        "**__Your Tier 1 Team Project__**\n",
+        "All Tier 1 teams will be building the **_Array Game_** app and you can find the requirements & specifications here --> https://github.com/chingu-voyages/voyage-project-tier1-arraygame."
+      ]
+    },
+    { 
+      "tier": "tier2", 
+      "greeting": [
+        "**__Your Tier 2 Team Project__**\n",
+        "All Tier 2 teams will be building the **_Boolebots game_** and you can find the requirements & specifications here --> https://github.com/chingu-voyages/voyage-project-tier2-boolebots."
       ]
     }
   ]

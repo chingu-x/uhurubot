@@ -40,8 +40,6 @@ const getVoyageTeam = async (voyage) => {
           discord_name: `${ record.get('Discord ID') }`,
           github_name: `${ record.get('GitHub ID') ?? '' }`,
         })
-        //console.log(`number: ${ voyagerNo } email: ${ record.get('Email') } voyage: ${ record.get('Voyage') } team_name: ${ record.get('Team Name') '}
-        //  tier: ${ tierName } team_no: ${ record.get('Team No.') } discord_name: ${ record.get('Discord ID') } github_name: ${ record.get('GitHub ID') }`)
       }
 
       // To fetch the next page of records, call `fetchNextPage`.

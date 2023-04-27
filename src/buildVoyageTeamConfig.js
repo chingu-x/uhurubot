@@ -11,7 +11,7 @@ const getCategoryName = (voyager) => {
 }
 
 const addCategory = (categories, voyager) => {
-  // If this is the first Voyager push the category name onto categores
+  // If this is the first Voyager push the category name onto categories
   if (categories.length === 0) {
     categories.push(getCategoryName(voyager))
   }
@@ -64,15 +64,29 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start. https://giphy.com/gifs/F9hQLAVhWnL56\n",
       "**_Your First Steps _** \n",
       "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n", 
-      "2. Go to #🖐introduce-yourself and copy/paste your intro into this channel. This let your teammates get to know you so get the party can get started!\n",
-      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible."
+      "2. Go to #🖐introduce-yourself and copy/paste your intro into this team channel. This lets your teammates get to know you so get the party can get started!\n",
+      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n\n",
+      "**_In your first Sprint you should concentrate on completing these tasks:\n",
+      "1. Meet your team & schedule kickoff meeting\n",
+      "2. Conduct kickoff meeting\n",
+      "3. Choose a project & create a Vision Statement\n",
+      "4. Define & prioritize MVP features\n\n",
+      "You can find out more about each of these in the Voyage Guide (https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n\n",
+      "Finally, stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's daily **_communication & collaboration with your teammates.\n"
     ],
     tier_greeting: [
       { 
         "tier": "tier1", 
         "greeting": [
           "**__Tier 1 Team Project__**\n",
-          "If you are a Toucans (tier 1) team you are required to create the **_Mad Libs word game_** app. All Toucans teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-MadLibs."
+          "All Tier 1 teams will be building the **_Array Game_** app. All teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-arraygame."
+        ]
+      },
+      { 
+        "tier": "tier2", 
+        "greeting": [
+          "**__Tier 2 Team Project__**\n",
+          "All Tier 2 teams will be building the **_Boolebots game_**. All teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier2-boolebots."
         ]
       }
     ]
@@ -85,9 +99,13 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)
   }
 
-  const configJSON = JSON.stringify(config, null, 2)
-  //console.log('configJSON: ', configJSON)
-  fs.writeFileSync('/Users/jim/Downloads/v43_teams_users_test.json', configJSON);
+  try { 
+    const configJSON = JSON.stringify(config, null, 2)
+    const outputFileName = `${ '/Users/jim/Downloads/v'.concat(config.voyage_number,'_teams_users_test.json') }`
+    fs.writeFileSync(outputFileName, configJSON)
+  } catch(err) {
+    console.log('writeFileSync failed: ', err)
+  }
 }
 
 export default buildVoyageTeamConfig
