@@ -76,14 +76,14 @@ const addTeamResourcesToTeam = (team, teamNo, voyagers) => {
 
   const resourceMsg = [
     `**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**\n`,
-    `- Product Owners: ${ productOwners.toString() }\n`,
-    `- UI/UX Designer: ${ uiuxDesigners.toString() }\n`,
-    `- Web Developers: ${ webDevelopers.toString() }\n`,
-    `- Data Scientists: ${ dataScientists.toString() }\n`,
-    `- Voyage Guide: ${ voyageGuides.toString() }\n\n`,
-    `**__Resources:\n`,
-    `- GitHub Repo: ${ githubRepoURL }\n`,
-    `- Google Drive: ${ gdrivePlaceholderURL} \n`,
+    `* Product Owners: ${ productOwners.toString() }\n`,
+    `* UI/UX Designer: ${ uiuxDesigners.toString() }\n`,
+    `* Web Developers: ${ webDevelopers.toString() }\n`,
+    `* Data Scientists: ${ dataScientists.toString() }\n`,
+    `* Voyage Guide: ${ voyageGuides.toString() }\n\n`,
+    `**__Resources__**:\n`,
+    `* GitHub Repo: ${ githubRepoURL }\n`,
+    `* Google Drive: ${ gdrivePlaceholderURL} \n`,
   ]
 
   team.team.resource_msg = resourceMsg
