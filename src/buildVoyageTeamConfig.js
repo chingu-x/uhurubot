@@ -61,26 +61,26 @@ const addTeamResourcesToTeam = (team, teamNo, voyagers) => {
   const findDataScientists = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Data Scientist'
   const findVoyageGuides = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Voyage Guide'
 
-  const productOwners = voyagers.filter(findPOs) ? voyagers.filter(findPOs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
-  const uiuxDesigners = voyagers.filter(findUIUXs) ? voyagers.filter(findUIUXs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
-  const webDevelopers = voyagers.filter(findWebdevs) ? voyagers.filter(findWebdevs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
-  const dataScientists = voyagers.filter(findDataScientists) ? voyagers.filter(findDataScientists)
-    .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
-  const voyageGuides = voyagers.filter(findVoyageGuides) ? voyagers.filter(findVoyageGuides)
-    .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
+  const productOwners = voyagers.filter(findPOs).length > 0 ? voyagers.filter(findPOs)
+    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+  const uiuxDesigners = voyagers.filter(findUIUXs).length > 0 ? voyagers.filter(findUIUXs)
+    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+  const webDevelopers = voyagers.filter(findWebdevs).length > 0 ? voyagers.filter(findWebdevs)
+    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+  const dataScientists = voyagers.filter(findDataScientists).length > 0 ? voyagers.filter(findDataScientists)
+    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+  const voyageGuides = voyagers.filter(findVoyageGuides).length > 0 ? voyagers.filter(findVoyageGuides)
+    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
   const githubRepoURL = `https://github.com/chingu-voyages/v44-tier-team-${ teamNo.padStart(2,0) }`
   const gdrivePlaceholderURL = 'https://drive.google.com/drive/folders/'
 
   const resourceMsg = [
     `**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**\n`,
-    `* Product Owners: ${ productOwners.toString() }\n`,
-    `* UI/UX Designer: ${ uiuxDesigners.toString() }\n`,
-    `* Web Developers: ${ webDevelopers.toString() }\n`,
-    `* Data Scientists: ${ dataScientists.toString() }\n`,
-    `* Voyage Guide: ${ voyageGuides.toString() }\n\n`,
+    `* Product Owners: ${ productOwners.join(' ') }\n`,
+    `* UI/UX Designer: ${ uiuxDesigners.join(' ') }\n`,
+    `* Web Developers: ${ webDevelopers.join(' ') }\n`,
+    `* Data Scientists: ${ dataScientists.join(' ') }\n`,
+    `* Voyage Guide: ${ voyageGuides.join(' ') }\n\n`,
     `**__Resources__**:\n`,
     `* GitHub Repo: ${ githubRepoURL }\n`,
     `* Google Drive: ${ gdrivePlaceholderURL} \n`,
