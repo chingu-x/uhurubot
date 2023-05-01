@@ -19,7 +19,8 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    const allUsers = await guild.members.fetch()
+    console.log('guild: ', guild)
+    const allUsers = await guild.members.fetch(guild.id)
     
     for (let userID of team.team.discord_names) {
       const userName = userID.split('#')[0]
