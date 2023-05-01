@@ -71,7 +71,7 @@ const addTeamResourcesToTeam = (team, teamNo, voyagers) => {
     .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
   const voyageGuides = voyagers.filter(findVoyageGuides) ? voyagers.filter(findVoyageGuides)
     .map(voyager => '@'.concat(voyager.discord_name)) : 'None'
-  const githubRepoURL = `https://github.com/chingu-voyages/v44-tier-team-${ teamNo.padStart(2,0) }`
+  const githubRepoURL = `https://github.com/chingu-voyages/v44-${ team.team.tier }-team-${ teamNo.padStart(2,0) }`
   const gdrivePlaceholderURL = 'https://drive.google.com/drive/folders/'
 
   const resourceMsg = [
