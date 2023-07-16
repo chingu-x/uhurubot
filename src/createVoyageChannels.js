@@ -54,7 +54,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         }
         if (discordChannel.length === 0) {
           discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_TEXT', team.team.name)
-          const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_VOICE', team.team.name.concat('av'))
+          //const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_VOICE', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
 
           // Add a tier-specific greeting message if one is configured for this team's tier

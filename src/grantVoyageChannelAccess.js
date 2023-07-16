@@ -34,6 +34,17 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           console.log('Validation failed for user: ', userName)
         }
       } else {
+        const permissions = {
+          'VIEW_CHANNEL': true,
+          'SEND_MESSAGES': true,
+          'EMBED_LINKS': true,
+          'ATTACH_FILES': true,
+          'ADD_REACTIONS': true,
+          'MENTION_EVERYONE': true,
+          'MANAGE_MESSAGES': true,
+          'READ_MESSAGE_HISTORY': true
+        }
+        /*
         const permissions = type === 'text'
           ? {
               'VIEW_CHANNEL': true,
@@ -51,6 +62,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
               'CONNECT': true,
               'SPEAK': true,
             }
+        */
         // TODO: Add error handling & reporting for unknown users
         const updatedChannel = await channel.updateOverwrite(user, permissions)
         console.log('updatedChannel: ', updatedChannel.name)
@@ -114,12 +126,14 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
             defined yet. Please create it before continuing.`) 
           }
           await grantUserAccess('GUILD_TEXT', guild, textChannel, team)
+          /*
           let voiceChannel = getChannel(guild, category, team.team.name.concat('av'))
           if (voiceChannel === undefined) {
             throw new Error(`This Voyage channel (${ team.team.name.concate('av') }) hasn't been \
             defined yet. Please create it before continuing.`) 
           }
           await grantUserAccess('GUILD_VOICE', guild, voiceChannel, team)
+          */
         }
         //progressBars[teamNo+1].increment(1)
         //progressBars[ALL_TEAMS].increment(1) 
