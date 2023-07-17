@@ -14,14 +14,15 @@ const addCategory = (categories, voyager) => {
   // If this is the first Voyager push the category name onto categories
   if (categories.length === 0) {
     categories.push(getCategoryName(voyager))
-  }
+  } else {
 
-  // If there's a change in tier push a new category name onto categories
-  const mostRecentCategory = categories.slice(-1)[0]
-  //console.log(`mostRecentCategory: ${ mostRecentCategory } voyager.tier: ${ voyager.tier }`)
-  if (mostRecentCategory.slice(4,9) !== voyager.tier) {
-    groupNo = ++groupNo
-    categories.push(getCategoryName(voyager))
+    // If there's a change in tier push a new category name onto categories
+    const mostRecentCategory = categories.slice(-1)[0]
+    //console.log(`mostRecentCategory: ${ mostRecentCategory } voyager.tier: ${ voyager.tier }`)
+    if (mostRecentCategory.slice(4,9) !== voyager.tier) {
+      groupNo = ++groupNo
+      categories.push(getCategoryName(voyager))
+    }
   }
 
   // Return the current category name
@@ -124,6 +125,13 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
         "greeting": [
           "**__Tier 2 Team Project__**\n",
           "All Tier 2 teams will be building the **_Boolebots game_**. All teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier2-boolebots."
+        ]
+      },
+      { 
+        "tier": "tier3", 
+        "greeting": [
+          "**__Tier 3 Team Project__**\n",
+          "As a Tier 3 team you have the experience to choose what project you want to create"
         ]
       }
     ]

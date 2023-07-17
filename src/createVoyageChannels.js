@@ -62,7 +62,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
             for (let i = 0; i < teamsConfig.tier_greeting.length; ++i) {
               if (teamsConfig.tier_greeting[i].tier === team.team.tier) {
                 await discordIntf.postGreetingMessage(discordChannel, teamsConfig.tier_greeting[i].greeting)
-              }
+              } 
             }
           }
         }
