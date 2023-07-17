@@ -18,8 +18,7 @@
   },
   "scripts": {
     "email": "node uhurubot email",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "email": "node uhurubot email"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
