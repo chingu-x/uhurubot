@@ -15,7 +15,7 @@ const getVoyageTeam = async (voyage) => {
     //console.log('filter: ', filter)
 
     base('Voyage Signups').select({ 
-      fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID'],
+      fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID', 'Role'],
       filterByFormula: filter,
       view: 'Teamsort - for Bots' 
     })
@@ -39,9 +39,8 @@ const getVoyageTeam = async (voyage) => {
           team_no: `${ record.get('Team No.') }`,
           discord_name: `${ record.get('Discord ID') }`,
           github_name: `${ record.get('GitHub ID') ?? '' }`,
+          role: `${ record.get('Role') }`,
         })
-        //console.log(`number: ${ voyagerNo } email: ${ record.get('Email') } voyage: ${ record.get('Voyage') } team_name: ${ record.get('Team Name') '}
-        //  tier: ${ tierName } team_no: ${ record.get('Team No.') } discord_name: ${ record.get('Discord ID') } github_name: ${ record.get('GitHub ID') }`)
       }
 
       // To fetch the next page of records, call `fetchNextPage`.
