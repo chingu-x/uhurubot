@@ -13,8 +13,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   // Load the teams configuration file into a JS object
   const rawTeamsConfig = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeamsConfig)
-  console.log('teamsConfig: ', teamsConfig)
-
   const categoryNames = teamsConfig.categories.map(category => {
     return { 
       "name": category, 
@@ -22,8 +20,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
       "discordCategory": null,
     }
   })
-
-  console.log('categoryNames: ', categoryNames)
 
   let categoryNoForProgressBar = 0
   let { overallProgress, progressBars } = initializeProgressBars(categoryNames)
@@ -54,7 +50,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         }
         if (discordChannel.length === 0) {
           discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_TEXT', team.team.name)
-          const voiceChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, 'GUILD_VOICE', team.team.name.concat('av'))
           await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting)
 
           // Add a tier-specific greeting message if one is configured for this team's tier
@@ -62,7 +57,14 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
             for (let i = 0; i < teamsConfig.tier_greeting.length; ++i) {
               if (teamsConfig.tier_greeting[i].tier === team.team.tier) {
                 await discordIntf.postGreetingMessage(discordChannel, teamsConfig.tier_greeting[i].greeting)
-              }
+              } 
+            }
+          }
+
+          // Post a list of team members by their roles
+          if (team.team.resource_msg !== undefined) {
+            for (let i = 0; i < team.team.resource_msg.length; ++i) {
+              await discordIntf.postGreetingMessage(discordChannel, team.team.resource_msg[i])
             }
           }
         }
