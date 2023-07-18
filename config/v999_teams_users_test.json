@@ -18,15 +18,15 @@
           ""
         ],
         "resource_msg": [
-          "**__V999-tier1-team-01 team:__**\n",
-          "* Product Owners: None\n",
-          "* UI/UX Designer: None\n",
-          "* Web Developers: None\n",
-          "* Data Scientists: None\n",
-          "* Voyage Guide: @139615488295698432\n\n",
+          ".\n**__V999-tier1-team-01 team:__**",
+          "- Product Owners: None",
+          "- UI/UX Designer: None",
+          "- Web Developers: None",
+          "- Data Scientists: None",
+          "- Voyage Guide: <@139615488295698432>\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v44-tier-team-01\n",
-          "* Google Drive: https://drive.google.com/drive/folders/ \n"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-01",
+          "* Google Drive: https://drive.google.com/drive/folders/"
         ]
       }
     },
@@ -42,15 +42,15 @@
           "ellrub"
         ],
         "resource_msg": [
-          "**__V999-tier2-team-02 team:__**\n",
-          "* Product Owners: None\n",
-          "* UI/UX Designer: None\n",
-          "* Web Developers: None\n",
-          "* Data Scientists: None\n",
-          "* Voyage Guide: @116322935739908097\n\n",
+          ".\n**__V999-tier2-team-02 team:__**",
+          "- Product Owners: None",
+          "- UI/UX Designer: None",
+          "- Web Developers: None",
+          "- Data Scientists: None",
+          "- Voyage Guide: <@116322935739908097>\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v44-tier-team-02\n",
-          "* Google Drive: https://drive.google.com/drive/folders/ \n"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-02",
+          "* Google Drive: https://drive.google.com/drive/folders/"
         ]
       }
     },
@@ -66,15 +66,15 @@
           "jdmedlock"
         ],
         "resource_msg": [
-          "**__V999-tier3-team-03 team:__**\n",
-          "* Product Owners: @299541649229348865\n",
-          "* UI/UX Designer: None\n",
-          "* Web Developers: None\n",
-          "* Data Scientists: None\n",
-          "* Voyage Guide: None\n\n",
+          ".\n**__V999-tier3-team-03 team:__**",
+          "- Product Owners: <@299541649229348865>",
+          "- UI/UX Designer: None",
+          "- Web Developers: None",
+          "- Data Scientists: None",
+          "- Voyage Guide: None\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v44-tier-team-03\n",
-          "* Google Drive: https://drive.google.com/drive/folders/ \n"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-03",
+          "* Google Drive: https://drive.google.com/drive/folders/"
         ]
       }
     }

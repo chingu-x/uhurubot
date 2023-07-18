@@ -18,7 +18,6 @@ const addCategory = (categories, voyager) => {
 
     // If there's a change in tier push a new category name onto categories
     const mostRecentCategory = categories.slice(-1)[0]
-    //console.log(`mostRecentCategory: ${ mostRecentCategory } voyager.tier: ${ voyager.tier }`)
     if (mostRecentCategory.slice(4,9) !== voyager.tier) {
       groupNo = ++groupNo
       categories.push(getCategoryName(voyager))
@@ -54,7 +53,7 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
   return voyager.team_no
 }
 
-const addTeamResourcesToTeam = (team, teamNo, voyagers) => {
+const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
   const teamNumber = teamNo.padStart(2,0)
   const findPOs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Product Owner'
   const findUIUXs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'UI/UX'
@@ -63,28 +62,28 @@ const addTeamResourcesToTeam = (team, teamNo, voyagers) => {
   const findVoyageGuides = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Voyage Guide'
 
   const productOwners = voyagers.filter(findPOs).length > 0 ? voyagers.filter(findPOs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const uiuxDesigners = voyagers.filter(findUIUXs).length > 0 ? voyagers.filter(findUIUXs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const webDevelopers = voyagers.filter(findWebdevs).length > 0 ? voyagers.filter(findWebdevs)
-    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const dataScientists = voyagers.filter(findDataScientists).length > 0 ? voyagers.filter(findDataScientists)
-    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const voyageGuides = voyagers.filter(findVoyageGuides).length > 0 ? voyagers.filter(findVoyageGuides)
-    .map(voyager => '@'.concat(voyager.discord_name)) : ['None']
-  const githubRepoURL = `https://github.com/chingu-voyages/v44-tier-team-${ teamNo.padStart(2,0) }`
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
+  const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-tier-team-${ teamNo.padStart(2,0) }`
   const gdrivePlaceholderURL = 'https://drive.google.com/drive/folders/'
 
   const resourceMsg = [
-    `**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**\n`,
-    `* Product Owners: ${ productOwners.join(' ') }\n`,
-    `* UI/UX Designer: ${ uiuxDesigners.join(' ') }\n`,
-    `* Web Developers: ${ webDevelopers.join(' ') }\n`,
-    `* Data Scientists: ${ dataScientists.join(' ') }\n`,
-    `* Voyage Guide: ${ voyageGuides.join(' ') }\n\n`,
+    `.\n**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**`,
+    `- Product Owners: ${ productOwners.join(' ') }`,
+    `- UI/UX Designer: ${ uiuxDesigners.join(' ') }`,
+    `- Web Developers: ${ webDevelopers.join(' ') }`,
+    `- Data Scientists: ${ dataScientists.join(' ') }`,
+    `- Voyage Guide: ${ voyageGuides.join(' ') }\n`,
     `**__Resources__**:\n`,
-    `* GitHub Repo: ${ githubRepoURL }\n`,
-    `* Google Drive: ${ gdrivePlaceholderURL} \n`,
+    `* GitHub Repo: ${ githubRepoURL }`,
+    `* Google Drive: ${ gdrivePlaceholderURL}`,
   ]
 
   team.team.resource_msg = resourceMsg
@@ -147,7 +146,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   }
 
   config.teams.forEach(team => {
-    addTeamResourcesToTeam(team, team.team.name.slice(-2), voyagers)
+    addTeamResourcesToTeam(VOYAGE, team, team.team.name.slice(-2), voyagers)
   })  
 
   try { 

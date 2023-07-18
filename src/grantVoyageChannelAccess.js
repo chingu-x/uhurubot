@@ -44,25 +44,8 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           'MANAGE_MESSAGES': true,
           'READ_MESSAGE_HISTORY': true
         }
-        /*
-        const permissions = type === 'text'
-          ? {
-              'VIEW_CHANNEL': true,
-              'SEND_MESSAGES': true,
-              'EMBED_LINKS': true,
-              'ATTACH_FILES': true,
-              'ADD_REACTIONS': true,
-              'MENTION_EVERYONE': true,
-              'MANAGE_MESSAGES': true,
-              'READ_MESSAGE_HISTORY': true
-            }
-          : {
-              'VIEW_CHANNEL': true,
-              'STREAM': true,
-              'CONNECT': true,
-              'SPEAK': true,
-            }
-        */
+
+        
         // TODO: Add error handling & reporting for unknown users
         const updatedChannel = await channel.updateOverwrite(user, permissions)
         console.log('updatedChannel: ', updatedChannel.name)
@@ -85,15 +68,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   try {
     client.on('ready', async () => {
       // Retrieve references to the categories used to organize this Voyage's team channels
-      /*
-      const categoryName = discordIntf.generateCategoryName(teamsConfig)
-      let category = discordIntf.isCategoryCreated(guild, categoryName)
-      console.log('grantVoyageChannelAccess - category: ', category[0])
-      if (category.length === 0) {
-        throw new Error(`This Voyage category (${ categoryName }) hasn't been \
-          defined yet. Please create it before continuing.`)
-      }
-      */
+
       console.log('teamsConfig: ', teamsConfig)
       console.log('teamsConfig.categories: ', teamsConfig.categories)
       const categoryNames = teamsConfig.categories.map(category => {
@@ -126,14 +101,6 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
             defined yet. Please create it before continuing.`) 
           }
           await grantUserAccess('GUILD_TEXT', guild, textChannel, team)
-          /*
-          let voiceChannel = getChannel(guild, category, team.team.name.concat('av'))
-          if (voiceChannel === undefined) {
-            throw new Error(`This Voyage channel (${ team.team.name.concate('av') }) hasn't been \
-            defined yet. Please create it before continuing.`) 
-          }
-          await grantUserAccess('GUILD_VOICE', guild, voiceChannel, team)
-          */
         }
         //progressBars[teamNo+1].increment(1)
         //progressBars[ALL_TEAMS].increment(1) 
