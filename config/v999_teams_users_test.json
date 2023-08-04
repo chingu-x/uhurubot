@@ -12,10 +12,14 @@
         "name": "tier1-team-01",
         "tier": "tier1",
         "discord_names": [
-          "139615488295698432"
+          "139615488295698432",
+          "116322935739908097",
+          "299541649229348865"
         ],
         "github_names": [
-          ""
+          "notcori",
+          "ellrub",
+          "jdmedlock"
         ],
         "resource_msg": [
           ".\n**__V999-tier1-team-01 team:__**",
@@ -25,8 +29,7 @@
           "- Data Scientists: None",
           "- Voyage Guide: <@139615488295698432>\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-01",
-          "* Google Drive: https://drive.google.com/drive/folders/"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-01"
         ]
       }
     },
@@ -36,10 +39,12 @@
         "name": "tier2-team-02",
         "tier": "tier2",
         "discord_names": [
-          "116322935739908097"
+          "116322935739908097",
+          "299541649229348865"
         ],
         "github_names": [
-          "ellrub"
+          "ellrub",
+          "jdmedlock"
         ],
         "resource_msg": [
           ".\n**__V999-tier2-team-02 team:__**",
@@ -49,8 +54,7 @@
           "- Data Scientists: None",
           "- Voyage Guide: <@116322935739908097>\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-02",
-          "* Google Drive: https://drive.google.com/drive/folders/"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-02"
         ]
       }
     },
@@ -73,8 +77,7 @@
           "- Data Scientists: None",
           "- Voyage Guide: None\n",
           "**__Resources__**:\n",
-          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-03",
-          "* Google Drive: https://drive.google.com/drive/folders/"
+          "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-03"
         ]
       }
     }

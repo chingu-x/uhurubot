@@ -11,6 +11,8 @@ const getCategoryName = (voyager) => {
 }
 
 const addCategory = (categories, voyager) => {
+  console.log('addCategory - voyager: ', voyager)
+  console.log('addCategory - categories: ', categories)
   // If this is the first Voyager push the category name onto categories
   if (categories.length === 0) {
     categories.push(getCategoryName(voyager))
@@ -18,6 +20,7 @@ const addCategory = (categories, voyager) => {
 
     // If there's a change in tier push a new category name onto categories
     const mostRecentCategory = categories.slice(-1)[0]
+    console.log('addCategory - mostRecentCategory: ', mostRecentCategory)
     if (mostRecentCategory.slice(4,9) !== voyager.tier) {
       groupNo = ++groupNo
       categories.push(getCategoryName(voyager))
@@ -72,7 +75,6 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
   const voyageGuides = voyagers.filter(findVoyageGuides).length > 0 ? voyagers.filter(findVoyageGuides)
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-tier-team-${ teamNo.padStart(2,0) }`
-  const gdrivePlaceholderURL = 'https://drive.google.com/drive/folders/'
 
   const resourceMsg = [
     `.\n**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**`,
@@ -83,7 +85,6 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
     `- Voyage Guide: ${ voyageGuides.join(' ') }\n`,
     `**__Resources__**:\n`,
     `* GitHub Repo: ${ githubRepoURL }`,
-    `* Google Drive: ${ gdrivePlaceholderURL}`,
   ]
 
   team.team.resource_msg = resourceMsg
@@ -140,6 +141,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
 
   let teamData = { currentTeamNo: 0 }
 
+  console.log('buildVoyageTeamConfig - voyagers: ', voyagers)
   for (let voyager of voyagers) {
     const voyagerCategory = addCategory(config.categories, voyager)
     teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)
