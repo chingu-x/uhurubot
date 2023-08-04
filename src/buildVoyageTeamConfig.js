@@ -11,8 +11,6 @@ const getCategoryName = (voyager) => {
 }
 
 const addCategory = (categories, voyager) => {
-  console.log('addCategory - voyager: ', voyager)
-  console.log('addCategory - categories: ', categories)
   // If this is the first Voyager push the category name onto categories
   if (categories.length === 0) {
     categories.push(getCategoryName(voyager))
@@ -20,8 +18,10 @@ const addCategory = (categories, voyager) => {
 
     // If there's a change in tier push a new category name onto categories
     const mostRecentCategory = categories.slice(-1)[0]
-    console.log('addCategory - mostRecentCategory: ', mostRecentCategory)
-    if (mostRecentCategory.slice(4,9) !== voyager.tier) {
+    const voyageNameLength = mostRecentCategory.split('-')[0].length
+    const sliceStart = voyageNameLength === 3 ? 4 : 5
+    const sliceEnd = voyageNameLength === 3 ? 9 : 10
+    if (mostRecentCategory.slice(sliceStart,sliceEnd) !== voyager.tier) {
       groupNo = ++groupNo
       categories.push(getCategoryName(voyager))
     }
@@ -141,7 +141,6 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
 
   let teamData = { currentTeamNo: 0 }
 
-  console.log('buildVoyageTeamConfig - voyagers: ', voyagers)
   for (let voyager of voyagers) {
     const voyagerCategory = addCategory(config.categories, voyager)
     teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)

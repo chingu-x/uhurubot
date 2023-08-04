@@ -12,14 +12,10 @@
         "name": "tier1-team-01",
         "tier": "tier1",
         "discord_names": [
-          "139615488295698432",
-          "116322935739908097",
-          "299541649229348865"
+          "139615488295698432"
         ],
         "github_names": [
-          "notcori",
-          "ellrub",
-          "jdmedlock"
+          ""
         ],
         "resource_msg": [
           ".\n**__V999-tier1-team-01 team:__**",
@@ -39,20 +35,22 @@
         "name": "tier2-team-02",
         "tier": "tier2",
         "discord_names": [
+          "299541649229348865",
           "116322935739908097",
-          "299541649229348865"
+          "139615488295698432"
         ],
         "github_names": [
+          "jdmedlock",
           "ellrub",
-          "jdmedlock"
+          ""
         ],
         "resource_msg": [
           ".\n**__V999-tier2-team-02 team:__**",
-          "- Product Owners: None",
+          "- Product Owners: <@299541649229348865>",
           "- UI/UX Designer: None",
           "- Web Developers: None",
           "- Data Scientists: None",
-          "- Voyage Guide: <@116322935739908097>\n",
+          "- Voyage Guide: <@116322935739908097> <@139615488295698432>\n",
           "**__Resources__**:\n",
           "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-02"
         ]
@@ -64,10 +62,12 @@
         "name": "tier3-team-03",
         "tier": "tier3",
         "discord_names": [
-          "299541649229348865"
+          "299541649229348865",
+          "116322935739908097"
         ],
         "github_names": [
-          "jdmedlock"
+          "jdmedlock",
+          "ellrub"
         ],
         "resource_msg": [
           ".\n**__V999-tier3-team-03 team:__**",
@@ -75,7 +75,7 @@
           "- UI/UX Designer: None",
           "- Web Developers: None",
           "- Data Scientists: None",
-          "- Voyage Guide: None\n",
+          "- Voyage Guide: <@116322935739908097>\n",
           "**__Resources__**:\n",
           "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-03"
         ]
