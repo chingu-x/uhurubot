@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-const program = new Command();
+const program = new Command()
 import Environment from './src/util/Environment.js'
 import Schedule from './src/util/Schedule.js'
 import buildVoyageTeamConfig from './src/buildVoyageTeamConfig.js'

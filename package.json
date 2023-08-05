@@ -12,11 +12,14 @@
     "cli-progress": "^3.9.0",
     "colors": "^1.4.0",
     "commander": "^7.2.0",
-    "discord.js": "^12.5.3",
+    "discord.js": "^14.11.0",
     "dotenv": "^9.0.1",
     "node-fetch": ">=2.6.7"
   },
   "scripts": {
+    "build": "node uhurubot build -t /Users/jim/Development/uhurubot/config/v999_teams_users_test.json",
+    "create": "node uhurubot create -t /Users/jim/Development/uhurubot/config/v999_teams_users_test.json",
+    "authorize": "node uhurubot authorize -t /Users/jim/Development/uhurubot/config/v999_teams_users_test.json",
     "email": "node uhurubot email",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
