@@ -13,48 +13,42 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           
   // TODO: Add verification of the parent category when a match is made on the channel name to ensure we have the right one
   const getChannel = (guild, category, teamName) => {
-    console.log('getChannel - Made it here')
     const channel = guild.channels.cache.find(channel => {
-      return channel.name === teamName && channel.parentID === category.discordCategory.id
+      return channel.name === teamName && channel.parentId === category.discordCategory.id
     })
     return channel
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    console.log('grantUserAccess - Made it here')
-    console.log('grantUserAccess - guild: ', guild)
-    const allUsers = await guild.members.fetch(guild.id)
+    const allUsers = await guild.members.fetch()
 
-    console.log('grantUserAccess - allUsers: ', allUsers)
-
-    for (let userID of team.team.discord_names) {
-      const userName = userID.split('#')[0]
+    for (let userId of team.team.discord_names) {
       const user = allUsers.find(member => {
-          return member.user.username === userName || member.nickname === userName
+          return member.user.id === userId
         }
       )
-      console.log('grantUserAccess - userName: ', userName, ' user: ', user)
 
       if (VALIDATE) {
         if (!user || user.size === 0) {
-          console.log('Validation failed for user: ', userName)
+          console.log('Validation failed for user: ', userId)
         }
       } else {
         const permissions = {
-          'VIEW_CHANNEL': true,
-          'SEND_MESSAGES': true,
-          'EMBED_LINKS': true,
-          'ATTACH_FILES': true,
-          'ADD_REACTIONS': true,
-          'MENTION_EVERYONE': true,
-          'MANAGE_MESSAGES': true,
-          'READ_MESSAGE_HISTORY': true
+          ViewChannel: true,
+          SendMessages: true,
+          CreatePublicThreads: true,
+          SendMessagesInThreads: true,
+          EmbedLinks: true,
+          AttachFiles: true,
+          AddReactions: true,
+          MentionEveryone: true,
+          ManageMessages: true,
+          ReadMessageHistory: true
         }
-
         
         // TODO: Add error handling & reporting for unknown users
-        const updatedChannel = await channel.updateOverwrite(user, permissions)
-        console.log('updatedChannel: ', updatedChannel.name)
+        const updatedChannel = await channel.permissionOverwrites.edit(userId, permissions)
+        console.log('Updated permissions for userId: ', userId, ' in channel: ', updatedChannel.name)
       }
     }
   }
@@ -64,7 +58,6 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   
   //const ALL_TEAMS = 0
   const teamNames = teamsConfig.teams.map(team => team.team.name)
-  console.log('teamNames: ', teamNames)
   //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
   const discordIntf = new Discord(environment)
@@ -76,26 +69,20 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
     client.on('ready', async () => {
       // Retrieve references to the categories used to organize this Voyage's team channels
       const guild = await client.guilds.fetch(process.env.GUILD_ID)
-      console.log('got here dude 1')
       await guild.members.fetch()
-      console.log('got here dude 2')
-      console.log('teamsConfig.categories: ', teamsConfig.categories)
       const categoryNames = teamsConfig.categories.map(category => {
         return { 
           "name": category, 
           "discordCategory": null,
         }
       })
-      console.log('categoryNames: ', categoryNames, ' categoryNames.length: ', categoryNames.length)
       
       for (let i = 0; i < categoryNames.length; i++) {
-        console.log('grantVoyageChannlAccess - category name: ', categoryNames[i].name)
         let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
-        console.log('discordCategory[0].name: ', discordCategory[0].name)
-        if (discordCategory.length > 0) {
-          categoryNames[i].discordCategory = discordCategory[0]
+        if (discordCategory) {
+          categoryNames[i].discordCategory = discordCategory
         } else {
-          throw new Error(`This Voyage category (${ discordCategory[0] }) hasn't been \
+          throw new Error(`This Voyage category (${ discordCategory }) hasn't been \
           defined yet. Please create it before continuing.`) 
         }
       }
@@ -119,6 +106,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
 
       //overallProgress.stop()
       discordIntf.commandResolve('done')
+      client.destroy() // Terminate this Discord bot
     })
   }
   catch(err) {

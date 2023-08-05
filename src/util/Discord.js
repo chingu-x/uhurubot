@@ -1,6 +1,8 @@
 //import DiscordJS from 'discord.js'
 import { Client, GatewayIntentBits } from 'discord.js'
 
+const GUILD_CATEGORY = 4
+
 export default class Discord {
   constructor(environment) {
     this.environment = environment
@@ -46,10 +48,10 @@ export default class Discord {
   }
 
   isCategoryCreated(guild, categoryName) {
-    return guild.channels.cache.array()
-      .filter((channel) => {
-        return channel.type === 'category' && channel.name === categoryName
-      })
+    const channel = guild.channels.cache.find(channel => {
+      return channel.type === GUILD_CATEGORY && channel.name === categoryName
+    })
+    return channel
   }
 
   async createChannelCategory(guild, categoryName) {
