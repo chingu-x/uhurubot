@@ -1,10 +1,18 @@
-import DiscordJS from 'discord.js'
+//import DiscordJS from 'discord.js'
+import { Client, GatewayIntentBits } from 'discord.js'
 
 export default class Discord {
   constructor(environment) {
     this.environment = environment
     this.isDebug = this.environment.isDebug()
-    this.client = new DiscordJS.Client()
+    //this.client = new DiscordJS.Client()
+    this.client = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+      ],
+    })
+    this.login = this.client.login(process.env.DISCORD_TOKEN)
 
     // Since extraction occurs within the `client.on` block these promises are
     // returned to the extract/audit callers and resolved by calling 

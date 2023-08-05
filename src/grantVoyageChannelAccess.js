@@ -1,5 +1,6 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
+
 // import initializeProgressBars from './util/initializeProgressBars.js'
 
 const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_NAME, VALIDATE) => {
@@ -12,22 +13,27 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           
   // TODO: Add verification of the parent category when a match is made on the channel name to ensure we have the right one
   const getChannel = (guild, category, teamName) => {
+    console.log('getChannel - Made it here')
     const channel = guild.channels.cache.find(channel => {
-      return channel.name === teamName && channel.parentID === category.discordCategory[0].id
+      return channel.name === teamName && channel.parentID === category.discordCategory.id
     })
     return channel
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    console.log('guild: ', guild)
+    console.log('grantUserAccess - Made it here')
+    console.log('grantUserAccess - guild: ', guild)
     const allUsers = await guild.members.fetch(guild.id)
-    
+
+    console.log('grantUserAccess - allUsers: ', allUsers)
+
     for (let userID of team.team.discord_names) {
       const userName = userID.split('#')[0]
       const user = allUsers.find(member => {
           return member.user.username === userName || member.nickname === userName
         }
       )
+      console.log('grantUserAccess - userName: ', userName, ' user: ', user)
 
       if (VALIDATE) {
         if (!user || user.size === 0) {
@@ -53,7 +59,6 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
     }
   }
 
-  const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeams)
   
@@ -62,14 +67,18 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   console.log('teamNames: ', teamNames)
   //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
+  const discordIntf = new Discord(environment)
   const client = discordIntf.getDiscordClient()
-  const guild = await client.guilds.fetch(`${ process.env.GUILD_ID }`)
+  
+
 
   try {
     client.on('ready', async () => {
       // Retrieve references to the categories used to organize this Voyage's team channels
-
-      console.log('teamsConfig: ', teamsConfig)
+      const guild = await client.guilds.fetch(process.env.GUILD_ID)
+      console.log('got here dude 1')
+      await guild.members.fetch()
+      console.log('got here dude 2')
       console.log('teamsConfig.categories: ', teamsConfig.categories)
       const categoryNames = teamsConfig.categories.map(category => {
         return { 
@@ -77,15 +86,16 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           "discordCategory": null,
         }
       })
-      console.log('categoryNames: ', categoryNames)
+      console.log('categoryNames: ', categoryNames, ' categoryNames.length: ', categoryNames.length)
       
       for (let i = 0; i < categoryNames.length; i++) {
+        console.log('grantVoyageChannlAccess - category name: ', categoryNames[i].name)
         let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
-        console.log('discordCategory: ', discordCategory.name)
+        console.log('discordCategory[0].name: ', discordCategory[0].name)
         if (discordCategory.length > 0) {
-          categoryNames[i].discordCategory = discordCategory
+          categoryNames[i].discordCategory = discordCategory[0]
         } else {
-          throw new Error(`This Voyage category (${ discordCategory }) hasn't been \
+          throw new Error(`This Voyage category (${ discordCategory[0] }) hasn't been \
           defined yet. Please create it before continuing.`) 
         }
       }

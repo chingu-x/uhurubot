@@ -12,10 +12,10 @@
         "name": "tier1-team-01",
         "tier": "tier1",
         "discord_names": [
-          "139615488295698432"
+          "213099466742300674"
         ],
         "github_names": [
-          "cherylli"
+          "ericadev"
         ],
         "resource_msg": [
           ".\n**__V999-tier1-team-01 team:__**",
@@ -23,7 +23,7 @@
           "- UI/UX Designer: None",
           "- Web Developers: None",
           "- Data Scientists: None",
-          "- Voyage Guide: <@139615488295698432>\n",
+          "- Voyage Guide: <@213099466742300674>\n",
           "**__Resources__**:\n",
           "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-01"
         ]
@@ -35,14 +35,14 @@
         "name": "tier2-team-02",
         "tier": "tier2",
         "discord_names": [
+          "213099466742300674",
           "299541649229348865",
-          "116322935739908097",
-          "139615488295698432"
+          "116322935739908097"
         ],
         "github_names": [
+          "ericadev",
           "jdmedlock",
-          "ellrub",
-          "cherylli"
+          "ellrub"
         ],
         "resource_msg": [
           ".\n**__V999-tier2-team-02 team:__**",
@@ -50,7 +50,7 @@
           "- UI/UX Designer: None",
           "- Web Developers: None",
           "- Data Scientists: None",
-          "- Voyage Guide: <@116322935739908097> <@139615488295698432>\n",
+          "- Voyage Guide: <@213099466742300674> <@116322935739908097>\n",
           "**__Resources__**:\n",
           "* GitHub Repo: https://github.com/chingu-voyages/v999-tier-team-02"
         ]
@@ -94,7 +94,7 @@
     "3. Choose a project & create a Vision Statement",
     "4. Define & prioritize MVP features\n",
     "**_How can we communicate & collaborate with one another?_**\n",
-    "Just join <#1130565532953882675> and watch the magic happen!\n",
+    "We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
     "You can find out more about each of these in the [Voyage Guide](https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n",
     "Finally, stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
   ],
