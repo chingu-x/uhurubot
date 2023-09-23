@@ -74,7 +74,7 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const voyageGuides = voyagers.filter(findVoyageGuides).length > 0 ? voyagers.filter(findVoyageGuides)
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
-  const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-tier-team-${ teamNo.padStart(2,0) }`
+  const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-${ team.team.tier }-team-${ teamNo.padStart(2,0) }`
 
   const resourceMsg = [
     `.\n**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**`,
