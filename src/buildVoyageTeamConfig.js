@@ -18,7 +18,10 @@ const addCategory = (categories, voyager) => {
 
     // If there's a change in tier push a new category name onto categories
     const mostRecentCategory = categories.slice(-1)[0]
-    if (mostRecentCategory.slice(4,9) !== voyager.tier) {
+    const voyageNameLength = mostRecentCategory.split('-')[0].length
+    const sliceStart = voyageNameLength === 3 ? 4 : 5
+    const sliceEnd = voyageNameLength === 3 ? 9 : 10
+    if (mostRecentCategory.slice(sliceStart,sliceEnd) !== voyager.tier) {
       groupNo = ++groupNo
       categories.push(getCategoryName(voyager))
     }
@@ -71,8 +74,7 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const voyageGuides = voyagers.filter(findVoyageGuides).length > 0 ? voyagers.filter(findVoyageGuides)
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
-  const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-tier-team-${ teamNo.padStart(2,0) }`
-  const gdrivePlaceholderURL = 'https://drive.google.com/drive/folders/'
+  const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-${ team.team.tier }-team-${ teamNo.padStart(2,0) }`
 
   const resourceMsg = [
     `.\n**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**`,
@@ -83,7 +85,6 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
     `- Voyage Guide: ${ voyageGuides.join(' ') }\n`,
     `**__Resources__**:\n`,
     `* GitHub Repo: ${ githubRepoURL }`,
-    `* Google Drive: ${ gdrivePlaceholderURL}`,
   ]
 
   team.team.resource_msg = resourceMsg
@@ -99,40 +100,41 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     teams: [],
     team_greeting: [
       ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start.\n",
-      "**_Your First Steps _** \n",
-      "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n", 
-      "2. Go to #🖐introduce-yourself and copy/paste your intro into this team channel. This lets your teammates get to know you so get the party can get started!\n",
-      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n",
-      "**_In your first Sprint you should concentrate on completing these tasks:_**\n",
+      "**__Your First Steps__** \n",
+      "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:", 
+      "2. Go to <#553103063649353738> and copy/paste your intro into this team channel. This lets your teammates get to know you so get the party can get started!",
+      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.",
+      "**__In your first Sprint you should concentrate on completing these tasks:__**\n",
       "1. Meet your team & schedule kickoff meeting",
       "2. Conduct kickoff meeting",
       "3. Choose a project & create a Vision Statement",
-      "4. Define & prioritize MVP features\n",
-      "**_How can we communicate & collaborate with one another?_**\n",
-      "We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
-      "You can find out more about each of these in the Voyage Guide (https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n",
-      "Finally, stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
+      "4. Define & prioritize MVP features",
+      "**__How can we communicate & collaborate with one another?__**\n",
+      "- We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
+      "- You can find out more about each of these in the [Voyage Guide](https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n",
+      "**__Finally__**\n",
+      "Stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
     ],
     tier_greeting: [
       { 
         "tier": "tier1", 
         "greeting": [
           ".\n**__Tier 1 Team Project__**\n",
-          "All Tier 1 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier1-fireball."
+          "All Tier 1 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-fireball)."
         ]
       },
       { 
         "tier": "tier2", 
         "greeting": [
           ".\n**__Tier 2 Team Project__**\n",
-          "All Tier 2 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these requirements & specifications --> https://github.com/chingu-voyages/voyage-project-tier2-fireball."
+          "All Tier 2 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-fireball)."
         ]
       },
       { 
         "tier": "tier3", 
         "greeting": [
           ".\n**__Tier 3 Team Project__**\n",
-          "As a Tier 3 team your team will be choosing the project you want to create. To get started you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features. This will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
+          "As a Tier 3 team your team will be choosing the project you want to create. To get started you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
     ]
@@ -151,7 +153,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
 
   try { 
     const configJSON = JSON.stringify(config, null, 2)
-    const outputFileName = `${ '/Users/jim/Downloads/v'.concat(config.voyage_number,'_teams_users_test.json') }`
+    const outputFileName = `${ '/Users/jim/Downloads/v'.concat(config.voyage_number,'_teams_users.json') }`
     fs.writeFileSync(outputFileName, configJSON)
   } catch(err) {
     console.log('writeFileSync failed: ', err)

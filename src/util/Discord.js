@@ -1,10 +1,18 @@
-import DiscordJS from 'discord.js'
+//import DiscordJS from 'discord.js'
+import { Client, ChannelType, GatewayIntentBits, PermissionsBitField } from 'discord.js'
 
 export default class Discord {
   constructor(environment) {
     this.environment = environment
     this.isDebug = this.environment.isDebug()
-    this.client = new DiscordJS.Client()
+    //this.client = new DiscordJS.Client()
+    this.client = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+      ],
+    })
+    this.login = this.client.login(process.env.DISCORD_TOKEN)
 
     // Since extraction occurs within the `client.on` block these promises are
     // returned to the extract/audit callers and resolved by calling 
@@ -38,36 +46,38 @@ export default class Discord {
   }
 
   isCategoryCreated(guild, categoryName) {
-    return guild.channels.cache.array()
-      .filter((channel) => {
-        return channel.type === 'category' && channel.name === categoryName
-      })
+    const channel = guild.channels.cache.find(channel => {
+      return channel.type === ChannelType.GuildCategory && channel.name === categoryName
+    })
+    return channel
   }
 
   async createChannelCategory(guild, categoryName) {
-    const category = await guild.channels.create(categoryName, {
-      type: 'category',
-      topic: `${ categoryName }`,
+    const category = await guild.channels.create({
+      type: ChannelType.GuildCategory,
+      name: `${ categoryName }`,
       position: 1,
       permissionOverwrites: [
         {
           id: guild.id,
-          allow: ['MANAGE_MESSAGES'],
-          deny: ['VIEW_CHANNEL'],
+          allow: [PermissionsBitField.Flags.ManageMessages],
+          deny: [PermissionsBitField.Flags.ViewChannel],
         }]
     })
     return category
   }
 
   isChannelCreated(guild, categoryName = '', channelName) {
-    const channel = guild.channels.cache.array()
-      .filter(channel => channel.name === channelName)
+    const channel = guild.channels.cache.find(channel => {
+      return channel.type === ChannelType.GuildText && channel.name === channelName
+    })
     
     // Validate that channel is owned by a category based on an optional category name parm
     if (categoryName !== '') {
       let category = this.isCategoryCreated(guild, categoryName)
-      return category.length > 0 && category[0].name === categoryName ? channel : []
+      return category !== undefined && category.name === categoryName ? channel : null
     }
+    console.log('isChannelCreated - channel: ', channel)
     return channel
   }
 
@@ -75,15 +85,15 @@ export default class Discord {
     await channel.send(greetingMessageText)
   }
 
-  async createChannel(guild, categoryId, channelType, teamName) {
-    const channel = await guild.channels.create(teamName, {
-      type: `${ channelType }`,
-      topic: `${ teamName }`,
+  async createChannel(guild, categoryId, teamName) {
+    const channel = await guild.channels.create({
+      type: ChannelType.GuildText,
+      name: `${ teamName }`,
       parent: categoryId,
       permissionOverwrites: [
         {
           id: guild.roles.everyone,
-          deny: ['VIEW_CHANNEL'],
+          deny: [PermissionsBitField.Flags.ViewChannel],
         },
       ],
     })

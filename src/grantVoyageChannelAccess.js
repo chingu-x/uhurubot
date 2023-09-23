@@ -1,5 +1,6 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
+
 // import initializeProgressBars from './util/initializeProgressBars.js'
 
 const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_NAME, VALIDATE) => {
@@ -13,76 +14,72 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   // TODO: Add verification of the parent category when a match is made on the channel name to ensure we have the right one
   const getChannel = (guild, category, teamName) => {
     const channel = guild.channels.cache.find(channel => {
-      return channel.name === teamName && channel.parentID === category.discordCategory[0].id
+      return channel.name === teamName && channel.parentId === category.discordCategory.id
     })
     return channel
   }
 
   const grantUserAccess = async (type, guild, channel, team) => {
-    console.log('guild: ', guild)
-    const allUsers = await guild.members.fetch(guild.id)
-    
-    for (let userID of team.team.discord_names) {
-      const userName = userID.split('#')[0]
+    const allUsers = await guild.members.fetch()
+
+    for (let userId of team.team.discord_names) {
       const user = allUsers.find(member => {
-          return member.user.username === userName || member.nickname === userName
+          return member.user.id === userId
         }
       )
 
       if (VALIDATE) {
         if (!user || user.size === 0) {
-          console.log('Validation failed for user: ', userName)
+          console.log('Validation failed for user: ', userId)
         }
       } else {
         const permissions = {
-          'VIEW_CHANNEL': true,
-          'SEND_MESSAGES': true,
-          'EMBED_LINKS': true,
-          'ATTACH_FILES': true,
-          'ADD_REACTIONS': true,
-          'MENTION_EVERYONE': true,
-          'MANAGE_MESSAGES': true,
-          'READ_MESSAGE_HISTORY': true
+          ViewChannel: true,
+          SendMessages: true,
+          CreatePublicThreads: true,
+          SendMessagesInThreads: true,
+          EmbedLinks: true,
+          AttachFiles: true,
+          AddReactions: true,
+          MentionEveryone: true,
+          ManageMessages: true,
+          ReadMessageHistory: true
         }
-
         
         // TODO: Add error handling & reporting for unknown users
-        const updatedChannel = await channel.updateOverwrite(user, permissions)
-        console.log('updatedChannel: ', updatedChannel.name)
+        const updatedChannel = await channel.permissionOverwrites.edit(userId, permissions)
+        console.log('Updated permissions for userId: ', userId, ' in channel: ', updatedChannel.name)
       }
     }
   }
 
-  const discordIntf = new Discord(environment)
   const rawTeams = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeams)
   
   //const ALL_TEAMS = 0
   const teamNames = teamsConfig.teams.map(team => team.team.name)
-  console.log('teamNames: ', teamNames)
   //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
+  const discordIntf = new Discord(environment)
   const client = discordIntf.getDiscordClient()
-  const guild = await client.guilds.fetch(`${ process.env.GUILD_ID }`)
+  
+
 
   try {
     client.on('ready', async () => {
       // Retrieve references to the categories used to organize this Voyage's team channels
-
-      console.log('teamsConfig: ', teamsConfig)
-      console.log('teamsConfig.categories: ', teamsConfig.categories)
+      const guild = await client.guilds.fetch(process.env.GUILD_ID)
+      await guild.members.fetch()
       const categoryNames = teamsConfig.categories.map(category => {
         return { 
           "name": category, 
           "discordCategory": null,
         }
       })
-      console.log('categoryNames: ', categoryNames)
       
       for (let i = 0; i < categoryNames.length; i++) {
         let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
-        console.log('discordCategory: ', discordCategory.name)
-        if (discordCategory.length > 0) {
+        if (discordCategory) {
           categoryNames[i].discordCategory = discordCategory
         } else {
           throw new Error(`This Voyage category (${ discordCategory }) hasn't been \
@@ -109,6 +106,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
 
       //overallProgress.stop()
       discordIntf.commandResolve('done')
+      client.destroy() // Terminate this Discord bot
     })
   }
   catch(err) {
