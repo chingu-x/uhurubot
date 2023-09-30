@@ -124,21 +124,21 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
         "tier": "tier1", 
         "greeting": [
           ".\n**__Tier 1 Team Project__**\n",
-          "All Tier 1 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-fireball)."
+          "All Tier 1 teams will be building the **_Recipes_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-recipes)."
         ]
       },
       { 
         "tier": "tier2", 
         "greeting": [
           ".\n**__Tier 2 Team Project__**\n",
-          "All Tier 2 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-fireball)."
+          "All Tier 2 teams will be building the **_Fireball_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-recipes)."
         ]
       },
       { 
         "tier": "tier3", 
         "greeting": [
           ".\n**__Tier 3 Team Project__**\n",
-          "As a Tier 3 team your team will be choosing the project you want to create. To get started you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
+          "As a Tier 3 team your team has the choice of building the **_Recipes_** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-recipes) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
     ]
