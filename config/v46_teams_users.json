@@ -46,21 +46,19 @@
           "1013792037478338581",
           "677267032713986052",
           "484625186239283211",
-          "311593317693653003",
           "350666806983393292"
         ],
         "github_names": [
           "aspiringsoftwareprogrammer",
           "lawlawson",
           "enochval",
-          "Ooxz",
           "KseniiaRiabova"
         ],
         "resource_msg": [
           ".\n**__V46-tier1-team-02 team:__**",
           "- Product Owners: None",
           "- UI/UX Designer: None",
-          "- Web Developers: <@677267032713986052> <@311593317693653003> <@350666806983393292>",
+          "- Web Developers: <@677267032713986052> <@350666806983393292>",
           "- Data Scientists: None",
           "- Voyage Guide: <@1013792037478338581> <@484625186239283211>\n",
           "**__Resources__**:\n",
@@ -74,20 +72,24 @@
         "name": "tier1-team-03",
         "tier": "tier1",
         "discord_names": [
+          "311593317693653003",
           "1062553924013396029",
           "319133650308431872",
-          "640529640565243936"
+          "640529640565243936",
+          "599218443060903947"
         ],
         "github_names": [
+          "Ooxz",
           "Sarita1517",
           "Axeldru",
-          "ardalum"
+          "ardalum",
+          "FlorSmile"
         ],
         "resource_msg": [
           ".\n**__V46-tier1-team-03 team:__**",
           "- Product Owners: <@1062553924013396029>",
           "- UI/UX Designer: None",
-          "- Web Developers: <@319133650308431872> <@640529640565243936>",
+          "- Web Developers: <@311593317693653003> <@319133650308431872> <@640529640565243936> <@599218443060903947>",
           "- Data Scientists: None",
           "- Voyage Guide: None\n",
           "**__Resources__**:\n",
@@ -252,6 +254,7 @@
         "discord_names": [
           "376929785865175047",
           "871392964436455474",
+          "964834814983307285",
           "1005411909786423407",
           "974273283992219688",
           "733210918036439112"
@@ -259,6 +262,7 @@
         "github_names": [
           "ErickaConcepcion",
           "GabriellaN-02",
+          "0bunny0",
           "johncarlolipa",
           "Paulette-Zaldivar-Flores",
           "jessabc"
@@ -267,7 +271,7 @@
           ".\n**__V46-tier2-team-12 team:__**",
           "- Product Owners: None",
           "- UI/UX Designer: None",
-          "- Web Developers: <@376929785865175047> <@871392964436455474> <@1005411909786423407> <@733210918036439112>",
+          "- Web Developers: <@376929785865175047> <@871392964436455474> <@964834814983307285> <@1005411909786423407> <@733210918036439112>",
           "- Data Scientists: None",
           "- Voyage Guide: <@974273283992219688>\n",
           "**__Resources__**:\n",
@@ -315,19 +319,21 @@
           "1117780618479149118",
           "193011182225850368",
           "1062997786183860307",
-          "946035366467629076"
+          "946035366467629076",
+          "896682309745528873"
         ],
         "github_names": [
           "adhamElhabashy",
           "DikshantAgarwal",
           "diaasaur",
-          "Sumitgangwar58"
+          "Sumitgangwar58",
+          "singhpriya147"
         ],
         "resource_msg": [
           ".\n**__V46-tier2-team-14 team:__**",
           "- Product Owners: None",
           "- UI/UX Designer: None",
-          "- Web Developers: <@193011182225850368> <@1062997786183860307> <@946035366467629076>",
+          "- Web Developers: <@193011182225850368> <@1062997786183860307> <@946035366467629076> <@896682309745528873>",
           "- Data Scientists: None",
           "- Voyage Guide: <@1117780618479149118>\n",
           "**__Resources__**:\n",
@@ -794,7 +800,7 @@
           "484625186239283211",
           "998903460315545630",
           "1033285611144101941",
-          "undefined"
+          "905057001325887509"
         ],
         "github_names": [
           "debbiect246",
@@ -812,7 +818,7 @@
           ".\n**__V46-tier3-team-33 team:__**",
           "- Product Owners: None",
           "- UI/UX Designer: None",
-          "- Web Developers: <@554234306101379082> <@undefined> <@940993256764870756> <@896345682187792424> <@805069499791441950> <@998903460315545630> <@1033285611144101941> <@undefined>",
+          "- Web Developers: <@554234306101379082> <@undefined> <@940993256764870756> <@896345682187792424> <@805069499791441950> <@998903460315545630> <@1033285611144101941> <@905057001325887509>",
           "- Data Scientists: <@757668097455947878>",
           "- Voyage Guide: <@484625186239283211>\n",
           "**__Resources__**:\n",
@@ -829,19 +835,21 @@
           "1043932341246115900",
           "738890979204923503",
           "774570135474143243",
-          "926776016813297684"
+          "926776016813297684",
+          "1077891080072208384"
         ],
         "github_names": [
           "muyixone",
           "lumidee007",
           "Ellon-M",
-          "samad13"
+          "samad13",
+          "philipObiri"
         ],
         "resource_msg": [
           ".\n**__V46-tier3-team-34 team:__**",
           "- Product Owners: None",
           "- UI/UX Designer: None",
-          "- Web Developers: <@1043932341246115900> <@738890979204923503> <@774570135474143243> <@926776016813297684>",
+          "- Web Developers: <@1043932341246115900> <@738890979204923503> <@774570135474143243> <@926776016813297684> <@1077891080072208384>",
           "- Data Scientists: None",
           "- Voyage Guide: None\n",
           "**__Resources__**:\n",
