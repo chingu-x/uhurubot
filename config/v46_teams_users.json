@@ -289,14 +289,16 @@
           "1084729753212309624",
           "937260646976876585",
           "230686334426021888",
-          "516604616410923008"
+          "516604616410923008",
+          "974273283992219688"
         ],
         "github_names": [
           "Chennareddy44",
           "itzmidinesh",
           "Ch-Amulya",
           "farisadam97",
-          "rakharan"
+          "rakharan",
+          "Paulette-Zaldivar-Flores"
         ],
         "resource_msg": [
           ".\n**__V46-tier2-team-13 team:__**",
@@ -304,7 +306,7 @@
           "- UI/UX Designer: None",
           "- Web Developers: <@1013021802399809557> <@1084729753212309624> <@937260646976876585> <@230686334426021888> <@516604616410923008>",
           "- Data Scientists: None",
-          "- Voyage Guide: None\n",
+          "- Voyage Guide: <@974273283992219688>\n",
           "**__Resources__**:\n",
           "* GitHub Repo: https://github.com/chingu-voyages/v46-tier2-team-13"
         ]
