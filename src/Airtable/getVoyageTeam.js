@@ -30,6 +30,17 @@ const getVoyageTeam = async (voyage) => {
           .toLowerCase()
           .split(' ')
           .join('')
+      /*
+        console.log(`getVoyageTeam - number: ${ voyagerNo } \
+          email: ${ record.get('Email') } \
+          voyage: ${ record.get('Voyage') } \
+          team_name: ${ record.get('Team Name') } \
+          tier: ${ tierName } \
+          team_no: ${ record.get('Team No.') } \
+          discord_name: ${ record.get('Discord ID') } \
+          github_name: ${ record.get('GitHub ID') ?? '' } \
+          role: ${ record.get('Role') }`)
+        */
         voyagers.push({ 
           number: `${ voyagerNo }`,
           email: `${ record.get('Email') }`,

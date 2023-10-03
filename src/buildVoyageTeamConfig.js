@@ -111,7 +111,11 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       "4. Define & prioritize MVP features",
       "**__How can we communicate & collaborate with one another?__**\n",
       "- We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
-      "- You can find out more about each of these in the [Voyage Guide](https://chingucohorts.notion.site/Voyage-Guide-1e528dcbf1d241c9a93b4627f6f1c809).\n",
+      "- You can find out more about each of these in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide).\n",
+      "**__How can I get the attention of my teammates?__**\n",
+      "Remember that you can always use the following in a message rather than each teammates Discord account name:\n",
+      "- `@everyone`: Notify all members in this channel.\n",
+      "- `@here`: Notify only teammates who are online.\n",
       "**__Finally__**\n",
       "Stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
     ],
@@ -120,21 +124,21 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
         "tier": "tier1", 
         "greeting": [
           ".\n**__Tier 1 Team Project__**\n",
-          "All Tier 1 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-fireball)."
+          "All Tier 1 teams will be building the **_Recipes_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-recipes)."
         ]
       },
       { 
         "tier": "tier2", 
         "greeting": [
           ".\n**__Tier 2 Team Project__**\n",
-          "All Tier 2 teams will be building the **_Fireball_** app to explore the history of known meteorite landings in novel ways. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-fireball)."
+          "All Tier 2 teams will be building the **_Recipes_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-recipes)."
         ]
       },
       { 
         "tier": "tier3", 
         "greeting": [
           ".\n**__Tier 3 Team Project__**\n",
-          "As a Tier 3 team your team will be choosing the project you want to create. To get started you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
+          "As a Tier 3 team your team has the choice of building the **_Recipes_** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-recipes) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
     ]
