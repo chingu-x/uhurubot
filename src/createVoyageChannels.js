@@ -53,11 +53,12 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         if (discordChannel === undefined || discordChannel === null) {
           discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name)
 
-          // Add the team greeting message
           if (teamsConfig.team_greeting !== undefined) {
+            let teamMessage = '' 
             for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
-              await discordIntf.postGreetingMessage(discordChannel, teamsConfig.team_greeting[i])
+              teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
             }
+            await discordIntf.postGreetingMessage(discordChannel, teamMessage)
           }
           
 
