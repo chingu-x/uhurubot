@@ -113,9 +113,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       "- We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
       "- You can find out more about each of these in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide).\n",
       "**__How can I get the attention of my teammates?__**\n",
-      "Remember that you can always use the following in a message rather than each teammates Discord account name:\n",
-      "- `@everyone`: Notify all members in this channel.\n",
-      "- `@here`: Notify only teammates who are online.\n",
+      "Remember that you can always use `@Voyager` to notify all members in this channel rather than each teammates Discord account name.\n",
       "**__Finally__**\n",
       "Stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
     ],
