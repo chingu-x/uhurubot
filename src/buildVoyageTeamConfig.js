@@ -1,4 +1,5 @@
 import fs from 'fs'
+import Bar from 'progress-barjs'
 import { getVoyageTeam } from './Airtable/getVoyageTeam.js'
 
 let groupNo = 1
@@ -99,8 +100,24 @@ const addTeamResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_pro
 }
 
 const buildVoyageTeamConfig = async (environment, VOYAGE) => {
+
   // Retrieve the roster of Voyagers in a specific Voyage
   const voyagers = await getVoyageTeam('V'.concat(VOYAGE).toUpperCase())
+
+  const initbarOptions = {
+    label: 'Initializing'.padEnd(20),
+    total: voyagers.length+1,
+    show: {
+      overwrite: false,
+      'only_at_completed_rows': false,
+      bar: {
+          completed: '\x1b[47m \x1b[0;37m',
+          incompleted: ' ',
+      }
+    }
+  }
+  const initBar = Bar(initbarOptions)
+  initBar.tick(1)
 
   let config = {
     voyage_number: VOYAGE,
@@ -155,11 +172,27 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   for (let voyager of voyagers) {
     const voyagerCategory = addCategory(config.categories, voyager)
     teamData.currentTeamNo = addVoyagerToTeam(config.teams, teamData.currentTeamNo, voyagerCategory, voyager)
+    initBar.tick(1)
   }
+
+  const buildbarOptions = {
+    label: 'Building config file'.padEnd(20),
+    total: config.teams.length,
+    show: {
+      overwrite: false,
+      'only_at_completed_rows': false,
+      bar: {
+          completed: '\x1b[47m \x1b[0;37m',
+          incompleted: ' ',
+      }
+    }
+  }
+  const buildBar = Bar(buildbarOptions)
 
   config.teams.forEach(team => {
     addTeamResourcesToTeam(VOYAGE, team, team.team.name.slice(0,4), team.team.name.slice(-2), voyagers, config.tier_project)
-  })  
+    buildBar.tick(1)
+  })
 
   try { 
     const configJSON = JSON.stringify(config, null, 2)
