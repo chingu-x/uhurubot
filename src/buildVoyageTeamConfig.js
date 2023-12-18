@@ -40,6 +40,7 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
         "category": voyagerCategory, 
         "name": teamName, 
         "tier": voyager.tier,
+        "channel_type": "text",
         "discord_names": [voyager.discord_name],
         "github_names": [voyager.github_name] ? [voyager.github_name] : '',
         "resource_msg": []
