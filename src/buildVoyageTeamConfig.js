@@ -41,7 +41,7 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
         "name": teamName, 
         "tier": voyager.tier,
         "channel_type": "text",
-        "discord_names": [voyager.discord_name],
+        "discord_names": [voyager.discord_name ? voyager.discord_name : ''],
         "github_names": [voyager.github_name] ? [voyager.github_name] : '',
         "resource_msg": []
       }
@@ -57,8 +57,11 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
   return voyager.team_no
 }
 
-const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
+const addTeamResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project) => {
   const teamNumber = teamNo.padStart(2,0)
+  const tierNumber = team.team.tier.slice(4,5)
+  const teamProjectDescription = tier_project[tierNumber - 1].greeting
+
   const findPOs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Product Owner'
   const findUIUXs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'UI/UX'
   const findWebdevs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Developer'
@@ -78,13 +81,17 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
   const githubRepoURL = `https://github.com/chingu-voyages/v${ voyageNo }-${ team.team.tier }-team-${ teamNo.padStart(2,0) }`
 
   const resourceMsg = [
-    `.\n**__${ voyagers[0].voyage.concat('-',team.team.name) } team:__**`,
+    `\n**__Your Tier:__** ${ tier }`,
+    `\n**__Your Team Name:__** ${ team.team.name }`,
+    `\n**__Your Teammates:__**`,
     `- Product Owners: ${ productOwners.join(' ') }`,
     `- UI/UX Designer: ${ uiuxDesigners.join(' ') }`,
     `- Web Developers: ${ webDevelopers.join(' ') }`,
     `- Data Scientists: ${ dataScientists.join(' ') }`,
     `- Voyage Guide: ${ voyageGuides.join(' ') }\n`,
-    `**__Resources__**:\n`,
+    `\n**__Your Project:__**`,
+    `${ teamProjectDescription }`,
+    `\n**__Resources__**:\n`,
     `* GitHub Repo: ${ githubRepoURL }`,
   ]
 
@@ -104,7 +111,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       "**__Your First Steps__** \n",
       "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n",
       "2. Go to <#553103063649353738> and copy/paste your intro into this team channel. This lets your teammates get to know you so get the party can get started!\n",
-      "3. Follow the steps in the Voyage Guide we provided last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n\n",
+      "3. Follow the steps in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide) we emailed last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n\n",
       "**__In your first Sprint you should concentrate on completing these tasks:__**\n",
       "1. Meet your team & schedule kickoff meeting\n",
       "2. Conduct kickoff meeting\n",
@@ -114,30 +121,30 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       "- We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
       "- You can find out more about each of these in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide).\n\n",
       "**__How can I get the attention of my teammates?__**\n",
-      "You can use `@Voyager` to send a message to all teammates.\n\n",
+      "You can use <@1104544072347160578> to send a message to all teammates. It's best to avoid using `@everyone`.\n\n",
       "**__Finally__**\n",
       "Stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n https://giphy.com/gifs/F9hQLAVhWnL56"
     ],
-    tier_greeting: [
+    tier_project: [
       { 
         "tier": "tier1", 
         "greeting": [
           ".\n**__Tier 1 Team Project__**\n",
-          "All Tier 1 teams will be building the **_Recipes_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-recipes)."
+          "All Tier 1 teams will be building the **_Daily Tasks_** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-dailytasks)."
         ]
       },
       { 
         "tier": "tier2", 
         "greeting": [
           ".\n**__Tier 2 Team Project__**\n",
-          "All Tier 2 teams will be building the **_Recipes_** app to help your users manage and organize their culinary collections. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-recipes)."
+          "All Tier 2 teams will be building the **Daily Tasks** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-dailytasks)."
         ]
       },
       { 
         "tier": "tier3", 
         "greeting": [
           ".\n**__Tier 3 Team Project__**\n",
-          "As a Tier 3 team your team has the choice of building the **_Recipes_** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-recipes) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
+          "As a Tier 3 team your team has the choice of building the **_Daily Tasks** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-dailytasks) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
     ]
@@ -151,7 +158,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   }
 
   config.teams.forEach(team => {
-    addTeamResourcesToTeam(VOYAGE, team, team.team.name.slice(-2), voyagers)
+    addTeamResourcesToTeam(VOYAGE, team, team.team.name.slice(0,4), team.team.name.slice(-2), voyagers, config.tier_project)
   })  
 
   try { 
