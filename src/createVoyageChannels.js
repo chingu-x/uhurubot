@@ -1,6 +1,5 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
-import initializeProgressBars from './util/initializeProgressBars.js'
 
 const lookupDiscordCategory = (categoryNames, categoryName) => {
   const category = categoryNames.find(category => category.name === categoryName)
@@ -22,7 +21,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   })
 
   let categoryNoForProgressBar = 0
-  //let { overallProgress, progressBars } = initializeProgressBars(categoryNames)
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(GUILD_ID)
@@ -80,19 +78,14 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
             }
           }
         }
-
-        //progressBars[categoryNoForProgressBar].increment(1)
-        //++categoryNoForProgressBar
       }
 
-      //overallProgress.stop()
       discordIntf.commandResolve('done')
       await client.destroy() // Terminate this Discord bot
     })
   }
   catch(err) {
     console.log(err)
-    //overallProgress.stop()
     await client.destroy() // Terminate this Discord bot
     discordIntf.commandReject('fail')
   }
@@ -105,7 +98,6 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   catch (err) {
     console.error(`Error logging into Discord. Token: ${ process.env.DISCORD_TOKEN }`)
     console.error(err)
-    //overallProgress.stop()
     discordIntf.commandReject('fail')
   }
 }
