@@ -12,7 +12,7 @@ const getVoyageTeam = async (voyage) => {
       '{Team No.} != ""' +
       ')'
 
-    //console.log('filter: ', filter)
+    //console.log('getVoyageTeam - filter: ', filter)
 
     base('Voyage Signups').select({ 
       fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID', 'Role'],

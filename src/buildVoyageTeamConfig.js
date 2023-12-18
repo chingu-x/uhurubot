@@ -93,7 +93,7 @@ const addTeamResourcesToTeam = (voyageNo, team, teamNo, voyagers) => {
 
 const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   // Retrieve the roster of Voyagers in a specific Voyage
-  const voyagers = await getVoyageTeam('v'.concat(VOYAGE).toUpperCase())
+  const voyagers = await getVoyageTeam('V'.concat(VOYAGE).toUpperCase())
 
   let config = {
     voyage_number: VOYAGE,
