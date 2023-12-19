@@ -6,6 +6,54 @@ const lookupDiscordCategory = (categoryNames, categoryName) => {
   return category
 }
 
+const createTextTeamChannels = async (discordIntf, guild, categoryNames, teamsConfig) => {
+  // Create & populate team channels
+  for (let team of teamsConfig.teams) {
+    console.log(`...Creating channel for team: ${ team.team.name }`)
+    let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
+    let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
+    if (discordCategory === undefined || discordCategory === null) {
+      console.log('categoryNames: ', categoryNames)
+      console.log('team.team:', team.team)
+      throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
+    }
+    if (discordChannel === undefined || discordChannel === null) {
+      discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name)
+
+      if (teamsConfig.team_greeting !== undefined) {
+        let teamMessage = '' 
+        for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
+          teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
+        }
+        await discordIntf.postGreetingMessage(discordChannel, teamMessage)
+      }
+      
+
+      // Add a tier-specific greeting message if one is configured for this team's tier
+      if (teamsConfig.tier_greeting !== undefined) {
+        for (let i = 0; i < teamsConfig.tier_greeting.length; ++i) {
+          if (teamsConfig.tier_greeting[i].tier === team.team.tier) {
+            for (let j = 0; j < teamsConfig.tier_greeting[i].greeting.length; ++j ) {
+              await discordIntf.postGreetingMessage(discordChannel, teamsConfig.tier_greeting[i].greeting[j])
+            }
+          } 
+        }
+      }
+
+      // Post a list of team members by their roles
+      if (team.team.resource_msg !== undefined) {
+        for (let i = 0; i < team.team.resource_msg.length; ++i) {
+          await discordIntf.postGreetingMessage(discordChannel, team.team.resource_msg[i])
+        }
+      }
+    }
+  }
+}
+
+const createForumTeamChannels = async (discordIntf, guild, categoryNames, teamsConfig) => {
+
+}
+
 const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_FILE_NAME) => {
   const discordIntf = new Discord(environment)
 
@@ -38,45 +86,11 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         categoryNames[i].discordCategory = discordCategory
       }
 
-      // Create & populate team channels
       for (let team of teamsConfig.teams) {
-        console.log(`...Creating channel for team: ${ team.team.name }`)
-        let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
-        let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
-        if (discordCategory === undefined || discordCategory === null) {
-          console.log('categoryNames: ', categoryNames)
-          console.log('team.team:', team.team)
-          throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
-        }
-        if (discordChannel === undefined || discordChannel === null) {
-          discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name)
-
-          if (teamsConfig.team_greeting !== undefined) {
-            let teamMessage = '' 
-            for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
-              teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
-            }
-            await discordIntf.postGreetingMessage(discordChannel, teamMessage)
-          }
-          
-
-          // Add a tier-specific greeting message if one is configured for this team's tier
-          if (teamsConfig.tier_greeting !== undefined) {
-            for (let i = 0; i < teamsConfig.tier_greeting.length; ++i) {
-              if (teamsConfig.tier_greeting[i].tier === team.team.tier) {
-                for (let j = 0; j < teamsConfig.tier_greeting[i].greeting.length; ++j ) {
-                  await discordIntf.postGreetingMessage(discordChannel, teamsConfig.tier_greeting[i].greeting[j])
-                }
-              } 
-            }
-          }
-
-          // Post a list of team members by their roles
-          if (team.team.resource_msg !== undefined) {
-            for (let i = 0; i < team.team.resource_msg.length; ++i) {
-              await discordIntf.postGreetingMessage(discordChannel, team.team.resource_msg[i])
-            }
-          }
+        if (team.team.channel_type === "text") {
+          await createTextTeamChannels(discordIntf, guild, categoryNames, teamsConfig)
+        } else {
+          await createForumTeamChannels(discordIntf, guild, categoryNames, teamsConfig)
         }
       }
 
