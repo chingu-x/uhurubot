@@ -85,9 +85,17 @@ export default class Discord {
     return await channel.send(greetingMessageText) // Return a Message object
   }
 
-  async createChannel(guild, categoryId, teamName) {
+  async createChannel(guild, categoryId, teamName, channelType) {
+    let channelTypeIndicator = ChannelType.GuildText
+    if (channelType === 'text') {
+      channelTypeIndicator = ChannelType.GuildText
+    } else if (channelType === 'forum') {
+      channelTypeIndicator = ChannelType.GuildForum
+    } else {
+      console.log ('createChannel - teamName: ', teamName, ' defaulting to text channel')
+    }
     const channel = await guild.channels.create({
-      type: ChannelType.GuildText,
+      type: channelTypeIndicator,
       name: `${ teamName }`,
       parent: categoryId,
       permissionOverwrites: [
