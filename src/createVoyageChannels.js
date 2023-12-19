@@ -1,3 +1,4 @@
+import Bar from 'progress-barjs'
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
 
@@ -8,12 +9,9 @@ const lookupDiscordCategory = (categoryNames, categoryName) => {
 
 const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, teamsConfig) => {
   // Create & populate team channels
-  console.log(`...Creating channel for team: ${ team.team.name }`)
   let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
   let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
   if (discordCategory === undefined || discordCategory === null) {
-    console.log('categoryNames: ', categoryNames)
-    console.log('team.team:', team.team)
     throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
   }
   if (discordChannel === undefined || discordChannel === null) {
@@ -70,22 +68,39 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   try {
     client.on('ready', async () => {
 
-      // Create the Voyage category
+      // Initialize the progress bar
+      const buildbarOptions = {
+        label: 'Creating & populating team channels'.padEnd(20),
+        total: teamsConfig.teams.length + categoryNames.length,
+        show: {
+          overwrite: false,
+          'only_at_completed_rows': false,
+          bar: {
+              completed: '\x1b[47m \x1b[0;37m',
+              incompleted: ' ',
+          }
+        }
+      }
+      const buildBar = Bar(buildbarOptions)
+
+      // Create the Voyage categories
       for (let i = 0; i < categoryNames.length; i++) {
         let discordCategory = discordIntf.isCategoryCreated(guild, categoryNames[i].name)
         if (discordCategory === undefined) {
-          console.log(`Creating category: ${ categoryNames[i].name }`)
           discordCategory = await discordIntf.createChannelCategory(guild, categoryNames[i].name)
         }
         categoryNames[i].discordCategory = discordCategory
+        buildBar.tick(1)
       }
 
+      // Create the team channels and populate with Voyage information & guidance
       for (let team of teamsConfig.teams) {
         if (team.team.channel_type === "text") {
           await createTextTeamChannels(discordIntf, guild, categoryNames, team, teamsConfig)
         } else {
           await createForumTeamChannels(discordIntf, guild, categoryNames, team, teamsConfig)
         }
+        buildBar.tick(1)
       }
 
       discordIntf.commandResolve('done')
