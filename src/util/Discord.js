@@ -82,7 +82,7 @@ export default class Discord {
   }
 
   async postGreetingMessage(channel, greetingMessageText) {
-    await channel.send(greetingMessageText)
+    return await channel.send(greetingMessageText) // Return a Message object
   }
 
   async createChannel(guild, categoryId, teamName) {
