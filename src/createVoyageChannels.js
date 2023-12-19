@@ -73,7 +73,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
         label: 'Creating & populating team channels'.padEnd(20),
         total: teamsConfig.teams.length + categoryNames.length,
         show: {
-          overwrite: false,
+          overwrite: true,
           'only_at_completed_rows': false,
           bar: {
               completed: '\x1b[47m \x1b[0;37m',
