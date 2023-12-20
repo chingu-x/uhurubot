@@ -1,5 +1,7 @@
 //import DiscordJS from 'discord.js'
-import { Client, ChannelType, GatewayIntentBits, PermissionsBitField } from 'discord.js'
+import { Client, ChannelType, 
+  GatewayIntentBits, PermissionsBitField, ThreadAutoArchiveDuration
+} from 'discord.js'
 
 export default class Discord {
   constructor(environment) {
@@ -81,8 +83,34 @@ export default class Discord {
     return channel
   }
 
-  async postGreetingMessage(channel, greetingMessageText) {
-    return await channel.send(greetingMessageText) // Return a Message object
+  async postGreetingMessage(channel, title, tag, greetingMessageText) {
+    const getSnowflakeForTag = (channel, tag) => {
+      const tags = channel.availableTags
+      for (let tagObject of tags) {
+        if (tagObject.name === tag) {
+          return tagObject.id
+        }
+      }
+      console.log('Discord - postGreetingMessage - tag not found (', tag,') in ', tags)
+      return -1
+    }
+
+    console.log('channel: ', channel)
+    if (channel.type === ChannelType.GuildText) {
+      return await channel.send(greetingMessageText) // Return a Message object
+    }
+    if (channel.type === ChannelType.GuildForum) {
+      const thread = await channel.threads.create({
+        name: title,
+        autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+        reason: 'Getting started and resources message',
+        message: greetingMessageText,
+        appliedTags: [getSnowflakeForTag(channel, tag)]
+      })
+      return thread // Return a Thread object
+    }
+    console.log('Discord - postGreetingMessage - invalid channel type: ', channel.type)
+    return -1
   }
 
   async createChannel(guild, categoryId, teamName, channelType) {
