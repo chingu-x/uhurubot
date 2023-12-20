@@ -42,42 +42,49 @@ const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, t
   }
 }
 
-const createForumTeamChannels = async (discordIntf, guild, categoryNames, teamsConfig) => {
-// Create & populate team channels
-let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
-let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
-if (discordCategory === undefined || discordCategory === null) {
-  throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
-}
-if (discordChannel === undefined || discordChannel === null) {
-  discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum')
-
-  // Add forum tags to the channel
-
-  // Post the team greeting messages
-  if (teamsConfig.team_greeting !== undefined) {
-    let teamMessage = '' 
-    for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
-      teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
-    }
-    const greetingMsg = await discordIntf.postGreetingMessage(discordChannel, teamMessage)
-    greetingMsg.pin()
+const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, teamsConfig) => {
+  // Create & populate team channels
+  let discordChannel = discordIntf.isChannelCreated(guild, team.team.name)
+  let discordCategory = lookupDiscordCategory(categoryNames, team.team.category)
+  if (discordCategory === undefined || discordCategory === null) {
+    throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
   }
+  if (discordChannel === undefined || discordChannel === null) {
+    discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum')
 
-  // Post a list of team members by their roles
-  let teamResourceMsg
-  if (team.team.resource_msg !== undefined) {
-    for (let i = 0; i < team.team.resource_msg.length; ++i) {
-      let teamMsg = await discordIntf.postGreetingMessage(discordChannel, team.team.resource_msg[i])
-      if (i === 0) {
-        teamResourceMsg = teamMsg
+    // Add forum tags to the channel
+    console.log('teamsConfig: ', teamsConfig)
+    const forumChannelTags = teamsConfig.forum_tags.map((tag) => {
+      console.log('tag: ', tag)
+      return { name: tag }
+    })
+    console.log('forumChannelTags: ', forumChannelTags)
+    discordChannel.setAvailableTags(forumChannelTags)
+
+    // Post the team greeting messages
+    if (teamsConfig.team_greeting !== undefined) {
+      let teamMessage = '' 
+      for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
+        teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
+      }
+      const greetingMsg = await discordIntf.postGreetingMessage(discordChannel, teamMessage)
+      greetingMsg.pin()
+    }
+
+    // Post a list of team members by their roles
+    let teamResourceMsg
+    if (team.team.resource_msg !== undefined) {
+      for (let i = 0; i < team.team.resource_msg.length; ++i) {
+        let teamMsg = await discordIntf.postGreetingMessage(discordChannel, team.team.resource_msg[i])
+        if (i === 0) {
+          teamResourceMsg = teamMsg
+        }
+      }
+      if (teamResourceMsg !== null) {
+        teamResourceMsg.pin()
       }
     }
-    if (teamResourceMsg !== null) {
-      teamResourceMsg.pin()
-    }
   }
-}
 }
 
 const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_FILE_NAME) => {

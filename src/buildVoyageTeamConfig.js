@@ -163,6 +163,17 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
           "As a Tier 3 team your team has the choice of building the **_Daily Tasks** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-dailytasks) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
+    ],
+    forum_tags: [
+      "General Info", 
+      "Meetings",
+      "Daily Standups",
+      "Sprint Planning", 
+      "Discussion", 
+      "Help & Advice", 
+      "Celebrate", 
+      "Issues", 
+      "Blockers"
     ]
   }
 
