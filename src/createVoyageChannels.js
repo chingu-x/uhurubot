@@ -18,24 +18,16 @@ const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, t
     discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'text')
 
     if (teamsConfig.team_greeting !== undefined) {
-      let teamMessage = '' 
-      for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
-        teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
-      }
       const greetingMsg = await discordIntf.postGreetingMessage(
-        discordChannel, null, null, teamMessage)
+        discordChannel, null, null, teamsConfig.team_greeting.join(''))
       greetingMsg.pin()
     }
 
     // Post a list of team resources including the list of team members and
     // their roles
     if (team.team.resource_msg !== undefined) {
-      let resourceMessage = ''
-      for (let i = 0; i < team.team.resource_msg.length; ++i) {
-        resourceMessage = resourceMessage.concat(team.team.resource_msg[i])
-      }
       const teamResourceMsg = await discordIntf.postGreetingMessage(
-        discordChannel, null, null, resourceMessage)
+        discordChannel, null, null, team.team.resource_msg.join(''))
       teamResourceMsg.pin()
     }
   }
@@ -59,23 +51,17 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
 
     // Post the team greeting messages
     if (teamsConfig.team_greeting !== undefined) {
-      let teamMessage = '' 
-      for (let i = 0; i < teamsConfig.team_greeting.length; ++i) {
-        teamMessage = teamMessage.concat(teamsConfig.team_greeting[i])
-      }
       const greetingMsg = await discordIntf.postGreetingMessage(
-        discordChannel, 'Welcome to your team channel', 'General Info', teamMessage)
+        discordChannel, 'Welcome to your team channel', 'General Info', 
+        teamsConfig.team_greeting.join(''))
     }
 
     // Post a list of team resources including the list of team members and
     // their roles
     if (team.team.resource_msg !== undefined) {
-      let resourceMessage = ''
-      for (let i = 0; i < team.team.resource_msg.length; ++i) {
-        resourceMessage = resourceMessage.concat(team.team.resource_msg[i])
-      }
       const teamResourceMsg = await discordIntf.postGreetingMessage(
-        discordChannel, 'Team Info', 'General Info', resourceMessage)
+        discordChannel, 'Team Info', 'General Info', 
+        team.team.resource_msg.join(''))
     }
   }
 }
