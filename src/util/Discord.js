@@ -95,7 +95,6 @@ export default class Discord {
       return -1
     }
 
-    console.log('channel: ', channel)
     if (channel.type === ChannelType.GuildText) {
       return await channel.send(greetingMessageText) // Return a Message object
     }

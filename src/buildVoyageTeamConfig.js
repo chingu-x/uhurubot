@@ -83,7 +83,7 @@ const addResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project
 
   team.team.resource_msg = [
     `\n**__About your Team__**`,
-    `\n**Your Tier:** ${ tier }`,
+    `\n**Your Tier:** ${ tier.slice(0,1).toUpperCase().concat(tier.slice(1)) }`,
     `\n**Your Team Name:** ${ team.team.name }`,
     `\n**Your Teammates:**`,
     `\n* Product Owners: ${ productOwners.join(' ') }`,
@@ -126,7 +126,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start.\n\n",
       "**__Your First Steps__** \n",
       "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n",
-      "2. Go to <#553103063649353738> and copy/paste your intro into this team channel. This lets your teammates get to know you so get the party can get started!\n",
+      "2. Copy/paste the intro you added in https://discord.com/channels/330284646283608064/553103063649353738 into this team channel to let your teammates get to know you!\n",
       "3. Follow the steps in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide) we emailed last week to set a solid foundation for your project. The most important step to concentrate on is scheduling your Team Kickoff meeting as soon as possible.\n\n",
       "**__In your first Sprint you should concentrate on completing these tasks:__**\n",
       "1. Meet your team & schedule kickoff meeting\n",
@@ -200,7 +200,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
   const buildBar = Bar(buildbarOptions)
 
   config.teams.forEach(team => {
-    addResourcesToTeam(VOYAGE, team, team.team.name.slice(0,5).toUpperCase(), team.team.name.slice(-2), voyagers, config.tier_project)
+    addResourcesToTeam(VOYAGE, team, team.team.name.slice(0,5), team.team.name.slice(-2), voyagers, config.tier_project)
     buildBar.tick(1)
   })
 
