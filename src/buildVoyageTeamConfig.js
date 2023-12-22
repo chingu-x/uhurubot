@@ -92,8 +92,11 @@ const addResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project
     `\n* Data Scientists: ${ dataScientists.join(' ') }`,
     `\n* Voyage Guide: ${ voyageGuides.join(' ') }\n`,
     `${ teamProjectDescription }\n`,
-    `\n**Resources**:\n`,
-    `* GitHub Repo: ${ githubRepoURL }`,
+    `\n**Resources**:`,
+    `\n* GitHub Repo: ${ githubRepoURL }`,
+    `\n**Tools**:`,
+    `\n* [Hammertime](https://hammertime.cyou/)`,
+    `\n* [When2Meet](https://www.when2meet.com/)`
   ]
 
 }
