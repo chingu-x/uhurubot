@@ -39,7 +39,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           EmbedLinks: true,
           AttachFiles: true,
           AddReactions: true,
-          MentionEveryone: true,
+          MentionEveryone: false,
           ManageMessages: true,
           ReadMessageHistory: true
         }
