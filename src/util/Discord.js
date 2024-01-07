@@ -1,4 +1,3 @@
-//import DiscordJS from 'discord.js'
 import { Client, ChannelType, 
   GatewayIntentBits, PermissionsBitField, ThreadAutoArchiveDuration
 } from 'discord.js'
@@ -83,6 +82,14 @@ export default class Discord {
     return channel
   }
 
+  async setForumTags(channel, forumChannelTags) {
+    await channel.setAvailableTags(forumChannelTags)
+    .catch(err => {
+      console.error('\nDiscord - setForumTags - forumChannelTags ', forumChannelTags, ' err: ', err)
+      throw new Error('Discord - setForumTags - forumChannelTags ', forumChannelTags, ' err: ', err)
+    })
+  }
+
   async postGreetingMessage(channel, title, tag, greetingMessageText) {
     const getSnowflakeForTag = (channel, tag) => {
       const tags = channel.availableTags
@@ -91,41 +98,35 @@ export default class Discord {
           return tagObject.id
         }
       }
-      console.error('Discord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
-      return -1
+      console.error('\nDiscord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
+      throw new Error('Discord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
     }
 
     if (channel.type === ChannelType.GuildText) {
       return await channel.send(greetingMessageText) // Return a Message object
     }
     if (channel.type === ChannelType.GuildForum) {
-      //const tagSnowflake = getSnowflakeForTag(channel, tag)
+      const tagSnowflake = getSnowflakeForTag(channel, tag)
       const thread = await channel.threads.create({
         name: title,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
         reason: 'Getting started and resources message',
         message: greetingMessageText,
-        //appliedTags: [tagSnowflake],
+        appliedTags: [tagSnowflake],
       })
       return thread // Return a Thread object
     }
-    console.error('Discord - postGreetingMessage - invalid channel type: ', channel.type)
-    return -1
+    console.error('\nDiscord - postGreetingMessage - invalid channel type: ', channel.type)
+    throw new Error(`Discord - postGreetingMessage - invalid channel type: ${ channel.type }`)
   }
 
-  async createChannel(guild, categoryId, teamName, channelType) {
+  async createChannel(guild, categoryId, teamName, channelType, forumChannelTags) {
     let channelTypeIndicator = ChannelType.GuildText
+    let channelCreateOptions
     if (channelType === 'text') {
-      channelTypeIndicator = ChannelType.GuildText
-    } else if (channelType === 'forum') {
-      channelTypeIndicator = ChannelType.GuildForum
-    } else {
-      console.error ('createChannel - teamName: ', teamName, ' defaulting to text channel')
-    }
-
-    try {
-      const channel = await guild.channels.create({
-        type: channelTypeIndicator,
+      //channelTypeIndicator = ChannelType.GuildText
+      channelCreateOptions = {
+        type: ChannelType.GuildText,
         name: `${ teamName }`,
         parent: categoryId,
         permissionOverwrites: [
@@ -134,11 +135,32 @@ export default class Discord {
             deny: [PermissionsBitField.Flags.ViewChannel],
           },
         ],
-      })
+      }
+    } else if (channelType === 'forum') {
+      //channelTypeIndicator = ChannelType.GuildForum
+      channelCreateOptions = {
+        type: ChannelType.GuildForum,
+        name: `${ teamName }`,
+        parent: categoryId,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            deny: [PermissionsBitField.Flags.ViewChannel],
+          },
+        ],
+        availableTags: forumChannelTags,
+      }
+    } else {
+      console.error ('\ncreateChannel - teamName: ', teamName, ' defaulting to text channel')
+    }
+
+    try {
+      const channel = await guild.channels.create(channelCreateOptions)
       return channel
     }
     catch (err) {
-      console.error('Discord - createChannel - err: ', err)
+      console.error('\nDiscord - createChannel - err: ', err)
+      throw new Error('Discord - createChannel - err: ', err)
     }
   }
 

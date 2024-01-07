@@ -15,11 +15,17 @@ const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, t
     throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
   }
   if (discordChannel === undefined || discordChannel === null) {
-    discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'text')
+    discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'text', null)
+    .catch(err => {
+      console.error('createTextTeamChannels - Error creating team channel: ', err)
+    })
 
     if (teamsConfig.team_greeting !== undefined) {
       const greetingMsg = await discordIntf.postGreetingMessage(
         discordChannel, null, null, teamsConfig.team_greeting.join(''))
+      .catch(err => {
+        console.error('createTextTeamChannels - Error adding team_greeting: ', err)
+      })
       greetingMsg.pin()
     }
 
@@ -28,6 +34,9 @@ const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, t
     if (team.team.resource_msg !== undefined) {
       const teamResourceMsg = await discordIntf.postGreetingMessage(
         discordChannel, null, null, team.team.resource_msg.join(''))
+        .catch(err => {
+          console.error('createTextTeamChannels - Error adding resource_msg: ', err)
+        })
       teamResourceMsg.pin()
     }
   }
@@ -41,14 +50,20 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
     throw new Error(`Category name '${ team.team.category }' is undefined in the configuration.`)
   }
   if (discordChannel === undefined || discordChannel === null) {
-    discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum')
 
     try {
-      // Add forum tags to the channel
-      const forumChannelTags = teamsConfig.forum_tags.map((tag) => {
-        return { name: tag }
+      let forumChannelTags = []
+      for (let tag of teamsConfig.forum_tags) {
+        forumChannelTags.push({ name: tag })
+      }
+      discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum', forumChannelTags)
+
+      /*
+      await discordIntf.setForumTags(discordChannel, forumChannelTags)
+      .catch(err => {
+        console.error('createForumTeamChannels - Error adding tags: ', err)
       })
-      await discordChannel.setAvailableTags(forumChannelTags)
+      */
           
       // Post a list of team resources including the list of team members and
       // their roles
@@ -56,6 +71,9 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
         const teamResourceMsg = await discordIntf.postGreetingMessage(
           discordChannel, 'Team Info', 'General Info', 
           team.team.resource_msg.join(''))
+        .catch(err => {
+          console.error('createForumTeamChannels - Error adding resource_msg: ', err)
+        })
       }
 
       // Post the team greeting messages. This order is important since it will
@@ -66,6 +84,9 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
         const greetingMsg = await discordIntf.postGreetingMessage(
           discordChannel, 'Welcome to your team channel', 'General Info', 
           teamsConfig.team_greeting.join(''))
+        .catch(err => {
+          console.error('createForumTeamChannels - Error adding team_greeting: ', err)
+        })
       }
     }
     catch(err) {
@@ -80,15 +101,15 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
   // Load the teams configuration file into a JS object
   const rawTeamsConfig = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeamsConfig)
-  const categoryNames = teamsConfig.categories.map(category => {
-    return { 
+
+  let categoryNames = []
+  for (let category of teamsConfig.categories) {
+    categoryNames.push({
       "name": category, 
       "created": false,
       "discordCategory": null,
-    }
-  })
-
-  let categoryNoForProgressBar = 0
+    })
+  }
 
   const client = discordIntf.getDiscordClient()
   const guild = await client.guilds.fetch(GUILD_ID)
@@ -127,6 +148,10 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
           await createTextTeamChannels(discordIntf, guild, categoryNames, team, teamsConfig)
         } else {
           await createForumTeamChannels(discordIntf, guild, categoryNames, team, teamsConfig)
+          .catch(async err => {
+            await client.destroy() // Terminate this Discord bot
+            discordIntf.commandReject('fail')
+          })
         }
         buildBar.tick(1)
       }
