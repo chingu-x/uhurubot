@@ -43,28 +43,33 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
   if (discordChannel === undefined || discordChannel === null) {
     discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum')
 
-    // Add forum tags to the channel
-    const forumChannelTags = teamsConfig.forum_tags.map((tag) => {
-      return { name: tag }
-    })
-    await discordChannel.setAvailableTags(forumChannelTags)
+    try {
+      // Add forum tags to the channel
+      const forumChannelTags = teamsConfig.forum_tags.map((tag) => {
+        return { name: tag }
+      })
+      await discordChannel.setAvailableTags(forumChannelTags)
+          
+      // Post a list of team resources including the list of team members and
+      // their roles
+      if (team.team.resource_msg !== undefined) {
+        const teamResourceMsg = await discordIntf.postGreetingMessage(
+          discordChannel, 'Team Info', 'General Info', 
+          team.team.resource_msg.join(''))
+      }
 
-    // Post a list of team resources including the list of team members and
-    // their roles
-    if (team.team.resource_msg !== undefined) {
-      const teamResourceMsg = await discordIntf.postGreetingMessage(
-        discordChannel, 'Team Info', 'General Info', 
-        team.team.resource_msg.join(''))
+      // Post the team greeting messages. This order is important since it will
+      // result in the message being the first topic in the channel. Forum
+      // channel posts are essential "push down" stacks with the most recent
+      // one being placed at the top.
+      if (teamsConfig.team_greeting !== undefined) {
+        const greetingMsg = await discordIntf.postGreetingMessage(
+          discordChannel, 'Welcome to your team channel', 'General Info', 
+          teamsConfig.team_greeting.join(''))
+      }
     }
-
-    // Post the team greeting messages. This order is important since it will
-    // result in the message being the first topic in the channel. Forum
-    // channel posts are essential "push down" stacks with the most recent
-    // one being placed at the top.
-    if (teamsConfig.team_greeting !== undefined) {
-      const greetingMsg = await discordIntf.postGreetingMessage(
-        discordChannel, 'Welcome to your team channel', 'General Info', 
-        teamsConfig.team_greeting.join(''))
+    catch(err) {
+      console.error('createVoyageChannels - createForumTeamChannels - err: ', err)
     }
   }
 }
@@ -131,7 +136,7 @@ const createVoyageChannels = async (environment, GUILD_ID, DISCORD_TOKEN, TEAMS_
     })
   }
   catch(err) {
-    console.log(err)
+    console.error(err)
     await client.destroy() // Terminate this Discord bot
     discordIntf.commandReject('fail')
   }

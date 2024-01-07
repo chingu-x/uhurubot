@@ -9,63 +9,82 @@ import postScheduledMessages from './src/postScheduledMessages.js'
 import sendScheduledEmails from './src/sendScheduledEmails.js'
 import replacePosts from './src/replacePosts.js'
 
-const environment = new Environment()
-environment.initDotEnv('./')
-let debug = false
+(async () => {
+  const environment = new Environment()
+  environment.initDotEnv('./')
+  let debug = false
 
-const consoleLogOptions = (options) => {
-  if (environment.isDebug()) {
-    console.log('\Uhuru clone command options:')
-    console.log('--------------------')
-    console.log('- debug: ', options.debug)
-    console.log('- guild id: ', options.guildID)
-    console.log('- voyage: ', options.voyage)
-    console.log('- teams: ', options.teams)
-    console.log('- posts: ', options.posts)
-    console.log('- schedule: ', options.schedule)
+  const consoleLogOptions = (options) => {
+    if (environment.isDebug()) {
+      console.log('\Uhuru clone command options:')
+      console.log('--------------------')
+      console.log('- debug: ', options.debug)
+      console.log('- guild id: ', options.guildID)
+      console.log('- voyage: ', options.voyage)
+      console.log('- teams: ', options.teams)
+      console.log('- posts: ', options.posts)
+      console.log('- schedule: ', options.schedule)
+    }
   }
-}
 
-// Process a request to create new Voyage team channels
-program 
-  .command('build')
-  .description('Build the teams json config file for the next Chingu Voyage')
-  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
-  .action(async (options) => {
-    environment.setOperationalVars({
-      debug: options.debug,
-      teams: options.teams,
+  // Process a request to create new Voyage team channels
+  program 
+    .command('build')
+    .description('Build the teams json config file for the next Chingu Voyage')
+    .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+    .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
+    .action(async (options) => {
+      environment.setOperationalVars({
+        debug: options.debug,
+        teams: options.teams,
+      })
+
+      debug = environment.isDebug()
+
+      debug && consoleLogOptions(options)
+      debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+      debug && environment.logEnvVars()
+
+      const { VOYAGE } = environment.getOperationalVars()
+      
+      try {
+        await buildVoyageTeamConfig(environment, VOYAGE)
+        process.exit(0)
+      }
+      catch (err) {
+        console.log(err)
+        process.exit(0)
+      }
     })
 
-    debug = environment.isDebug()
+  // Process a request to create new Voyage team channels
+  program 
+    .command('create')
+    .description('Create team channels in Discord for an upcoming Chingu Voyage')
+    .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+    .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
+    .action(async (options) => {
+      environment.setOperationalVars({
+        debug: options.debug,
+        teams: options.teams,
+      })
 
-    debug && consoleLogOptions(options)
-    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
-    debug && environment.logEnvVars()
+      debug = environment.isDebug()
 
-    const { VOYAGE } = environment.getOperationalVars()
-    
-    try {
-      await buildVoyageTeamConfig(environment, VOYAGE)
-      process.exit(0)
-    }
-    catch (err) {
-      console.log(err)
-      process.exit(0)
-    }
-  })
+      debug && consoleLogOptions(options)
+      debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+      debug && environment.logEnvVars()
 
-// Process a request to create new Voyage team channels
-program 
-  .command('create')
-  .description('Create team channels in Discord for an upcoming Chingu Voyage')
-  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
-  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
-  .action(async (options) => {
-    environment.setOperationalVars({
-      debug: options.debug,
-      teams: options.teams,
+      const { GUILD_ID, DISCORD_TOKEN, TEAMS } = environment.getOperationalVars()
+      
+      try {
+        await createVoyageChannels(environment, GUILD_ID, DISCORD_TOKEN, TEAMS)
+        process.exit(0)
+      }
+      catch (err) {
+        console.log(err)
+        process.exit(0)
+      }
     })
 
     debug = environment.isDebug()
@@ -134,24 +153,6 @@ program
       validate: options.validate,
     })
 
-    debug = environment.isDebug()
-
-    debug && consoleLogOptions(options)
-    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
-    debug && environment.logEnvVars()
-
-    const { DISCORD_TOKEN, GUILD_ID, TEAMS, VALIDATE } = environment.getOperationalVars()
-    
-    try {
-      await grantVoyageChannelAccess(environment, DISCORD_TOKEN, TEAMS, VALIDATE)
-      process.exit(0)
-    }
-    catch (err) {
-      console.log(err)
-      process.exit(0)
-    }
-  })
-
   // Process a request to send scheduled emails to specific Chingu's
   program 
   .command('email')
@@ -214,3 +215,4 @@ program
   })
 
   program.parse(process.argv)
+})()

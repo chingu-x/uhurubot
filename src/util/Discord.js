@@ -91,7 +91,7 @@ export default class Discord {
           return tagObject.id
         }
       }
-      console.log('Discord - postGreetingMessage - tag not found (', tag,') in ', tags)
+      console.error('Discord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
       return -1
     }
 
@@ -99,16 +99,17 @@ export default class Discord {
       return await channel.send(greetingMessageText) // Return a Message object
     }
     if (channel.type === ChannelType.GuildForum) {
+      //const tagSnowflake = getSnowflakeForTag(channel, tag)
       const thread = await channel.threads.create({
         name: title,
         autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
         reason: 'Getting started and resources message',
         message: greetingMessageText,
-        appliedTags: [getSnowflakeForTag(channel, tag)]
+        //appliedTags: [tagSnowflake],
       })
       return thread // Return a Thread object
     }
-    console.log('Discord - postGreetingMessage - invalid channel type: ', channel.type)
+    console.error('Discord - postGreetingMessage - invalid channel type: ', channel.type)
     return -1
   }
 
@@ -119,20 +120,26 @@ export default class Discord {
     } else if (channelType === 'forum') {
       channelTypeIndicator = ChannelType.GuildForum
     } else {
-      console.log ('createChannel - teamName: ', teamName, ' defaulting to text channel')
+      console.error ('createChannel - teamName: ', teamName, ' defaulting to text channel')
     }
-    const channel = await guild.channels.create({
-      type: channelTypeIndicator,
-      name: `${ teamName }`,
-      parent: categoryId,
-      permissionOverwrites: [
-        {
-          id: guild.roles.everyone,
-          deny: [PermissionsBitField.Flags.ViewChannel],
-        },
-      ],
-    })
-    return channel
+
+    try {
+      const channel = await guild.channels.create({
+        type: channelTypeIndicator,
+        name: `${ teamName }`,
+        parent: categoryId,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            deny: [PermissionsBitField.Flags.ViewChannel],
+          },
+        ],
+      })
+      return channel
+    }
+    catch (err) {
+      console.error('Discord - createChannel - err: ', err)
+    }
   }
 
 }
