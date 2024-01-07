@@ -7,6 +7,7 @@ import createVoyageChannels from './src/createVoyageChannels.js'
 import grantVoyageChannelAccess from './src/grantVoyageChannelAccess.js'
 import postScheduledMessages from './src/postScheduledMessages.js'
 import sendScheduledEmails from './src/sendScheduledEmails.js'
+import replacePosts from './src/replacePosts.js'
 
 const environment = new Environment()
 environment.initDotEnv('./')
@@ -84,6 +85,40 @@ program
       process.exit(0)
     }
   })
+
+// Process a request to replace messages in one or more Voyage team channels
+program 
+  .command('replace')
+  .description('Replace messages in one or more team channels in Discord for a Chingu Voyage')
+  .option('-d, --debug <debug>', 'Debug switch to add runtime info to console (YES/NO)')
+  .option('-t, --teams <teams>', 'Path to the JSON file containing team channels to be created')
+  .option('-r, --replace_posts <postIds>', 'NONE, omit, or a csv list of unique post numbers to replace')
+  .option('-i, --replace_teams <replaceTeams>','ALL or a csv list of team numbers')
+  .action(async (options) => {
+    environment.setOperationalVars({
+      debug: options.debug,
+      teams: options.teams,
+      postIds: options.postIds,
+      replaceTeams: options.replaceTeams,
+    })
+
+    debug = environment.isDebug()
+
+    debug && consoleLogOptions(options)
+    debug && console.log('\noperationalVars: ', environment.getOperationalVars())
+    debug && environment.logEnvVars()
+
+    const { GUILD_ID, DISCORD_TOKEN, TEAMS, REPLACE_POSTS, REPLACE_TEAMS } = environment.getOperationalVars()
+    
+    try {
+      await replacePosts(environment, GUILD_ID, DISCORD_TOKEN, TEAMS, REPLACE_POSTS, REPLACE_TEAMS)
+      process.exit(0)
+    }
+    catch (err) {
+      console.log(err)
+      process.exit(0)
+    }
+  })  
 
 // Process a request to authorize Chingus to access their Voyage team channels
 program 
