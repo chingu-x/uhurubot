@@ -124,7 +124,6 @@ export default class Discord {
     let channelTypeIndicator = ChannelType.GuildText
     let channelCreateOptions
     if (channelType === 'text') {
-      //channelTypeIndicator = ChannelType.GuildText
       channelCreateOptions = {
         type: ChannelType.GuildText,
         name: `${ teamName }`,
