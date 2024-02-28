@@ -101,6 +101,11 @@ const addResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project
 
 }
 
+const auditVoyage = (voyagers) => {
+  // TODO: Add logic to check for duplicate Voyagers and produce a warning
+  // message if any are found
+}
+
 const buildVoyageTeamConfig = async (environment, VOYAGE) => {
 
   // Retrieve the roster of Voyagers in a specific Voyage
@@ -206,6 +211,8 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     addResourcesToTeam(VOYAGE, team, team.team.name.slice(0,5), team.team.name.slice(-2), voyagers, config.tier_project)
     buildBar.tick(1)
   })
+
+  auditVoyage(voyagers)
 
   try { 
     const configJSON = JSON.stringify(config, null, 2)
