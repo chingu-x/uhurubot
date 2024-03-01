@@ -41,7 +41,7 @@ const addVoyagerToTeam = (teams, currentTeamNo, voyagerCategory, voyager) => {
         "category": voyagerCategory, 
         "name": teamName, 
         "tier": voyager.tier,
-        "channel_type": "text",
+        "channel_type": "forum",
         "discord_names": [voyager.discord_name ? voyager.discord_name : ''],
         "github_names": [voyager.github_name] ? [voyager.github_name] : '',
         "resource_msg": []
@@ -64,12 +64,15 @@ const addResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project
   const teamProjectDescription = tier_project[tierNumber - 1].greeting.join(' ')
 
   const findPOs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Product Owner'
+  const findSMs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Scrum Master'
   const findUIUXs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'UI/UX'
   const findWebdevs = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Developer'
   const findDataScientists = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Data Scientist'
   const findVoyageGuides = (voyager) => voyager.team_no.padStart(2,0) === teamNumber && voyager.role === 'Voyage Guide'
 
   const productOwners = voyagers.filter(findPOs).length > 0 ? voyagers.filter(findPOs)
+    .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
+  const scrumMasters = voyagers.filter(findSMs).length > 0 ? voyagers.filter(findSMs)
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
   const uiuxDesigners = voyagers.filter(findUIUXs).length > 0 ? voyagers.filter(findUIUXs)
     .map(voyager => '<@'.concat(voyager.discord_name,'>')) : ['None']
@@ -87,6 +90,7 @@ const addResourcesToTeam = (voyageNo, team, tier, teamNo, voyagers, tier_project
     `\n**Your Team Name:** ${ team.team.name }`,
     `\n**Your Teammates:**`,
     `\n* Product Owners: ${ productOwners.join(' ') }`,
+    `\n* Scrum Masters: ${ scrumMasters.join(' ') }`,
     `\n* UI/UX Designer: ${ uiuxDesigners.join(' ') }`,
     `\n* Web Developers: ${ webDevelopers.join(' ') }`,
     `\n* Data Scientists: ${ dataScientists.join(' ') }`,
@@ -130,7 +134,7 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
     voyage_number: VOYAGE,
     categories: [],
     teams: [],
-    team_greeting: [
+    team_greeting1: [
       ":rocket: **_Congratulations Voyagers!_** You found your team chat! Read carefully below so you don't miss out on getting a good start.\n\n",
       "**__Your First Steps__** \n",
       "1. Say \"hi\" to your team-mates! Come in excited and help welcome your teammates! I will list everyone on the team after this message so you can know exactly who is on your team. Note: @jim_medlock, Chingu-X bot, & the other Admins are not your teammates. :slight_smile:\n",
@@ -145,7 +149,9 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
       "- We've created a simple and easy way to create a voice/video channel for team meetings, one-on-one discussions, & troubleshooting sessions whenever you need them! Check out the `How do I make a voice channel for my team?` section in the Voyage Guide.\n",
       "- You can find out more about each of these in the [Voyage Guide](https://github.com/chingu-voyages/Handbook/blob/main/docs/guides/voyage/voyage.md#voyage-guide).\n\n",
       "**__How can I get the attention of my teammates?__**\n",
-      "You can use <#&1104544072347160578> to send a message to all teammates. It's best to avoid using `@everyone`.\n\n",
+      "You can use <#&1104544072347160578> to send a message to all teammates. It's best to avoid using `@everyone`.\n\n"
+    ],
+    team_greeting2: [
       "**__Finally__**\n",
       "Stay committed to your Voyage goal and active with your team! Remember that the #1 factor to success isn't technology - it's **_daily_** communication & collaboration with your teammates.\n\n"
     ],
@@ -154,21 +160,21 @@ const buildVoyageTeamConfig = async (environment, VOYAGE) => {
         "tier": "tier1", 
         "greeting": [
           "\n**Your Team Project:**\n",
-          "All Tier 1 teams will be building the **_Daily Tasks_** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-dailytasks)."
+          "All Tier 1 teams will be building the **_Dinosaurs_** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier1-dinosaurs)."
         ]
       },
       { 
         "tier": "tier2", 
         "greeting": [
           "\n**Your Team Project:**\n",
-          "All Tier 2 teams will be building the **Daily Tasks** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-dailytasks)."
+          "All Tier 2 teams will be building the **_Dinosaurs_** app to help your users manage and organize their daily work as a checklist. All teams are required to create this same application from these [requirements & specifications](https://github.com/chingu-voyages/voyage-project-tier2-dinosaurs)."
         ]
       },
       { 
         "tier": "tier3", 
         "greeting": [
           "\n**Your Team Project:**\n",
-          "As a Tier 3 team your team has the choice of building the **_Daily Tasks** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-dailytasks) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
+          "As a Tier 3 team your team has the choice of building the **__Dinosaurs_** app from the [specifications we provide](https://github.com/chingu-voyages/voyage-project-tier3-dinosaurs) or another app of your own design. \n\n If you choose to create your own you'll want to start by working together to choose a project theme, create a vision statement, and then build a prioritized list of user features.\n\nThis will give you what you need to build the Project Backlog you'll be following to design, build, test, & deploy it."
         ]
       }
     ],

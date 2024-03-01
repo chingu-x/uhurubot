@@ -20,11 +20,20 @@ const createTextTeamChannels = async (discordIntf, guild, categoryNames, team, t
       console.error('createTextTeamChannels - Error creating team channel: ', err)
     })
 
-    if (teamsConfig.team_greeting !== undefined) {
+    if (teamsConfig.team_greeting1 !== undefined) {
       const greetingMsg = await discordIntf.postGreetingMessage(
-        discordChannel, null, null, teamsConfig.team_greeting.join(''))
+        discordChannel, null, null, teamsConfig.team_greeting1.join(''))
       .catch(err => {
-        console.error('createTextTeamChannels - Error adding team_greeting: ', err)
+        console.error('createTextTeamChannels - Error adding team_greeting1: ', err)
+      })
+      greetingMsg.pin()
+    }
+
+    if (teamsConfig.team_greeting2 !== undefined) {
+      const greetingMsg = await discordIntf.postMessageToThread(
+        discordChannel,teamsConfig.team_greeting2.join(''))
+      .catch(err => {
+        console.error('createTextTeamChannels - Error adding team_greeting2: ', err)
       })
       greetingMsg.pin()
     }
@@ -57,13 +66,6 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
         forumChannelTags.push({ name: tag })
       }
       discordChannel = await discordIntf.createChannel(guild, discordCategory.discordCategory.id, team.team.name, 'forum', forumChannelTags)
-
-      /*
-      await discordIntf.setForumTags(discordChannel, forumChannelTags)
-      .catch(err => {
-        console.error('createForumTeamChannels - Error adding tags: ', err)
-      })
-      */
           
       // Post a list of team resources including the list of team members and
       // their roles
@@ -80,12 +82,20 @@ const createForumTeamChannels = async (discordIntf, guild, categoryNames, team, 
       // result in the message being the first topic in the channel. Forum
       // channel posts are essential "push down" stacks with the most recent
       // one being placed at the top.
-      if (teamsConfig.team_greeting !== undefined) {
-        const greetingMsg = await discordIntf.postGreetingMessage(
+      let newThread
+      if (teamsConfig.team_greeting1 !== undefined) {
+        newThread = await discordIntf.postGreetingMessage(
           discordChannel, 'Welcome to your team channel', 'General Info', 
-          teamsConfig.team_greeting.join(''))
+          teamsConfig.team_greeting1.join(''))
         .catch(err => {
-          console.error('createForumTeamChannels - Error adding team_greeting: ', err)
+          console.error('createForumTeamChannels - Error adding team_greeting1: ', err)
+        })
+      }
+      if (teamsConfig.team_greeting2 !== undefined) {
+        const greetingMsg = await discordIntf.postMessageToThread(
+          newThread, teamsConfig.team_greeting2.join(''))
+        .catch(err => {
+          console.error('createForumTeamChannels - Error adding team_greeting2: ', err)
         })
       }
     }

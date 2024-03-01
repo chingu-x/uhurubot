@@ -90,7 +90,7 @@ export default class Discord {
     })
   }
 
-  async postGreetingMessage(channel, title, tag, greetingMessageText) {
+  async postGreetingMessage(channel, title, tag, greetingMessageText, thread) {
     const getSnowflakeForTag = (channel, tag) => {
       const tags = channel.availableTags
       for (let tagObject of tags) {
@@ -105,6 +105,7 @@ export default class Discord {
     if (channel.type === ChannelType.GuildText) {
       return await channel.send(greetingMessageText) // Return a Message object
     }
+
     if (channel.type === ChannelType.GuildForum) {
       const tagSnowflake = getSnowflakeForTag(channel, tag)
       const thread = await channel.threads.create({
@@ -118,6 +119,10 @@ export default class Discord {
     }
     console.error('\nDiscord - postGreetingMessage - invalid channel type: ', channel.type)
     throw new Error(`Discord - postGreetingMessage - invalid channel type: ${ channel.type }`)
+  }
+
+  async postMessageToThread(thread, messageText) {
+    return await thread.send(messageText) // Return a Message object
   }
 
   async createChannel(guild, categoryId, teamName, channelType, forumChannelTags) {
