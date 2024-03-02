@@ -1,6 +1,5 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
-import initializeProgressBars from './util/initializeProgressBars.js'
 
 const isInCurrentSprint = (sprintSchedule, currentDate, currentDay) => {
   const today = new Date()

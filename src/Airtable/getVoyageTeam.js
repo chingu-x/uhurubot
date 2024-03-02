@@ -9,10 +9,10 @@ const getVoyageTeam = async (voyage) => {
 
     const filter = 'AND(' +
       '{Voyage} = "' + voyage + '", ' +
-      '{Team No.} != ""' +
+      'AND({Team No.} != "", {Team No.} != "Non-JS")' +
       ')'
 
-    //console.log('filter: ', filter)
+    //console.log('getVoyageTeam - filter: ', filter)
 
     base('Voyage Signups').select({ 
       fields:['Email', 'Voyage', 'Team Name', 'Tier', 'Team No.', 'Discord ID', 'GitHub ID', 'Role'],
@@ -24,23 +24,13 @@ const getVoyageTeam = async (voyage) => {
       // Notification Events table
       let voyagerNo = 0
       for (let record of records) {
+
         voyagerNo = ++voyagerNo
         const tierName = record.get('Tier')
           .slice(0,6)
           .toLowerCase()
           .split(' ')
           .join('')
-      /*
-        console.log(`getVoyageTeam - number: ${ voyagerNo } \
-          email: ${ record.get('Email') } \
-          voyage: ${ record.get('Voyage') } \
-          team_name: ${ record.get('Team Name') } \
-          tier: ${ tierName } \
-          team_no: ${ record.get('Team No.') } \
-          discord_name: ${ record.get('Discord ID') } \
-          github_name: ${ record.get('GitHub ID') ?? '' } \
-          role: ${ record.get('Role') }`)
-        */
         voyagers.push({ 
           number: `${ voyagerNo }`,
           email: `${ record.get('Email') }`,

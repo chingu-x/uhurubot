@@ -19,6 +19,8 @@ export default class Environment {
     console.log('- TEAMS: ', process.env.TEAMS)
     console.log('- POSTS: ', process.env.POSTS)
     console.log('- SCHEDULE: ', process.env.SCHEDULE)
+    console.log('- REPLACE_POSTS: ', process.env.REPLACE_POSTS)
+    console.log('- REPLACE_TEAMS: ', process.env.REPLACE_TEAMS)
 
     return true
   }
@@ -50,7 +52,7 @@ export default class Environment {
   setOperationalVars(options) {
     // Retrieve the current variable values from `.env` file
     let { VOYAGE, DEBUG, GUILD_ID, DISCORD_TOKEN, AIRTABLE_API_KEY, AIRTABLE_BASE, 
-      UHURUBE_URL, TEAMS, POSTS, SCHEDULE} = process.env
+      UHURUBE_URL, TEAMS, POSTS, SCHEDULE, REPLACE_POSTS, REPLACE_TEAMS} = process.env
 
     // Initialize `operationalVars` allowing command line parameter values
     // to override `.env` parameters
@@ -68,5 +70,7 @@ export default class Environment {
     this.operationalVars.AIRTABLE_API_KEY = AIRTABLE_API_KEY
     this.operationalVars.AIRTABLE_BASE = AIRTABLE_BASE
     this.operationalVars.UHURUBE_URL = UHURUBE_URL
+    this.operationalVars.REPLACE_POSTS = REPLACE_POSTS
+    this.operationalVars.REPLACE_TEAMS = REPLACE_TEAMS
   }
 }
