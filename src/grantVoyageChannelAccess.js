@@ -1,8 +1,6 @@
 import Discord from './util/Discord.js'
 import FileOps from './util/FileOps.js'
 
-// import initializeProgressBars from './util/initializeProgressBars.js'
-
 const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_NAME, VALIDATE) => {
 
   // Retrieve a reference to the named category
@@ -41,7 +39,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           EmbedLinks: true,
           AttachFiles: true,
           AddReactions: true,
-          MentionEveryone: true,
+          MentionEveryone: false,
           ManageMessages: true,
           ReadMessageHistory: true
         }
@@ -56,9 +54,7 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
   const rawTeams = FileOps.readFile(TEAMS_FILE_NAME)
   const teamsConfig = JSON.parse(rawTeams)
   
-  //const ALL_TEAMS = 0
   const teamNames = teamsConfig.teams.map(team => team.team.name)
-  //let { overallProgress, progressBars } = initializeProgressBars(teamNames)
 
   const discordIntf = new Discord(environment)
   const client = discordIntf.getDiscordClient()
@@ -99,12 +95,8 @@ const grantVoyageChannelAccess = async (environment, DISCORD_TOKEN, TEAMS_FILE_N
           }
           await grantUserAccess('GUILD_TEXT', guild, textChannel, team)
         }
-        //progressBars[teamNo+1].increment(1)
-        //progressBars[ALL_TEAMS].increment(1) 
-        //++teamNo 
       }
 
-      //overallProgress.stop()
       discordIntf.commandResolve('done')
       client.destroy() // Terminate this Discord bot
     })

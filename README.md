@@ -105,6 +105,7 @@ The following shows the format of the Teams & Users JSON file:
         "name": "tiern-team-nn",
         "category": "category-name",
         "tier": "tier1|tier2|tier3",
+        "channel_type": "text|forum",
         "discord_names": ["user1", "user2", "user3",...]
         "github_names": ["user1", "user2", "user3", ...]
       }
@@ -147,6 +148,10 @@ names should be formatted as `vnn-tiern-gg-🔥` where:
 - `tiern` is the tier name - `tier1`, `tier2`, or `tier3`
 - `gg` is the group number used to make the category unique and distinct from
 other category names in the same Voyage.
+
+`channel_type` designates which type of Discord channel should be created for
+this team - "text" or "forum". This currently defaults to "text" and must
+manually be updated for teams needing a forum channel.
 
 `discord_names` defines the Discord users that are in that team. The user
 names in this array must be valid Discord users who have joined the Chingu
@@ -311,7 +316,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "toucans-team-01", 
         "category": "v31-tier1-01-🔥",
-        "tier": "tier1"
+        "tier": "tier1",
+        "channel_type": "text", 
         "discord_names": ["fred#9871", "mary#7626", "rakesh#8878"],
         "github_names": ["fredgh", "marygh", "rakeshgh"]
       },
@@ -319,7 +325,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "toucans-team-02",
         "category": "v31-tier1-01-🔥",
-        "tier": "tier1"
+        "tier": "tier1",
+        "channel_type": "text", 
         "discord_names": ["princess#1774", "grace#7716", "charles#8928"],
         "github_names": ["princessgh", "gracegh", "charlesgh"]
       },
@@ -327,7 +334,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "geckos-team-03",
         "category": "v31-tier2-02-🔥",
-        "tier": "tier2"
+        "tier": "tier2",
+        "channel_type": "text", 
         "discord_names": ["nygen#4762", "tim#4888", "bethany0925"],
         "github_names": ["nygengh", "timgh", "bethanygh"] 
       },
@@ -343,7 +351,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "bears-team-05",
         "category": "v31-tier3-03-🔥",
-        "tier": "tier3"
+        "tier": "tier3",
+        "channel_type": "text", 
         "discord_names": ["maria#9684", "mailia#6165", "nicola#3333"],
         "github_names": ["mariagh", "mailiagh", "nicolagh"] 
       },
@@ -351,7 +360,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "bears-team-06",
         "category": "v31-tier3-03-🔥",
-        "tier": "tier3"
+        "tier": "tier3",
+        "channel_type": "text", 
         "discord_names": ["ralph#1234", "jane#3489", "ling#2345"],
         "github_names": ["princessgh", "gracegh", "charlesgh"] 
       },
@@ -427,7 +437,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "toucans-team-01", 
         "category": "v31-tier1-01-🔥",
-        "tier": "tier1"
+        "tier": "tier1",
+        "channel_type": "text", 
         "discord_names": ["fred#9871", "mary#7626", "rakesh#8878"],
         "github_names": ["fredgh", "marygh", "rakeshgh"]
       },
@@ -435,7 +446,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "toucans-team-02",
         "category": "v31-tier1-01-🔥",
-        "tier": "tier1"
+        "tier": "tier1",
+        "channel_type": "text", 
         "discord_names": ["princess#1774", "grace#7716", "charles#8928"],
         "github_names": ["princessgh", "gracegh", "charlesgh"]
       },
@@ -443,7 +455,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "geckos-team-03",
         "category": "v31-tier2-02-🔥",
-        "tier": "tier2"
+        "tier": "tier2",
+        "channel_type": "text", 
         "discord_names": ["nygen#4762", "tim#4888", "bethany0925"],
         "github_names": ["nygengh", "timgh", "bethanygh"] 
       },
@@ -451,7 +464,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "bears-team-04",
         "category": "v31-tier3-03-🔥",
-        "tier": "tier1"
+        "tier": "tier1",
+        "channel_type": "text", 
         "discord_names": ["singh#1243", "marcus#0997", "frieda#9661"],
         "github_names": ["singhgh", "marcusgh", "friedagh"] 
       },
@@ -459,7 +473,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "bears-team-05",
         "category": "v31-tier3-03-🔥",
-        "tier": "tier3"
+        "tier": "tier3",
+        "channel_type": "text", 
         "discord_names": ["maria#9684", "mailia#6165", "nicola#3333"],
         "github_names": ["mariagh", "mailiagh", "nicolagh"] 
       },
@@ -467,7 +482,8 @@ Example contents for the `v31_teams_users` file:
       "team": { 
         "name": "bears-team-06",
         "category": "v31-tier3-03-🔥",
-        "tier": "tier3"
+        "tier": "tier3",
+        "channel_type": "text", 
         "discord_names": ["ralph#1234", "jane#3489", "ling#2345"],
         "github_names": ["princessgh", "gracegh", "charlesgh"] 
       },

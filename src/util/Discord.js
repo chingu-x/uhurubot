@@ -1,5 +1,6 @@
-//import DiscordJS from 'discord.js'
-import { Client, ChannelType, GatewayIntentBits, PermissionsBitField } from 'discord.js'
+import { Client, ChannelType, 
+  GatewayIntentBits, PermissionsBitField, ThreadAutoArchiveDuration
+} from 'discord.js'
 
 export default class Discord {
   constructor(environment) {
@@ -81,23 +82,90 @@ export default class Discord {
     return channel
   }
 
-  async postGreetingMessage(channel, greetingMessageText) {
-    await channel.send(greetingMessageText)
+  async setForumTags(channel, forumChannelTags) {
+    await channel.setAvailableTags(forumChannelTags)
+    .catch(err => {
+      console.error('\nDiscord - setForumTags - forumChannelTags ', forumChannelTags, ' err: ', err)
+      throw new Error('Discord - setForumTags - forumChannelTags ', forumChannelTags, ' err: ', err)
+    })
   }
 
-  async createChannel(guild, categoryId, teamName) {
-    const channel = await guild.channels.create({
-      type: ChannelType.GuildText,
-      name: `${ teamName }`,
-      parent: categoryId,
-      permissionOverwrites: [
-        {
-          id: guild.roles.everyone,
-          deny: [PermissionsBitField.Flags.ViewChannel],
-        },
-      ],
-    })
-    return channel
+  async postGreetingMessage(channel, title, tag, greetingMessageText, thread) {
+    const getSnowflakeForTag = (channel, tag) => {
+      const tags = channel.availableTags
+      for (let tagObject of tags) {
+        if (tagObject.name === tag) {
+          return tagObject.id
+        }
+      }
+      console.error('\nDiscord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
+      throw new Error('Discord - postGreetingMessage - tag not found (', tag,') in ', tags, ' channel.availableTags: ', channel.availableTags)
+    }
+
+    if (channel.type === ChannelType.GuildText) {
+      return await channel.send(greetingMessageText) // Return a Message object
+    }
+
+    if (channel.type === ChannelType.GuildForum) {
+      const tagSnowflake = getSnowflakeForTag(channel, tag)
+      const thread = await channel.threads.create({
+        name: title,
+        autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+        reason: 'Getting started and resources message',
+        message: greetingMessageText,
+        appliedTags: [tagSnowflake],
+      })
+      return thread // Return a Thread object
+    }
+    console.error('\nDiscord - postGreetingMessage - invalid channel type: ', channel.type)
+    throw new Error(`Discord - postGreetingMessage - invalid channel type: ${ channel.type }`)
+  }
+
+  async postMessageToThread(thread, messageText) {
+    return await thread.send(messageText) // Return a Message object
+  }
+
+  async createChannel(guild, categoryId, teamName, channelType, forumChannelTags) {
+    let channelTypeIndicator = ChannelType.GuildText
+    let channelCreateOptions
+    if (channelType === 'text') {
+      channelCreateOptions = {
+        type: ChannelType.GuildText,
+        name: `${ teamName }`,
+        parent: categoryId,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            deny: [PermissionsBitField.Flags.ViewChannel],
+          },
+        ],
+      }
+    } else if (channelType === 'forum') {
+      //channelTypeIndicator = ChannelType.GuildForum
+      channelCreateOptions = {
+        type: ChannelType.GuildForum,
+        name: `${ teamName }`,
+        parent: categoryId,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            deny: [PermissionsBitField.Flags.ViewChannel],
+          },
+        ],
+        availableTags: forumChannelTags,
+      }
+    } else {
+      console.error ('\ncreateChannel - teamName: ', teamName, ' defaulting to text channel')
+    }
+
+    try {
+      const channel = await guild.channels.create(channelCreateOptions)
+      return channel
+    }
+    catch (err) {
+      console.error('\nDiscord - createChannel - err: ', err)
+      throw new Error('Discord - createChannel - err: ', err)
+    }
   }
 
 }
